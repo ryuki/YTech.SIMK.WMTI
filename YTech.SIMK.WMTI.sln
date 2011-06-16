@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrudScaffolding", "tools\Cr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrudScaffoldingForEnterpriseApp", "tools\CrudScaffoldingForEnterpriseApp\CrudScaffoldingForEnterpriseApp.csproj", "{D0A5D52D-4397-4DD7-BD20-8FBE3C35288F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YTech.SIMK.WMTI.Enums", "app\YTech.SIMK.WMTI.Enums\YTech.SIMK.WMTI.Enums.csproj", "{BA38EA0F-99DF-4860-B8BD-663B6F5D42F5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{BC94CA49-93AB-45AE-909C-213B4DC8498B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0A5D52D-4397-4DD7-BD20-8FBE3C35288F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D0A5D52D-4397-4DD7-BD20-8FBE3C35288F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA38EA0F-99DF-4860-B8BD-663B6F5D42F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA38EA0F-99DF-4860-B8BD-663B6F5D42F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA38EA0F-99DF-4860-B8BD-663B6F5D42F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA38EA0F-99DF-4860-B8BD-663B6F5D42F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
