@@ -16,18 +16,18 @@ namespace YTech.SIMK.WMTI.Data.NHibernateMaps.Transaction
 
             mapping.Table("T_LOAN");
             mapping.Id(x => x.Id, "LOAN_ID").GeneratedBy.Assigned();
-
+            
             mapping.References(x => x.ZoneId, "ZONE_ID").Fetch.Join();
             mapping.References(x => x.PartnerId, "PARTNER_ID").Fetch.Join();
             mapping.References(x => x.CustomerId, "CUSTOMER_ID").Fetch.Join();
             mapping.References(x => x.PersonId, "PERSON_ID").Fetch.Join();
             mapping.References(x => x.AddressId, "ADDRESS_ID").Fetch.Join();
-
+            
             mapping.References(x => x.TLSId, "TLS_ID");
             mapping.References(x => x.SalesmanId, "SALESMAN_ID");
             mapping.References(x => x.SurveyorId, "SURVEYOR_ID");
             mapping.References(x => x.CollectorId, "COLLECTOR_ID");
-
+            
             mapping.Map(x => x.LoanNo, "LOAN_NO");
             mapping.Map(x => x.LoanCode, "LOAN_CODE");
             mapping.Map(x => x.LoanSubmissionDate, "LOAN_SUBMISSION_DATE");
@@ -43,14 +43,15 @@ namespace YTech.SIMK.WMTI.Data.NHibernateMaps.Transaction
             mapping.Map(x => x.LoanBasicInstallment, "LOAN_BASIC_INSTALLMENT");
             mapping.Map(x => x.LoanInterestInstallment, "LOAN_INTEREST_INSTALLMENT");
             mapping.Map(x => x.LoanOtherInstallment, "LOAN_OTHER_INSTALLMENT");
-
+            
             mapping.References(x => x.LoanACCBy, "LOAN_ACC_BY");
             mapping.Map(x => x.LoanACCDate, "LOAN_ACC_DATE");
-
+            
             mapping.Map(x => x.LoanAdminFee, "LOAN_ADMIN_FEE");
             mapping.Map(x => x.LoanMateraiFee, "LOAN_MATERAI_FEE");
             mapping.Map(x => x.LoanMaturityDate, "LOAN_MATURITY_DATE");
             mapping.Map(x => x.LoanIsSalesmanKnownCustomer, "LOAN_IS_SALESMAN_KNOWN_CUST");
+            
             mapping.Map(x => x.LoanDesc, "LOAN_DESC");
             mapping.Map(x => x.LoanStatus, "LOAN_STATUS");
             
