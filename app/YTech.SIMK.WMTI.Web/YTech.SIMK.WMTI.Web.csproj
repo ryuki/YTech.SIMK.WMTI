@@ -207,7 +207,7 @@
     <Content Include="Scripts\date.format.js" />
     <Content Include="Scripts\default.js" />
     <Content Include="Scripts\grid.locale-en.js" />
-    <Content Include="Scripts\jquery-1.5-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.5.2-vsdoc.js" />
     <Content Include="Scripts\jquery-1.5.2.min.js" />
     <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\jquery.jqGrid.min.js" />
