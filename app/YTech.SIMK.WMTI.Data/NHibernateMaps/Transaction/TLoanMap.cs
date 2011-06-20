@@ -30,6 +30,29 @@ namespace YTech.SIMK.WMTI.Data.NHibernateMaps.Transaction
 
             mapping.Map(x => x.LoanNo, "LOAN_NO");
             mapping.Map(x => x.LoanCode, "LOAN_CODE");
+            mapping.Map(x => x.LoanSubmissionDate, "LOAN_SUBMISSION_DATE");
+            mapping.Map(x => x.LoanSurveyDate, "LOAN_SURVEY_DATE");
+            mapping.Map(x => x.LoanUnitPriceTotal, "LOAN_UNIT_PRICE_TOTAL");
+            mapping.Map(x => x.LoanDownPayment, "LOAN_DOWN_PAYMENT");
+            mapping.Map(x => x.LoanBasicPrice, "LOAN_BASIC_PRICE");
+            mapping.Map(x => x.LoanCreditPrice, "LOAN_CREDIT_PRICE");
+            mapping.Map(x => x.LoanFactorMultiple, "LOAN_FACTOR_MULTIPLE");
+            mapping.Map(x => x.LoanFactorAdd, "LOAN_FACTOR_ADD");
+            mapping.Map(x => x.LoanInterest, "LOAN_INTEREST");
+            mapping.Map(x => x.LoanTenor, "LOAN_TENOR");
+            mapping.Map(x => x.LoanBasicInstallment, "LOAN_BASIC_INSTALLMENT");
+            mapping.Map(x => x.LoanInterestInstallment, "LOAN_INTEREST_INSTALLMENT");
+            mapping.Map(x => x.LoanOtherInstallment, "LOAN_OTHER_INSTALLMENT");
+
+            mapping.References(x => x.LoanACCBy, "LOAN_ACC_BY");
+            mapping.Map(x => x.LoanACCDate, "LOAN_ACC_DATE");
+
+            mapping.Map(x => x.LoanAdminFee, "LOAN_ADMIN_FEE");
+            mapping.Map(x => x.LoanMateraiFee, "LOAN_MATERAI_FEE");
+            mapping.Map(x => x.LoanMaturityDate, "LOAN_MATURITY_DATE");
+            mapping.Map(x => x.LoanIsSalesmanKnownCustomer, "LOAN_IS_SALESMAN_KNOWN_CUST");
+            mapping.Map(x => x.LoanDesc, "LOAN_DESC");
+            mapping.Map(x => x.LoanStatus, "LOAN_STATUS");
             
             mapping.Map(x => x.DataStatus, "DATA_STATUS");
             mapping.Map(x => x.CreatedBy, "CREATED_BY");
