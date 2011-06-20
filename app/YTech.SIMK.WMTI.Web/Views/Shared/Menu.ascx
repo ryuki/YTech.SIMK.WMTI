@@ -10,7 +10,10 @@
     <% if (Request.IsAuthenticated)
        {
 %>
-  
+            <h3><a href="#">Survey</a></h3>
+            <div>
+                <div></div>
+            </div>
     <%
         }
 %>
