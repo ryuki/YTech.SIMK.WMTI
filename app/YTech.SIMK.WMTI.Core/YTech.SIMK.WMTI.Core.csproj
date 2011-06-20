@@ -61,7 +61,16 @@
     <Compile Include="..\..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Master\MCustomer.cs" />
+    <Compile Include="Master\MDepartment.cs" />
+    <Compile Include="Master\MEmployee.cs" />
+    <Compile Include="Master\MPartner.cs" />
+    <Compile Include="Master\MZone.cs" />
+    <Compile Include="Master\RefAddress.cs" />
+    <Compile Include="Master\RefPerson.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Transaction\TLoan.cs" />
+    <Compile Include="Transaction\TLoanSurvey.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="RepositoryInterfaces\" />
