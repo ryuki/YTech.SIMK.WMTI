@@ -143,6 +143,13 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\Transaction\Survey\Index.aspx.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Transaction\Survey\Index.aspx.designer.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\css\complex.css" />
@@ -239,6 +246,7 @@
     <Content Include="Views\Shared\LogOnUserControl.ascx" />
     <Content Include="Views\Shared\Menu.ascx" />
     <Content Include="Views\Shared\Status.ascx" />
+    <Content Include="Views\Transaction\Survey\Index.aspx" />
     <Content Include="Views\Utility\UserAccount\ChangePassword.aspx" />
     <Content Include="Views\Utility\UserAccount\ChangePasswordSuccess.aspx" />
     <Content Include="Views\Utility\UserAccount\LogOn.aspx" />
