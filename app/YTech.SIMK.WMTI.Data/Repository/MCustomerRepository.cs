@@ -8,7 +8,7 @@ using YTech.SIMK.WMTI.Core.RepositoryInterfaces;
 
 namespace YTech.SIMK.WMTI.Data.Repository
 {
-    public class MCustomerRepository : NHibernateRepositoryWithTypedId<MCustomer, string>
+    public class MCustomerRepository : NHibernateRepositoryWithTypedId<MCustomer, string>, IMCustomerRepository
     {
     }
 }
