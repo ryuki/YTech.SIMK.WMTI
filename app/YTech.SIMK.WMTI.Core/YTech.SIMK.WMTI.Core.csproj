@@ -69,12 +69,19 @@
     <Compile Include="Master\RefAddress.cs" />
     <Compile Include="Master\RefPerson.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RepositoryInterfaces\IMCustomerRepository.cs" />
+    <Compile Include="RepositoryInterfaces\IMDepartmentRepository.cs" />
+    <Compile Include="RepositoryInterfaces\IMEmployeeRepository.cs" />
+    <Compile Include="RepositoryInterfaces\IMPartnerRepository.cs" />
+    <Compile Include="RepositoryInterfaces\IMZoneRepository.cs" />
+    <Compile Include="RepositoryInterfaces\IRefAddressRepository.cs" />
+    <Compile Include="RepositoryInterfaces\IRefPersonRepository.cs" />
+    <Compile Include="RepositoryInterfaces\ITLoanRepository.cs" />
+    <Compile Include="RepositoryInterfaces\ITLoanSurveyRepository.cs" />
     <Compile Include="Transaction\TLoan.cs" />
     <Compile Include="Transaction\TLoanSurvey.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="RepositoryInterfaces\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

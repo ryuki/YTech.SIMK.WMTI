@@ -87,7 +87,7 @@
                 url: '<%= Url.Action("List", "Customer") %>',
                 datatype: 'json',
                 mtype: 'GET',
-                colNames: ['', 'Kode Survey', 'Nama', '', 'Nama', 'Alamat', '', '', 'Telp', 'Kota', 'Keterangan'],
+                colNames: ['', 'Kode Survey', 'Tgl Survey', 'Pemohon', 'Surveyor', 'Alamat', 'Wilayah', 'Status'],
                 colModel: [
                     {
                         name: 'act', index: 'act', width: 75, sortable: false
