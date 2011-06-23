@@ -57,7 +57,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="..\..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
@@ -76,8 +75,10 @@
     <Compile Include="RepositoryInterfaces\IMZoneRepository.cs" />
     <Compile Include="RepositoryInterfaces\IRefAddressRepository.cs" />
     <Compile Include="RepositoryInterfaces\IRefPersonRepository.cs" />
+    <Compile Include="RepositoryInterfaces\ITInstallmentRepository.cs" />
     <Compile Include="RepositoryInterfaces\ITLoanRepository.cs" />
     <Compile Include="RepositoryInterfaces\ITLoanSurveyRepository.cs" />
+    <Compile Include="Transaction\TInstallment.cs" />
     <Compile Include="Transaction\TLoan.cs" />
     <Compile Include="Transaction\TLoanSurvey.cs" />
   </ItemGroup>

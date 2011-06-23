@@ -66,6 +66,7 @@
     <Compile Include="..\..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Class1.cs" />
     <Compile Include="NHibernateMaps\Master\MCustomerMap.cs" />
     <Compile Include="NHibernateMaps\Master\MDepartmentMap.cs" />
     <Compile Include="NHibernateMaps\Master\MEmployeeMap.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="NHibernateMaps\Master\MZoneMap.cs" />
     <Compile Include="NHibernateMaps\Master\RefAddressMap.cs" />
     <Compile Include="NHibernateMaps\Master\RefPersonMap.cs" />
+    <Compile Include="NHibernateMaps\Transaction\TInstallmentMap.cs" />
     <Compile Include="NHibernateMaps\Transaction\TLoanMap.cs" />
     <Compile Include="NHibernateMaps\Transaction\TLoanSurveyMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -83,6 +85,7 @@
     <Compile Include="Repository\MZoneRepository.cs" />
     <Compile Include="Repository\RefAddressRepository.cs" />
     <Compile Include="Repository\RefPersonRepository.cs" />
+    <Compile Include="Repository\TInstallmentRepository.cs" />
     <Compile Include="Repository\TLoanRepository.cs" />
     <Compile Include="Repository\TLoanSurveyRepository.cs" />
   </ItemGroup>
