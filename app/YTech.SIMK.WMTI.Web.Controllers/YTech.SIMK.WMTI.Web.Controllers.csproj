@@ -85,8 +85,9 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RouteRegistrar.cs" />
-    <Compile Include="Transaction\LoanController.cs" />
+    <Compile Include="RouteRegistrar.cs" /> 
+    <Compile Include="Transaction\LoanController.cs" /> 
+    <Compile Include="Transaction\InstallmentController.cs" /> 
     <Compile Include="Transaction\TransactionAreaRegistration.cs" />
     <Compile Include="Utility\UserAccountController.cs" />
     <Compile Include="Utility\UserAdministrationController.cs" />

@@ -1,4 +1,6 @@
-﻿namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
+﻿using System.Web.Mvc;
+
+namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
 {
     public class TransactionAreaRegistration : System.Web.Mvc.AreaRegistration
     {
@@ -15,7 +17,7 @@
             context.MapRoute(
                     "Transaction_default",
                     "Transaction/{controller}/{action}/{id}",
-                    new { action = "Index", id = "" }
+                    new { action = "Index", id = UrlParameter.Optional }
                 );
         }
     }

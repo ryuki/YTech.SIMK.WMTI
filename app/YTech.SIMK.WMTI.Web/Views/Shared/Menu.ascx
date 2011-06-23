@@ -10,10 +10,15 @@
     <% if (Request.IsAuthenticated)
        {
 %>
-            <h3><a href="#">Survey</a></h3>
+            <h3><a href="#">Pengajuan Kredit</a></h3>
             <div>
                 <div><%= Html.ActionLinkForAreas<LoanController>(c => c.Registration(), "Form Survey") %></div>
                 <div><%= Html.ActionLinkForAreas<LoanController>(c => c.Index(), "Daftar Survey")%></div>
+            </div>
+
+            <h3><a href="#">Cicilan</a></h3>
+            <div>
+                <div><%= Html.ActionLinkForAreas<InstallmentController>(c => c.Index(), "Input Cicilan Baru")%></div>
             </div>
     <%
         }
