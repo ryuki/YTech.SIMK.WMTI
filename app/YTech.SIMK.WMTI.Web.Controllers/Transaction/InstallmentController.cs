@@ -64,7 +64,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                          ins.InstallmentMustPaid.ToString(Helper.CommonHelper.NumberFormat),  
                          ins.InstallmentPaid.HasValue ? ins.InstallmentPaid.Value.ToString(Helper.CommonHelper.NumberFormat) : null,  
                           ins.InstallmentPaymentDate.HasValue ? ins.InstallmentPaymentDate.Value.ToString(Helper.CommonHelper.DateFormat) : null,
-                          (ins.InstallmentPaid.Value - ins.InstallmentMustPaid).ToString(Helper.CommonHelper.NumberFormat),
+                         ins.InstallmentSisa.ToString(Helper.CommonHelper.NumberFormat),
                           ins.EmployeeId != null ? ins.EmployeeId.PersonId.PersonName : null
                         }
                     }).ToArray()

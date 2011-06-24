@@ -10,10 +10,11 @@ namespace YTech.SIMK.WMTI.Core.Transaction
     public class TInstallment : EntityWithTypedId<string>, IHasAssignedId<string>
     {
         [DomainSignature]
+        [NotNull, NotEmpty]
+        public virtual int? InstallmentNo { get; set; }
         public virtual TLoan LoanId { get; set; }
         public virtual MEmployee EmployeeId { get; set; }
 
-        public virtual int? InstallmentNo { get; set; }
         public virtual decimal? InstallmentBasic { get; set; }
         public virtual decimal? InstallmentInterest { get; set; }
         public virtual decimal? InstallmentOthers { get; set; }
@@ -42,6 +43,16 @@ namespace YTech.SIMK.WMTI.Core.Transaction
                 decimal total = InstallmentTotal;
                 decimal fine = InstallmentFine.HasValue ? InstallmentFine.Value : 0;
                 return total + fine;
+            }
+        }
+
+        public virtual decimal InstallmentSisa
+        {
+            get
+            {
+                decimal mustpaid = InstallmentMustPaid;
+                decimal paid = InstallmentPaid.HasValue ? InstallmentPaid.Value : 0;
+                return paid - mustpaid;
             }
         }
 
