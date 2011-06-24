@@ -6,6 +6,7 @@ using SharpArch.Web.NHibernate;
 using YTech.SIMK.WMTI.Core.Master;
 using YTech.SIMK.WMTI.Core.RepositoryInterfaces;
 using YTech.SIMK.WMTI.Core.Transaction;
+using YTech.SIMK.WMTI.Enums;
 using YTech.SIMK.WMTI.Web.Controllers.ViewModel;
 
 namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
@@ -16,16 +17,22 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         private readonly ITLoanRepository _tLoanRepository;
         private readonly ITLoanSurveyRepository _tLoanSurveyRepository;
         private readonly IMCustomerRepository _mCustomerRepository;
+        private readonly IRefAddressRepository _refAddressRepository;
+        private readonly IRefPersonRepository _refPersonRepository;
 
-        public LoanController(ITLoanRepository tLoanRepository, ITLoanSurveyRepository tLoanSurveyRepository, IMCustomerRepository mCustomerRepository)
+        public LoanController(ITLoanRepository tLoanRepository, ITLoanSurveyRepository tLoanSurveyRepository, IMCustomerRepository mCustomerRepository, IRefAddressRepository refAddressRepository, IRefPersonRepository refPersonRepository)
         {
             Check.Require(tLoanRepository != null, "tLoanRepository may not be null");
             Check.Require(tLoanSurveyRepository != null, "tLoanSurveyRepository may not be null");
             Check.Require(mCustomerRepository != null, "mCustomerRepository may not be null");
+            Check.Require(refAddressRepository != null, "refAddressRepository may not be null");
+            Check.Require(refPersonRepository != null, "refPersonRepository may not be null");
 
             _tLoanRepository = tLoanRepository;
             _tLoanSurveyRepository = tLoanSurveyRepository;
             _mCustomerRepository = mCustomerRepository;
+            _refAddressRepository = refAddressRepository;
+            _refPersonRepository = refPersonRepository;
         }
 
         public ActionResult Index()
@@ -91,6 +98,20 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             RefPerson person = new RefPerson();
             RefAddress address = new RefAddress();
 
+            TransferFormValuesTo(address, formCollection);
+            address.SetAssignedIdTo(Guid.NewGuid().ToString());
+            address.CreatedDate = DateTime.Now;
+            address.CreatedBy = User.Identity.Name;
+            address.DataStatus = EnumDataStatus.New.ToString();
+            _refAddressRepository.Save(address);
+
+            TransferFormValuesTo(person, formCollection);
+            person.SetAssignedIdTo(Guid.NewGuid().ToString());
+            person.CreatedDate = DateTime.Now;
+            person.CreatedBy = User.Identity.Name;
+            person.DataStatus = EnumDataStatus.New.ToString();
+            _refPersonRepository.Save(person);
+
             try
             {
                 _tLoanSurveyRepository.DbContext.CommitChanges();
@@ -147,6 +168,18 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             person.PersonCoupleIncome = Convert.ToDecimal(formCollection["PersonCoupleIncome"]);
             person.PersonStaySince = Convert.ToDateTime(formCollection["PersonStaySince"]);
             person.PersonGuarantorName = formCollection["PersonGuarantorName"];
+            person.PersonGuarantorRelationship = formCollection["PersonGuarantorRelationship"];
+            person.PersonGuarantorOccupation = formCollection["PersonGuarantorOccupation"];
+            person.PersonGuarantorPhone = formCollection["PersonGuarantorPhone"];
+            person.PersonGuarantorStaySince = Convert.ToDateTime(formCollection["PersonGuarantorStaySince"]);
+            person.PersonGuarantorHouseOwnerStatus = formCollection["PersonGuarantorHouseOwnerStatus"];
+        }
+
+        private void TransferFormValuesTo(RefAddress address, FormCollection formCollection)
+        {
+            address.AddressLine1 = formCollection["AddressLine1"];
+            address.AddressLine2 = formCollection["AddressLine2"];
+            address.AddressPostCode = formCollection["AddressPostCode"];
         }
     }
 }
