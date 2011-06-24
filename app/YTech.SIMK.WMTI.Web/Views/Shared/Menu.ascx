@@ -1,6 +1,7 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewUserControl" %>
 <%@ Import Namespace="YTech.SIMK.WMTI.Web.Controllers.Transaction" %>
 <%@ Import Namespace="YTech.SIMK.WMTI.Web.Controllers.Master" %>
+<%@ Import Namespace="YTech.SIMK.WMTI.Web.Controllers.Utility" %>
 <div id="accordion">
     <h3>
         <a href="#">Home</a></h3>
@@ -11,8 +12,20 @@
     <% if (Request.IsAuthenticated)
        {
 %>
+
+            <h3><a href="#">Pengajuan Kredit</a></h3>
+            <div>
+                <div><%= Html.ActionLinkForAreas<LoanController>(c => c.Survey(), "Form Survey") %></div>
+                <div><%= Html.ActionLinkForAreas<LoanController>(c => c.Index(), "Daftar Survey")%></div>
+            </div>
+
+            <h3><a href="#">Angsuran & Pelunasan</a></h3>
+            <div>
+                <div><%= Html.ActionLinkForAreas<InstallmentController>(c => c.Index(), "Input Angsuran Baru")%></div>
+            </div>
+            
     <h3>
-        <a href="#">Data Pokok</a></h3>
+        <a href="#">Administrasi</a></h3>
     <div>
         <div>
             <%= Html.ActionLinkForAreas<DepartmentController>(c => c.Index(),"Master Departemen") %></div>
@@ -21,15 +34,9 @@
         </div>
     </div>
 
-            <h3><a href="#">Pengajuan Kredit</a></h3>
+            <h3><a href="#">Utiliti</a></h3>
             <div>
-                <div><%= Html.ActionLinkForAreas<LoanController>(c => c.Survey(), "Form Survey") %></div>
-                <div><%= Html.ActionLinkForAreas<LoanController>(c => c.Index(), "Daftar Survey")%></div>
-            </div>
-
-            <h3><a href="#">Cicilan</a></h3>
-            <div>
-                <div><%= Html.ActionLinkForAreas<InstallmentController>(c => c.Index(), "Input Cicilan Baru")%></div>
+                <div><%= Html.ActionLinkForAreas<UserAdministrationController>(c => c.ListUsers(), "Daftar Pengguna")%></div>
             </div>
     <%
         }

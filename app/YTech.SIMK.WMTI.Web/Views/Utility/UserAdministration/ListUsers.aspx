@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/MyMaster.master" Inherits="System.Web.Mvc.ViewPage<YTech.SIMK.WMTI.Web.Controllers.ViewModel.UserAdministration.IndexViewModel>" %>
 
 <asp:Content ContentPlaceHolderID="title" runat="server">
-	Administrasi User
+	Administrasi Pengguna
 </asp:Content>
 
 <asp:Content ContentPlaceHolderID="MainContent" runat="server">
@@ -72,7 +72,7 @@
                 , closeAfterEdit: true
                 , modal: true
                 , afterShowForm: function (eparams) {
-                    $('#UserName').attr('disabled', '');
+                    $('#UserName').removeAttr('disabled');
                     $('#tr_Password', eparams).show();
                     $('#tr_PasswordConfirm', eparams).show();
                 }
@@ -112,7 +112,7 @@
                     { name: 'UserName', index: 'UserName', width: 100, align: 'left', key: true, editrules: { required: true, edithidden: false }, hidedlg: true, hidden: false, editable: true },
                     { name: 'Password', index: 'Password', width: 200, align: 'left', editable: true, edittype: 'text', editrules: { required: false }, hidden: true },
                     { name: 'PasswordConfirm', index: 'PasswordConfirm', width: 200, align: 'left', editable: true, edittype: 'text', editrules: { required: false }, hidden: true },
-                    { name: 'Comment', index: 'Comment', width: 200, align: 'left', editable: true, edittype: 'text', editrules: { required: false } },
+                    { name: 'Comment', index: 'Comment', width: 200, align: 'left', editable: true, edittype: 'text', editrules: { required: false} },
                    { name: 'LastActivityDate', index: 'LastActivityDate', width: 200, sortable: false, align: 'left', editable: false, editoptions: { edithidden: true }, editrules: { required: false}}],
 
               pager: $('#listPager'),
@@ -128,7 +128,7 @@
               loadComplete: function () {
                   var ids = jQuery("#list").getDataIDs();
                   for (var i = 0; i < ids.length; i++) {
-                      var cl = ids[i]; 
+                      var cl = ids[i];
                       var be = "<input type='button' value='Edit' tooltips='Edit Pengguna'  onClick=\"OpenPopup('" + cl + "');\" />";
 
                       //                                                alert(be); 
@@ -138,15 +138,15 @@
               ondblClickRow: function (rowid, iRow, iCol, e) {
                   $("#list").editGridRow(rowid, editDialog);
               }
-          }).navGrid('#listPager',
-                {
-                    edit: false, add: true, del: true, search: false, refresh: true
-                },
-                editDialog,
+          });
+          jQuery("#list").jqGrid('navGrid', '#listPager',
+                 { edit: false, add: true, del: true, search: false, refresh: true }, //options 
+                  {},
                 insertDialog,
-                deleteDialog
+                deleteDialog,
+                {}
             );
-            });
+      });
             function OpenPopup(id) {
                 var url = '<%= Url.Content("~/Utility/UserAdministration/Details/") %>';
                 if (id) {

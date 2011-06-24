@@ -39,11 +39,11 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         {
             return View();
         }
-        
+
         [Transaction]
         public virtual ActionResult List(string sidx, string sord, int page, int rows)
         {
-            int totalRecords = 0;   
+            int totalRecords = 0;
             var loans = _tLoanRepository.GetPagedLoanList(sidx, sord, page, rows, ref totalRecords);
             int pageSize = rows;
             int totalPages = (int)Math.Ceiling((float)totalRecords / (float)pageSize);
@@ -68,7 +68,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                                                                     loan.ZoneId.ZoneName,
                                                                     loan.LoanStatus
                                                                   }
-                                                   } 
+                                                   }
                                    ).ToArray()
                                };
 
@@ -89,11 +89,12 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         [ValidateAntiForgeryToken]      // Helps avoid CSRF attacks
         [Transaction]                   // Wraps a transaction around the action
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Registration(TLoanSurvey loanSurvey, FormCollection formCollection)
+        public ActionResult Survey(TLoanSurvey surveyVM, TLoan  loanVM, FormCollection formCollection)
         {
             _tLoanSurveyRepository.DbContext.BeginTransaction();
 
             TLoan loan = new TLoan();
+            TLoanSurvey survey = new TLoanSurvey(); 
             MCustomer customer = new MCustomer();
             RefPerson person = new RefPerson();
             RefAddress address = new RefAddress();
@@ -112,6 +113,52 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             person.DataStatus = EnumDataStatus.New.ToString();
             _refPersonRepository.Save(person);
 
+            customer.SetAssignedIdTo(Guid.NewGuid().ToString());
+            customer.CreatedDate = DateTime.Now;
+            customer.CreatedBy = User.Identity.Name;
+            customer.DataStatus = EnumDataStatus.New.ToString();
+            customer.AddressId = address;
+            customer.PersonId = person;
+            _mCustomerRepository.Save(customer);
+
+            loan.SetAssignedIdTo(Guid.NewGuid().ToString());
+            loan.CreatedDate = DateTime.Now;
+            loan.CreatedBy = User.Identity.Name;
+            loan.DataStatus = EnumDataStatus.New.ToString();
+            loan.AddressId = address;
+            loan.PersonId = person;
+            loan.CustomerId = customer;
+            loan.CollectorId = loanVM.CollectorId;
+            loan.LoanDownPayment = loanVM.LoanDownPayment;
+            loan.CollectorId = loanVM.CollectorId;
+            loan.LoanCode = loanVM.LoanCode;
+            loan.LoanCreditPrice = loanVM.LoanCreditPrice;
+            loan.LoanDesc = loanVM.LoanDesc;
+            loan.LoanDownPayment = loanVM.LoanDownPayment;
+            loan.LoanIsSalesmanKnownCustomer = loanVM.LoanIsSalesmanKnownCustomer;
+            loan.LoanTenor = loanVM.LoanTenor;
+            loan.LoanNo = loanVM.LoanNo;
+            loan.LoanStatus = loanVM.LoanStatus;
+            loan.LoanUnitPriceTotal = loanVM.LoanUnitPriceTotal;
+            _tLoanRepository.Save(loan);
+
+            survey.SetAssignedIdTo(Guid.NewGuid().ToString());
+            survey.CreatedDate = DateTime.Now;
+            survey.CreatedBy = User.Identity.Name;
+            survey.DataStatus = EnumDataStatus.New.ToString();
+            survey.LoanId = loan;
+            survey.SurveyDate = surveyVM.SurveyDate;
+            survey.SurveyDesc = surveyVM.SurveyDesc;
+            survey.SurveyHouseType = surveyVM.SurveyHouseType;
+            survey.SurveyNeighbor = surveyVM.SurveyNeighbor;
+            survey.SurveyNeighborAsset = surveyVM.SurveyNeighborAsset;
+            survey.SurveyNeighborCharacter = surveyVM.SurveyNeighborCharacter;
+            survey.SurveyNeighborConclusion = surveyVM.SurveyNeighborConclusion;
+            survey.SurveyStatus = surveyVM.SurveyStatus;
+            survey.SurveyUnitDeliverAddress = surveyVM.SurveyUnitDeliverAddress;
+            survey.SurveyUnitDeliverDate = surveyVM.SurveyUnitDeliverDate;
+            _tLoanSurveyRepository.Save(survey);
+
             try
             {
                 _tLoanSurveyRepository.DbContext.CommitChanges();
@@ -123,7 +170,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 var result = new
                 {
                     Success = false,
-                    Message = e.Message
+                    Message = e.GetBaseException().Message
                 };
 
                 return Json(result, JsonRequestBehavior.AllowGet);
@@ -150,28 +197,32 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
 
             if (!string.IsNullOrEmpty(formCollection["PersonDob"]))
                 person.PersonDob = Convert.ToDateTime(formCollection["PersonDob"]);
-            else
-                person.PersonDob = null;
 
             person.PersonPob = formCollection["PersonPob"];
             person.PersonPhone = formCollection["PersonPhone"];
             person.PersonMobile = formCollection["PersonMobile"];
             person.PersonOccupation = formCollection["PersonOccupation"];
             person.PersonLastEducation = formCollection["PersonLastEducation"];
-            person.PersonAge = Convert.ToDecimal(formCollection["PersonAge"]);
+            if (!string.IsNullOrEmpty(formCollection["PersonAge"]))
+                person.PersonAge = Convert.ToDecimal(formCollection["PersonAge"]);
             person.PersonReligion = formCollection["PersonReligion"];
-            person.PersonIncome = Convert.ToDecimal(formCollection["PersonIncome"]);
-            person.PersonNoOfChildren = Convert.ToDecimal(formCollection["PersonNoOfChildren"]);
+            if (!string.IsNullOrEmpty(formCollection["PersonIncome"]))
+                person.PersonIncome = Convert.ToDecimal(formCollection["PersonIncome"]);
+            if (!string.IsNullOrEmpty(formCollection["PersonNoOfChildren"]))
+                person.PersonNoOfChildren = Convert.ToDecimal(formCollection["PersonNoOfChildren"]);
             person.PersonMarriedStatus = formCollection["PersonMarriedStatus"];
             person.PersonCoupleName = formCollection["PersonCoupleName"];
             person.PersonCoupleOccupation = formCollection["PersonCoupleOccupation"];
-            person.PersonCoupleIncome = Convert.ToDecimal(formCollection["PersonCoupleIncome"]);
-            person.PersonStaySince = Convert.ToDateTime(formCollection["PersonStaySince"]);
+            if (!string.IsNullOrEmpty(formCollection["PersonCoupleIncome"]))
+                person.PersonCoupleIncome = Convert.ToDecimal(formCollection["PersonCoupleIncome"]);
+            if (!string.IsNullOrEmpty(formCollection["PersonStaySince"]))
+                person.PersonStaySince = Convert.ToDateTime(formCollection["PersonStaySince"]);
             person.PersonGuarantorName = formCollection["PersonGuarantorName"];
             person.PersonGuarantorRelationship = formCollection["PersonGuarantorRelationship"];
             person.PersonGuarantorOccupation = formCollection["PersonGuarantorOccupation"];
             person.PersonGuarantorPhone = formCollection["PersonGuarantorPhone"];
-            person.PersonGuarantorStaySince = Convert.ToDateTime(formCollection["PersonGuarantorStaySince"]);
+            if (!string.IsNullOrEmpty(formCollection["PersonGuarantorStaySince"]))
+                person.PersonGuarantorStaySince = Convert.ToDateTime(formCollection["PersonGuarantorStaySince"]);
             person.PersonGuarantorHouseOwnerStatus = formCollection["PersonGuarantorHouseOwnerStatus"];
         }
 

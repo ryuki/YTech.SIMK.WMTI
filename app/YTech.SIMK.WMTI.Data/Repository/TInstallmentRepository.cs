@@ -36,5 +36,22 @@ namespace YTech.SIMK.WMTI.Data.Repository
             IEnumerable<TInstallment> list = q.List<TInstallment>();
             return list;
         }
+
+        public TInstallment GetLastInstallment(string loanCode)
+        {
+            StringBuilder sql = new StringBuilder();
+            sql.AppendLine(@"  from TInstallment as ins
+                                               inner join ins.LoanId as loan ");
+
+            sql.AppendLine(@" where loan.LoanCode = :loanCode and ins.InstallmentStatus is null ");
+
+            string query = string.Format(" select ins {0}  order by ins.InstallmentNo ", sql);
+            IQuery q = Session.CreateQuery(query);
+            q.SetString("loanCode", loanCode);
+            //q.SetString("status", loanId);
+            q.SetMaxResults(1);
+
+            return q.UniqueResult<TInstallment>(); 
+        }
     }
 }

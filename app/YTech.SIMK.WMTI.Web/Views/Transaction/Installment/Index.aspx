@@ -12,14 +12,17 @@
     <script src="../../../Scripts/jquery-1.5.2-vsdoc.js" type="text/javascript"></script>
     <%
     }%>
-    <div>
+    <div class="box">
         <label for="ddlSearchBy">
             No Account :</label>
         <input id="txtLoanCode" type="text" />
         <img src='<%= Url.Content("~/Content/Images/window16.gif") %>' style='cursor: hand;'
             id='imgLoanCode' />
+            <%--<a href="#" id="btnSearch" class="btn info">OK</a>
+            <a href="#" id="btnPayment" class="btn info">Pembayaran</a>--%>
         <input id="btnSearch" type="button" value="OK" />
         <input id="btnPayment" type="button" value="Pembayaran" />
+        <input id="hidLoanId" type="hidden" />
     </div>
     <table id="list" class="scroll" cellpadding="0" cellspacing="0">
     </table>
@@ -37,6 +40,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $("#txtSearch").focus();
+            $("#btnPayment").attr('disabled', 'disabled');
             $("#dialog").dialog({
                 autoOpen: false
             });
@@ -53,10 +57,10 @@
             $.jgrid.nav.addtext = "Tambah";
             $.jgrid.nav.edittext = "Edit";
             $.jgrid.nav.deltext = "Hapus";
-            $.jgrid.edit.addCaption = "Tambah Pasien Baru";
-            $.jgrid.edit.editCaption = "Edit Pasien";
-            $.jgrid.del.caption = "Hapus Pasien";
-            $.jgrid.del.msg = "Anda yakin menghapus Pasien yang dipilih?";
+            $.jgrid.edit.addCaption = "Tambah Angsuran Baru";
+            $.jgrid.edit.editCaption = "Edit Angsuran";
+            $.jgrid.del.caption = "Hapus Angsuran";
+            $.jgrid.del.msg = "Anda yakin menghapus Angsuran yang dipilih?";
             $("#list").jqGrid({
                 url: '<%= Url.Action("List", "Installment") %>',
                 postData: {
@@ -95,16 +99,13 @@
                 sortorder: "asc",
                 viewrecords: true,
                 height: 250,
-                caption: 'Daftar Pasien',
+                caption: 'Daftar Angsuran',
                 autowidth: true,
                 loadComplete: function () {
 
                 },
                 ondblClickRow: function (rowid, iRow, iCol, e) {
-                    var list = $("#list");
-                    var rowData = list.getRowData(rowid);
-                    window.parent.SetCustomerDetail(rowData["Id"], rowData["PersonName"], 0);
-                    return false;
+
                 }
             }).navGrid('#listPager',
                 {
@@ -114,17 +115,22 @@
 
             $('#btnSearch').click(function () {
                 $("#list").jqGrid().setGridParam().trigger("reloadGrid");
+                $("#btnPayment").removeAttr('disabled');
             });
             $("#txtSearch").keydown(function (event) {
                 //if enter pressed
                 if (event.keyCode == '13') {
                     $("#list").jqGrid().setGridParam().trigger("reloadGrid");
+                    $("#btnPayment").removeAttr('disabled');
                 }
             });
             
             $('#imgLoanCode').click(function () {
                OpenPopupInstallment();
-            });
+           });
+           $('#btnPayment').click(function () {
+               OpenPopupInstallmentPayment();
+           });
         });  
 
         function OpenPopupInstallment()
@@ -132,7 +138,14 @@
             var src = '<%= Url.Action("Search", "Installment") %>'; 
             $("#popup_frame").attr("src", src);
             $("#popup").dialog("open");
+            return false;
+        }  
+         function OpenPopupInstallmentPayment() {
+             var src = '<%= Url.Action("Payment", "Installment") %>';
+             src = src + '?loanCode=' + $("#txtLoanCode").val();
+             $("#popup_frame").attr("src", src);
+            $("#popup").dialog("open");
             return false;   
-        }     
+        }   
     </script>
 </asp:Content>
