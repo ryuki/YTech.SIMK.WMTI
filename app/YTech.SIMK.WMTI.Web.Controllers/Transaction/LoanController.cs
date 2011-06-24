@@ -3,7 +3,9 @@ using System.Linq;
 using System.Web.Mvc;
 using SharpArch.Core;
 using SharpArch.Web.NHibernate;
+using YTech.SIMK.WMTI.Core.Master;
 using YTech.SIMK.WMTI.Core.RepositoryInterfaces;
+using YTech.SIMK.WMTI.Core.Transaction;
 using YTech.SIMK.WMTI.Web.Controllers.ViewModel;
 
 namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
@@ -73,12 +75,78 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             ViewData["CurrentItem"] = "Lembaran Survey";
             SurveyFormViewModel viewModel =
                 SurveyFormViewModel.CreateSurveyFormViewModel(_tLoanSurveyRepository, null);
-            //if (usePopup.HasValue)
-            //{
-            //    if (usePopup.Value)
-            //        return View("Registration", "MasterPopup", viewModel);
-            //}
+
             return View(viewModel);
+        }
+
+        [ValidateAntiForgeryToken]      // Helps avoid CSRF attacks
+        [Transaction]                   // Wraps a transaction around the action
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Registration(TLoanSurvey loanSurvey, FormCollection formCollection)
+        {
+            _tLoanSurveyRepository.DbContext.BeginTransaction();
+
+            TLoan loan = new TLoan();
+            MCustomer customer = new MCustomer();
+            RefPerson person = new RefPerson();
+            RefAddress address = new RefAddress();
+
+            try
+            {
+                _tLoanSurveyRepository.DbContext.CommitChanges();
+            }
+            catch (Exception e)
+            {
+                _tLoanSurveyRepository.DbContext.RollbackTransaction();
+
+                var result = new
+                {
+                    Success = false,
+                    Message = e.Message
+                };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+
+            var resultx = new
+            {
+                Success = true,
+                Message = @" <div class='ui-state-highlight ui-corner-all' style='padding: 5pt; margin-bottom: 5pt;'>
+                             <p>
+                                <span class='ui-icon ui-icon-info' style='float: left; margin-right: 0.3em;'></span>
+                                Data berhasil disimpan.</p>
+                             </div>"
+            };
+
+            return Json(resultx, JsonRequestBehavior.AllowGet);
+        }
+
+        private void TransferFormValuesTo(RefPerson person, FormCollection formCollection)
+        {
+            person.PersonFirstName = formCollection["PersonFirstName"];
+            person.PersonGender = formCollection["PersonGender"];
+            person.PersonIdCardNo = formCollection["PersonIdCardNo"];
+
+            if (!string.IsNullOrEmpty(formCollection["PersonDob"]))
+                person.PersonDob = Convert.ToDateTime(formCollection["PersonDob"]);
+            else
+                person.PersonDob = null;
+
+            person.PersonPob = formCollection["PersonPob"];
+            person.PersonPhone = formCollection["PersonPhone"];
+            person.PersonMobile = formCollection["PersonMobile"];
+            person.PersonOccupation = formCollection["PersonOccupation"];
+            person.PersonLastEducation = formCollection["PersonLastEducation"];
+            person.PersonAge = Convert.ToDecimal(formCollection["PersonAge"]);
+            person.PersonReligion = formCollection["PersonReligion"];
+            person.PersonIncome = Convert.ToDecimal(formCollection["PersonIncome"]);
+            person.PersonNoOfChildren = Convert.ToDecimal(formCollection["PersonNoOfChildren"]);
+            person.PersonMarriedStatus = formCollection["PersonMarriedStatus"];
+            person.PersonCoupleName = formCollection["PersonCoupleName"];
+            person.PersonCoupleOccupation = formCollection["PersonCoupleOccupation"];
+            person.PersonCoupleIncome = Convert.ToDecimal(formCollection["PersonCoupleIncome"]);
+            person.PersonStaySince = Convert.ToDateTime(formCollection["PersonStaySince"]);
+            person.PersonGuarantorName = formCollection["PersonGuarantorName"];
         }
     }
 }

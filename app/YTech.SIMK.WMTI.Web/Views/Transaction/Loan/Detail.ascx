@@ -481,7 +481,7 @@
                                 SA/TL mengetahui tentang konsumen :</label>
                         </td>
                         <td>
-                            <%= Html.DropDownList("LoanIsSalesmanKnowCust", Model.HouseTypeList)%>
+                            <%= Html.DropDownList("LoanIsSalesmanKnowCust", Model.KnowCustomerList)%>
                             <%= Html.ValidationMessage("LoanIsSalesmanKnowCust")%>
                         </td>
                     </tr>
