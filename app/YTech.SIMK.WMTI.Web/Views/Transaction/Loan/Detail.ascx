@@ -1,7 +1,7 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewUserControl<RegistrationFormViewModel>" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewUserControl<SurveyFormViewModel>" %>
 <% if (false)
    { %>
-<script src="../../../Scripts/jquery-1.5-vsdoc.js" type="text/javascript"></script>
+<script src="../../../Scripts/jquery-1.5.2-vsdoc.js" type="text/javascript"></script>
 <% } %>
 <%-- <% using (Html.BeginForm())
    {%> --%>
@@ -32,8 +32,8 @@
                         </td>
                         <td>
                             <%--<%= Html.TextBox("Id",  Model.Customer.Id ?? string.Empty,new {@readonly= Model.CanEditId ? "true" : "false" })%>--%>
-                            <%= Model.CanEditId ? Html.TextBox("Id", Model.Customer.Id ?? string.Empty, new { @style = "width:150px" }) :
-                                    Html.TextBox("Id", Model.Customer.Id ?? string.Empty, new { @readonly = Model.CanEditId ? "true" : "false", @style = "width:150px" })
+                            <%= Model.CanEditId ? Html.TextBox("Id", Model.LoanSurvey.Id ?? string.Empty, new { @style = "width:150px" }) :
+                                                  Html.TextBox("Id", Model.LoanSurvey.Id ?? string.Empty, new { @readonly = Model.CanEditId ? "true" : "false", @style = "width:150px" })
                             %>
                             <%= Html.ValidationMessage("Id")%>
                         </td>
@@ -46,7 +46,7 @@
                                 (Sesuai KTP) :</label>
                         </td>
                         <td>
-                            <%= Html.TextBox("PersonFirstName", Model.Customer.PersonId.PersonFirstName, new { @style = "width:300px" })%>
+                            <%= Html.TextBox("PersonFirstName", Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonFirstName, new { @style = "width:300px" })%>
                             <%= Html.ValidationMessage("PersonFirstName")%>
                         </td>
                     </tr>  
@@ -65,7 +65,7 @@
                                 No. KTP :</label>
                         </td>
                         <td>
-                            <%= Html.TextBox("PersonIdCardNo", Model.Customer.PersonId.PersonIdCardNo, new { @style = "width:300px" })%>
+                            <%= Html.TextBox("PersonIdCardNo", Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonIdCardNo, new { @style = "width:300px" })%>
                             <%= Html.ValidationMessage("PersonIdCardNo")%>
                         </td>
                     </tr>
@@ -75,10 +75,10 @@
                                 Tempat / Tanggal Lahir :</label>
                         </td>
                         <td>
-                            <%= Html.TextBox("PersonPob", Model.Customer.PersonId.PersonPob, new { @style = "width:150px" })%>
+                            <%= Html.TextBox("PersonPob", Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonPob, new { @style = "width:150px" })%>
                             <%= Html.ValidationMessage("PersonPob")%>
                             &nbsp;/&nbsp;
-                            <%= Html.TextBox("PersonDob", Model.Customer.PersonId.PersonDob.HasValue ? Model.Customer.PersonId.PersonDob.Value.ToString(CommonHelper.DateFormat) : null, new { @style = "width:125px" })%>
+                            <%= Html.TextBox("PersonDob", Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonDob.HasValue ? Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonDob.Value.ToString(CommonHelper.DateFormat) : null, new { @style = "width:125px" })%>
                             <%= Html.ValidationMessage("PersonDob")%>
                         </td>
                     </tr>
@@ -88,7 +88,7 @@
                                 Alamat :</label>
                         </td>
                         <td> 
-                            <%= Html.TextBox("AddressLine1", Model.Customer.AddressId.AddressLine1, new { @style = "width:300px" })%>
+                            <%= Html.TextBox("AddressLine1", Model.LoanSurvey.LoanId.CustomerId.AddressId.AddressLine1, new { @style = "width:300px" })%>
                             <%= Html.ValidationMessage("AddressLine1")%> 
                         </td>
                     </tr>
@@ -96,11 +96,11 @@
                         <td>
                         </td>
                         <td> 
-                            <%= Html.TextBox("AddressLine2", Model.Customer.AddressId.AddressLine2, new { @style = "width:175px" })%>
+                            <%= Html.TextBox("AddressLine2", Model.LoanSurvey.LoanId.CustomerId.AddressId.AddressLine2, new { @style = "width:175px" })%>
                             <%= Html.ValidationMessage("AddressLine2")%>
                             <label for="AddressIdCardPostCode">
                                 Kode Pos :</label>
-                            <%= Html.TextBox("AddressPostCode", Model.Customer.AddressId.AddressPostCode, new { style = "width:50px" })%>
+                            <%= Html.TextBox("AddressPostCode", Model.LoanSurvey.LoanId.CustomerId.AddressId.AddressPostCode, new { style = "width:50px" })%>
                             <%= Html.ValidationMessage("AddressPostCode")%>
                         </td>
                     </tr>
@@ -110,7 +110,7 @@
                                 No. Telepon :</label>
                         </td>
                         <td> 
-                            <%= Html.TextBox("PersonPhone", Model.Customer.PersonId.PersonPhone, new { @style = "width:300px" })%>
+                            <%= Html.TextBox("PersonPhone", Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonPhone, new { @style = "width:300px" })%>
                             <%= Html.ValidationMessage("PersonPhone")%> 
                         </td>
                     </tr>
@@ -120,7 +120,7 @@
                                 No. Handphone :</label>
                         </td>
                         <td>
-                            <%= Html.TextBox("PersonMobile", Model.Customer.PersonId.PersonMobile, new { @style = "width:300px" })%>
+                            <%= Html.TextBox("PersonMobile", Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonMobile, new { @style = "width:300px" })%>
                             <%= Html.ValidationMessage("PersonMobile")%>
                         </td>
                     </tr>
@@ -130,7 +130,7 @@
                                 Pekerjaan :</label>
                         </td>
                         <td> 
-                            <%= Html.TextBox("PersonOccupation", Model.Customer.PersonId.PersonOccupation, new { @style = "width:300px" })%>
+                            <%= Html.TextBox("PersonOccupation", Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonOccupation, new { @style = "width:300px" })%>
                             <%= Html.ValidationMessage("PersonOccupation")%> 
                         </td>
                     </tr>
@@ -150,7 +150,7 @@
                                 Umur :</label>
                         </td>
                         <td>
-                            <%= Html.TextBox("PersonAge", Model.Customer.PersonId.PersonAge, new { @style = "width:300px" })%>
+                            <%= Html.TextBox("PersonAge", Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonAge, new { @style = "width:300px" })%>
                             <%= Html.ValidationMessage("PersonAge")%>
                         </td>
                     </tr>
@@ -170,7 +170,7 @@
                                 Penghasilan / Bulan :</label>
                         </td>
                         <td>
-                            <%= Html.TextBox("PersonIncome", Model.Customer.PersonId.PersonIncome, new { @style = "width:300px" })%>
+                            <%= Html.TextBox("PersonIncome", Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonIncome, new { @style = "width:300px" })%>
                             <%= Html.ValidationMessage("PersonIncome")%>
                         </td>
                     </tr>
@@ -180,7 +180,7 @@
                                 Jumlah Anak :</label>
                         </td>
                         <td>
-                            <%= Html.TextBox("PersonNoOfChildren", Model.Customer.PersonId.PersonNoOfChildren, new { @style = "width:300px" })%>
+                            <%= Html.TextBox("PersonNoOfChildren", Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonNoOfChildren, new { @style = "width:300px" })%>
                             <%= Html.ValidationMessage("PersonNoOfChildren")%>
                         </td>
                     </tr>
@@ -200,7 +200,7 @@
                                 Nama Istri/Suami :</label>
                         </td>
                         <td>
-                            <%= Html.TextBox("PersonCoupleName", Model.Customer.PersonId.PersonCoupleName, new { @style = "width:300px" })%>
+                            <%= Html.TextBox("PersonCoupleName", Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonCoupleName, new { @style = "width:300px" })%>
                             <%= Html.ValidationMessage("PersonCoupleName")%>
                         </td>
                     </tr>
@@ -210,7 +210,7 @@
                                 Pekerjaan :</label>
                         </td>
                         <td>
-                            <%= Html.TextBox("PersonCoupleOccupation", Model.Customer.PersonId.PersonCoupleOccupation, new { @style = "width:300px" })%>
+                            <%= Html.TextBox("PersonCoupleOccupation", Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonCoupleOccupation, new { @style = "width:300px" })%>
                             <%= Html.ValidationMessage("PersonCoupleOccupation")%>
                         </td>
                     </tr>
@@ -220,7 +220,7 @@
                                 Penghasilan / Bulan :</label>
                         </td>
                         <td>
-                            <%= Html.TextBox("PersonCoupleIncome", Model.Customer.PersonId.PersonCoupleIncome, new { @style = "width:300px" })%>
+                            <%= Html.TextBox("PersonCoupleIncome", Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonCoupleIncome, new { @style = "width:300px" })%>
                             <%= Html.ValidationMessage("PersonCoupleIncome")%>
                         </td>
                     </tr>
@@ -230,14 +230,8 @@
                                 Status Tempat Tinggal :</label>
                         </td>
                         <td>
-                            <select>
-                              <option value="Milik Sendiri">Milik Sendiri</option>
-                              <option value="SewaKontrak">Sewa/Kontrak</option>
-                              <option value="Keluarga">Keluarga</option>
-                              <option value="KostAsrama">Kost/Asrama</option>
-                            </select>
-                            <%-- <%= Html.DropDownList("AddressStatusOwner")%>
-                            <%= Html.ValidationMessage("AddressStatusOwner")%> --%>
+                            <%= Html.DropDownList("AddressStatusOwner", Model.HouseOwnerList)%>
+                            <%= Html.ValidationMessage("AddressStatusOwner")%>
                         </td>
                     </tr>
                     <tr>
@@ -246,7 +240,7 @@
                                 Berapa lama tinggal di kota ini :</label>
                         </td>
                         <td>
-                            <%= Html.TextBox("PersonStaySince", Model.Customer.PersonId.PersonStaySince.HasValue ? Model.Customer.PersonId.PersonStaySince.Value.ToString(CommonHelper.DateFormat) : null, new { @style = "width:300px" })%>
+                            <%= Html.TextBox("PersonStaySince", Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonStaySince.HasValue ? Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonStaySince.Value.ToString(CommonHelper.DateFormat) : null, new { @style = "width:300px" })%>
                             <%= Html.ValidationMessage("PersonStaySince")%>
                         </td>
                     </tr>
@@ -258,7 +252,7 @@
                                 (Bila belum menikah) :</label>
                         </td>
                         <td>
-                            <%= Html.TextBox("PersonGuarantorName", Model.Customer.PersonId.PersonGuarantorName, new { @style = "width:300px" })%>
+                            <%= Html.TextBox("PersonGuarantorName", Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonGuarantorName, new { @style = "width:300px" })%>
                             <%= Html.ValidationMessage("PersonGuarantorName")%>
                         </td>
                     </tr>
@@ -279,7 +273,7 @@
                                 Pekerjaan Penjamin :</label>
                         </td>
                         <td>
-                            <%= Html.TextBox("PersonGuarantorOccupation", Model.Customer.PersonId.PersonGuarantorOccupation, new { @style = "width:300px" })%>
+                            <%= Html.TextBox("PersonGuarantorOccupation", Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonGuarantorOccupation, new { @style = "width:300px" })%>
                             <%= Html.ValidationMessage("PersonGuarantorOccupation")%>
                         </td>
                     </tr>
@@ -289,7 +283,7 @@
                                 No. HP/Telp Penjamin :</label>
                         </td>
                         <td>
-                            <%= Html.TextBox("PersonGuarantorPhone", Model.Customer.PersonId.PersonGuarantorPhone, new { @style = "width:300px" })%>
+                            <%= Html.TextBox("PersonGuarantorPhone", Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonGuarantorPhone, new { @style = "width:300px" })%>
                             <%= Html.ValidationMessage("PersonGuarantorPhone")%>
                         </td>
                     </tr>
@@ -299,7 +293,7 @@
                                 Mulai tinggal di kota ini :</label>
                         </td>
                         <td>
-                            <%= Html.TextBox("PersonGuarantorStaySince", Model.Customer.PersonId.PersonGuarantorStaySince.HasValue ? Model.Customer.PersonId.PersonGuarantorStaySince.Value.ToString(CommonHelper.DateFormat) : null, new { @style = "width:300px" })%>
+                            <%= Html.TextBox("PersonGuarantorStaySince", Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonGuarantorStaySince.HasValue ? Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonGuarantorStaySince.Value.ToString(CommonHelper.DateFormat) : null, new { @style = "width:300px" })%>
                             <%= Html.ValidationMessage("PersonGuarantorStaySince")%>
                         </td>
                     </tr>
@@ -309,14 +303,8 @@
                                 Status Tempat Tinggal Penjamin :</label>
                         </td>
                         <td>
-                            <select>
-                              <option value="Milik Sendiri">Milik Sendiri</option>
-                              <option value="SewaKontrak">Sewa/Kontrak</option>
-                              <option value="Keluarga">Keluarga</option>
-                              <option value="KostAsrama">Kost/Asrama</option>
-                            </select>
-                            <%-- <%= Html.DropDownList("AddressStatusOwner")%>
-                            <%= Html.ValidationMessage("AddressStatusOwner")%> --%>
+                            <%= Html.DropDownList("PersonGuarantorHouseOwnerStatus", Model.HouseOwnerList)%>
+                            <%= Html.ValidationMessage("PersonGuarantorHouseOwnerStatus")%>
                         </td>
                     </tr>
                     <tr>
@@ -328,12 +316,8 @@
                                 Tetangga :</label>
                         </td>
                         <td>
-                            <select>
-                              <option value="Baik">Baik</option>
-                              <option value="KurangBaik">Kurang Baik</option>
-                            </select>
-                            <%-- <%= Html.DropDownList("AddressStatusOwner")%>
-                            <%= Html.ValidationMessage("AddressStatusOwner")%> --%>
+                            <%= Html.DropDownList("SurveyNeighbor", Model.NeighborCharList)%>
+                            <%= Html.ValidationMessage("SurveyNeighbor")%>
                         </td>
                     </tr>
                     <tr>
@@ -342,9 +326,8 @@
                                 Character :</label>
                         </td>
                         <td>
-                            <input type="text" name="SurveyNeighborCharacter" style="width:300px" />
-                            <%-- <%= Html.TextBox("SurveyNeighborCharacter", Model.LoanSurvey.SurveyNeighborCharacter, new { @style = "width:300px" })%>
-                            <%= Html.ValidationMessage("SurveyNeighborCharacter")%> --%>
+                            <%= Html.TextBox("SurveyNeighborCharacter", Model.LoanSurvey.SurveyNeighborCharacter, new { @style = "width:300px" })%>
+                            <%= Html.ValidationMessage("SurveyNeighborCharacter")%>
                         </td>
                     </tr>
                     <tr>
@@ -353,9 +336,8 @@
                                 Keterangan Tetangga :</label>
                         </td>
                         <td>
-                            <input type="text" name="SurveyNeighborConclusion" style="width:300px" />
-                            <%-- <%= Html.TextBox("SurveyNeighborConclusion", Model.LoanSurvey.SurveyNeighborConclusion, new { @style = "width:300px" })%>
-                            <%= Html.ValidationMessage("SurveyNeighborConclusion")%> --%>
+                            <%= Html.TextBox("SurveyNeighborConclusion", Model.LoanSurvey.SurveyNeighborConclusion, new { @style = "width:300px" })%>
+                            <%= Html.ValidationMessage("SurveyNeighborConclusion")%>
                         </td>
                     </tr>
                     <tr>
@@ -373,8 +355,8 @@
                             <input type="checkbox" name="acc" value="MTR" />Motor
                             <input type="checkbox" name="acc" value="MBL" />Mobil
                             <input type="checkbox" name="acc" value="AC" />AC
-                            <%-- <%= Html.DropDownList("AddressStatusOwner")%>
-                            <%= Html.ValidationMessage("AddressStatusOwner")%> --%>
+                            <%-- <%= Html.DropDownList("AddressStatusOwner")%> --%>
+                            <%= Html.ValidationMessage("AddressStatusOwner")%>
                         </td>
                     </tr>
                     <tr>
@@ -383,13 +365,8 @@
                                 Kode Rumah :</label>
                         </td>
                         <td>
-                            <select>
-                              <option value="Permanen">Permanen</option>
-                              <option value="Semi Permanen">Semi Permanen</option>
-                              <option value="Kayu">Kayu</option>
-                            </select>
-                            <%-- <%= Html.DropDownList("AddressStatusOwner")%>
-                            <%= Html.ValidationMessage("AddressStatusOwner")%> --%>
+                            <%= Html.DropDownList("SurveyHouseType", Model.HouseTypeList)%>
+                            <%= Html.ValidationMessage("SurveyHouseType")%>
                         </td>
                     </tr>
                     <tr>
@@ -401,9 +378,8 @@
                                 Rencana Pengiriman Barang jika Disetujui Tanggal :</label>
                         </td>
                         <td>
-                            <input type="text" name="SurveyUnitDeliverDate" style="width:300px" />
-                            <%-- <%= Html.TextBox("PersonGuarantorStaySince", Model.Customer.PersonId.PersonGuarantorStaySince.HasValue ? Model.Customer.PersonId.PersonGuarantorStaySince.Value.ToString(CommonHelper.DateFormat) : null, new { @style = "width:300px" })%>
-                            <%= Html.ValidationMessage("PersonGuarantorStaySince")%> --%>
+                            <%= Html.TextBox("SurveyUnitDeliverDate", Model.LoanSurvey.SurveyUnitDeliverDate.HasValue ? Model.LoanSurvey.SurveyUnitDeliverDate.Value.ToString(CommonHelper.DateFormat) : null, new { @style = "width:300px" })%>
+                            <%= Html.ValidationMessage("SurveyUnitDeliverDate")%>
                         </td>
                     </tr>
                     <tr>
@@ -412,9 +388,136 @@
                                 Alamat Pengiriman Barang :</label>
                         </td>
                         <td>
-                            <input type="text" name="SurveyUnitDeliverAddress" style="width:300px" />
-                            <%-- <%= Html.TextBox("PersonGuarantorStaySince", Model.Customer.PersonId.PersonGuarantorStaySince.HasValue ? Model.Customer.PersonId.PersonGuarantorStaySince.Value.ToString(CommonHelper.DateFormat) : null, new { @style = "width:300px" })%>
-                            <%= Html.ValidationMessage("PersonGuarantorStaySince")%> --%>
+                            <%= Html.TextBox("SurveyUnitDeliverAddress", Model.LoanSurvey.SurveyUnitDeliverAddress, new { @style = "width:300px" })%>
+                            <%= Html.ValidationMessage("SurveyUnitDeliverAddress")%>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="JatuhTempoPembayaran">
+                                Jatuh Tempo Pembayaran Perbulan Setiap Tanggal :</label>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><hr /></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="LoanSalesman">
+                                Nama SA yg mengajukan :</label>
+                        </td>
+                        <td>
+                            <input type="text" name="LoanSalesman" style="width:300px;" />
+                            <%-- <%= Html.TextBox("LoanSalesman", Model.LoanSurvey.LoanId.SalesmanId.PersonId.PersonFirstName, new { @style = "width:300px" })%> --%>
+                            <%= Html.ValidationMessage("LoanSalesman")%>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="TLCode">
+                                Kode TL :</label>
+                        </td>
+                        <td>
+                            <input type="text" name="TLCode" style="width:300px;" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="CollCode">
+                                Kode Col :</label>
+                        </td>
+                        <td>
+                            <input type="text" name="CollCode" style="width:300px;" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="SurvCode">
+                                Kode Surv :</label>
+                        </td>
+                        <td>
+                            <input type="text" name="SurvCode" style="width:300px;" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="UnitName">
+                                Nama Barang yg akan diambil :</label>
+                        </td>
+                        <td>
+                            <input type="text" name="UnitName" style="width:300px;" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="UnitType">
+                                Type Barang :</label>
+                        </td>
+                        <td>
+                            <input type="text" name="UnitType" style="width:300px;" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="LamaAngsuran">
+                                Lama Angsuran :</label>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="JumlahAngsuran">
+                                Jumlah Angsuran per bulan RP:</label>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="LoanIsSalesmanKnowCust">
+                                SA/TL mengetahui tentang konsumen :</label>
+                        </td>
+                        <td>
+                            <%= Html.DropDownList("LoanIsSalesmanKnowCust", Model.KnowCustomerList)%>
+                            <%= Html.ValidationMessage("LoanIsSalesmanKnowCust")%>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="DownPayment">
+                                Bila memakai DP, maka DP adalah :</label>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><hr /></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="TglSurvey">
+                                Tanggal :</label>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="ReportReceive">
+                                Laporan diterima oleh :</label>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="AdministrationProcess">
+                                Diproses oleh Administrasi :</label>
+                        </td>
+                        <td>
                         </td>
                     </tr>
                 </table>

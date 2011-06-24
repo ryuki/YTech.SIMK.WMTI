@@ -246,7 +246,7 @@
     <Content Include="Views\Transaction\Installment\Index.aspx" />
     <Content Include="Views\Transaction\Loan\Detail.ascx" />
     <Content Include="Views\Transaction\Loan\Index.aspx" />
-    <Content Include="Views\Transaction\Loan\Registration.aspx" />
+    <Content Include="Views\Transaction\Loan\Survey.aspx" />
     <Content Include="Views\Utility\UserAccount\ChangePassword.aspx" />
     <Content Include="Views\Utility\UserAccount\ChangePasswordSuccess.aspx" />
     <Content Include="Views\Utility\UserAccount\LogOn.aspx" />
