@@ -262,9 +262,8 @@
                                 Hubungan dengan Penjamin :</label>
                         </td>
                         <td>
-                            <input type="text" name="PersonGuarantorRelationship" style="width:300px" />
-                            <%-- <%= Html.TextBox("PersonEmail", Model.Customer.PersonId.PersonEmail, new { @style = "width:300px" })%>
-                            <%= Html.ValidationMessage("PersonEmail")%>--%>
+                            <%= Html.TextBox("PersonGuarantorRelationship", Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonGuarantorRelationship, new { @style = "width:300px" })%>
+                            <%= Html.ValidationMessage("PersonGuarantorRelationship")%>
                         </td>
                     </tr>
                     <tr>
@@ -356,7 +355,7 @@
                             <input type="checkbox" name="acc" value="MBL" />Mobil
                             <input type="checkbox" name="acc" value="AC" />AC
                             <%-- <%= Html.DropDownList("AddressStatusOwner")%> --%>
-                            <%= Html.ValidationMessage("AddressStatusOwner")%>
+                            <%= Html.ValidationMessage("SurveyAsset")%>
                         </td>
                     </tr>
                     <tr>

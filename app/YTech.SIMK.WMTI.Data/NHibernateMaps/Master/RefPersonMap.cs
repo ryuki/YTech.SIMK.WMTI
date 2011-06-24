@@ -46,6 +46,7 @@ namespace YTech.SIMK.WMTI.Data.NHibernateMaps.Master
             mapping.Map(x => x.PersonCoupleIncome, "PERSON_COUPLE_INCOME");
             mapping.Map(x => x.PersonStaySince, "PERSON_STAY_SINCE");
             mapping.Map(x => x.PersonGuarantorName, "PERSON_GUARANTOR_NAME");
+            mapping.Map(x => x.PersonGuarantorRelationship, "PERSON_GUARANTOR_RELATION");
             mapping.Map(x => x.PersonGuarantorOccupation, "PERSON_GUARANTOR_OCCUPATION");
             mapping.Map(x => x.PersonGuarantorPhone, "PERSON_GUARANTOR_PHONE");
             mapping.Map(x => x.PersonGuarantorHouseOwnerStatus, "PERSON_GUARANTOR_HOUSE_OWNER_STATUS");

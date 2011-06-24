@@ -38,6 +38,7 @@ namespace YTech.SIMK.WMTI.Core.Master
         public virtual decimal? PersonCoupleIncome { get; set; }
         public virtual DateTime? PersonStaySince { get; set; }
         public virtual string PersonGuarantorName { get; set; }
+        public virtual string PersonGuarantorRelationship { get; set; }
         public virtual string PersonGuarantorOccupation { get; set; }
         public virtual string PersonGuarantorPhone { get; set; }
         public virtual string PersonGuarantorHouseOwnerStatus { get; set; }
