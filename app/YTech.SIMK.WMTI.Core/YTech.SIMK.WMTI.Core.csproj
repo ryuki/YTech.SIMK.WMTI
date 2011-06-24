@@ -60,27 +60,64 @@
     <Compile Include="..\..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Master\MCustomer.cs" />
+    <Compile Include="Class1.cs" />
+    <Compile Include="Master\MCustomer.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Master\MDepartment.cs" />
-    <Compile Include="Master\MEmployee.cs" />
-    <Compile Include="Master\MPartner.cs" />
-    <Compile Include="Master\MZone.cs" />
-    <Compile Include="Master\RefAddress.cs" />
-    <Compile Include="Master\RefPerson.cs" />
+    <Compile Include="Master\MEmployee.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Master\MPartner.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Master\MZone.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Master\RefAddress.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Master\RefPerson.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RepositoryInterfaces\IMCustomerRepository.cs" />
+    <Compile Include="RepositoryInterfaces\IMCustomerRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="RepositoryInterfaces\IMDepartmentRepository.cs" />
-    <Compile Include="RepositoryInterfaces\IMEmployeeRepository.cs" />
-    <Compile Include="RepositoryInterfaces\IMPartnerRepository.cs" />
-    <Compile Include="RepositoryInterfaces\IMZoneRepository.cs" />
-    <Compile Include="RepositoryInterfaces\IRefAddressRepository.cs" />
-    <Compile Include="RepositoryInterfaces\IRefPersonRepository.cs" />
-    <Compile Include="RepositoryInterfaces\ITInstallmentRepository.cs" />
-    <Compile Include="RepositoryInterfaces\ITLoanRepository.cs" />
-    <Compile Include="RepositoryInterfaces\ITLoanSurveyRepository.cs" />
-    <Compile Include="Transaction\TInstallment.cs" />
-    <Compile Include="Transaction\TLoan.cs" />
-    <Compile Include="Transaction\TLoanSurvey.cs" />
+    <Compile Include="RepositoryInterfaces\IMEmployeeRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RepositoryInterfaces\IMPartnerRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RepositoryInterfaces\IMZoneRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RepositoryInterfaces\IRefAddressRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RepositoryInterfaces\IRefPersonRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RepositoryInterfaces\ITInstallmentRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RepositoryInterfaces\ITLoanRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RepositoryInterfaces\ITLoanSurveyRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Transaction\TInstallment.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Transaction\TLoan.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Transaction\TLoanSurvey.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

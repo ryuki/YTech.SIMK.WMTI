@@ -26,7 +26,12 @@ namespace YTech.SIMK.WMTI.Data.NHibernateMaps.Master
             mapping.Map(x => x.CreatedDate, "CREATED_DATE");
             mapping.Map(x => x.ModifiedBy, "MODIFIED_BY");
             mapping.Map(x => x.ModifiedDate, "MODIFIED_DATE");
-            mapping.Map(x => x.RowVersion, "ROW_VERSION").ReadOnly();
+            mapping.Version(x => x.RowVersion)
+               .Column("ROW_VERSION")
+                //.CustomType("BinaryBlob")
+               .CustomSqlType("Timestamp")
+               .Not.Nullable()
+               .Generated.Always();
         }
 
         #endregion

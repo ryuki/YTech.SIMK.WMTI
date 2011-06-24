@@ -10,6 +10,7 @@ namespace YTech.SIMK.WMTI.Core.Master
         [DomainSignature]
         [NotNull, NotEmpty]
         public virtual RefPerson PersonId { get; set; }
+        public virtual RefAddress AddressId { get; set; }
         public virtual MDepartment DepartmentId { get; set; }
         public virtual string EmployeeStatus { get; set; }
         public virtual string EmployeeDesc { get; set; }

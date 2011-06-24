@@ -7,5 +7,6 @@ namespace YTech.SIMK.WMTI.Core.RepositoryInterfaces
 {
     public interface ITInstallmentRepository : INHibernateRepositoryWithTypedId<TInstallment, string>
     {
+        IEnumerable<TInstallment> GetPagedInstallmentList(string orderCol, string orderBy, int pageIndex, int maxRows, ref int totalRows, string loanCode);
     }
 }

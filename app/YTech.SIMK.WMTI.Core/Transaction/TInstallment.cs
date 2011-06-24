@@ -18,9 +18,31 @@ namespace YTech.SIMK.WMTI.Core.Transaction
         public virtual decimal? InstallmentOthers { get; set; }
         public virtual DateTime? InstallmentPaymentDate { get; set; }
         public virtual DateTime? InstallmentMaturityDate { get; set; }
-        public virtual decimal ? InstallmentFine { get; set; }
+        public virtual decimal? InstallmentFine { get; set; }
         public virtual string InstallmentDesc { get; set; }
         public virtual string InstallmentStatus { get; set; }
+        public virtual decimal? InstallmentPaid { get; set; }
+
+        public virtual decimal InstallmentTotal
+        {
+            get
+            {
+                decimal basic = InstallmentBasic.HasValue ? InstallmentBasic.Value : 0;
+                decimal interest = InstallmentInterest.HasValue ? InstallmentInterest.Value : 0;
+                decimal other = InstallmentOthers.HasValue ? InstallmentOthers.Value : 0;
+                return basic + interest + other;
+            }
+        }
+
+        public virtual decimal InstallmentMustPaid
+        {
+            get
+            {
+                decimal total = InstallmentTotal;
+                decimal fine = InstallmentFine.HasValue ? InstallmentFine.Value : 0;
+                return total + fine;
+            }
+        }
 
         public virtual string DataStatus { get; set; }
         public virtual string CreatedBy { get; set; }
