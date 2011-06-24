@@ -68,11 +68,11 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         }
 
         [Transaction]
-        public ActionResult Registration()
+        public ActionResult Survey()
         {
             ViewData["CurrentItem"] = "Lembaran Survey";
-            RegistrationFormViewModel viewModel =
-                RegistrationFormViewModel.CreateRegistrationFormViewModel(_mCustomerRepository, null);
+            SurveyFormViewModel viewModel =
+                SurveyFormViewModel.CreateSurveyFormViewModel(_tLoanSurveyRepository, null);
             //if (usePopup.HasValue)
             //{
             //    if (usePopup.Value)

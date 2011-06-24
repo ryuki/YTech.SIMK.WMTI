@@ -12,7 +12,7 @@
 %>
             <h3><a href="#">Survey</a></h3>
             <div>
-                <div><%= Html.ActionLinkForAreas<LoanController>(c => c.Registration(), "Form Survey") %></div>
+                <div><%= Html.ActionLinkForAreas<LoanController>(c => c.Survey(), "Form Survey") %></div>
                 <div><%= Html.ActionLinkForAreas<LoanController>(c => c.Index(), "Daftar Survey")%></div>
             </div>
     <%

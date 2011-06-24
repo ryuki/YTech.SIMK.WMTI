@@ -46,8 +46,12 @@
     <Compile Include="EnumEducation.cs" />
     <Compile Include="EnumExportFormat.cs" />
     <Compile Include="EnumGender.cs" />
+    <Compile Include="EnumHouseOwner.cs" />
+    <Compile Include="EnumHouseType.cs" />
     <Compile Include="EnumIdCardType.cs" />
+    <Compile Include="EnumKnowCustomer.cs" />
     <Compile Include="EnumMarriedStatus.cs" />
+    <Compile Include="EnumNeighborChar.cs" />
     <Compile Include="EnumPaymentMethod.cs" />
     <Compile Include="EnumPeriodType.cs" />
     <Compile Include="EnumPersonGender.cs" />
