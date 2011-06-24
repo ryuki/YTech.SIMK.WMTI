@@ -104,14 +104,8 @@
     <Compile Include="Utility\UserAccountController.cs" />
     <Compile Include="Utility\UserAdministrationController.cs" />
     <Compile Include="Utility\UtilityAreaRegistration.cs" />
-<<<<<<< HEAD
     <Compile Include="ViewModel\RegistrationFormViewModel.cs" />
     <Compile Include="ViewModel\SurveyFormViewModel.cs" />
-=======
-    <Compile Include="ViewModel\RegistrationFormViewModel.cs">
-      <SubType>Code</SubType>
-    </Compile>
->>>>>>> master
     <Compile Include="ViewModel\UserAdministration\DetailsViewModel.cs" />
     <Compile Include="ViewModel\UserAdministration\IndexViewModel.cs" />
     <Compile Include="ViewModel\UserAdministration\RoleViewModel.cs" />
