@@ -290,9 +290,7 @@
     <Content Include="Views\Shared\ParentMaster.Master" />
     <Content Include="Views\Shared\UIMaster.Master" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Transaction\Survey\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <Target Name="BeforeBuild">
