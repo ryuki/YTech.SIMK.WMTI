@@ -19,6 +19,7 @@ namespace YTech.SIMK.WMTI.Data.NHibernateMaps.Master
 
             mapping.References(x => x.PersonId, "PERSON_ID").Fetch.Join();
             mapping.References(x => x.DepartmentId, "DEPARTMENT_ID").Fetch.Join();
+            mapping.References(x => x.AddressId, "ADDRESS_ID").Fetch.Join();
 
             mapping.Map(x => x.EmployeeStatus, "EMPLOYEE_STATUS");
             mapping.Map(x => x.EmployeeDesc, "EMPLOYEE_DESC");

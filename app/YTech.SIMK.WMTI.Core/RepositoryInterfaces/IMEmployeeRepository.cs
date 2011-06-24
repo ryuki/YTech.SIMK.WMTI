@@ -6,5 +6,6 @@ namespace YTech.SIMK.WMTI.Core.RepositoryInterfaces
 {
     public interface IMEmployeeRepository : INHibernateRepositoryWithTypedId<MEmployee, string>
     {
+        IEnumerable<MEmployee> GetPagedEmployeeList(string orderCol, string orderBy, int pageIndex, int maxRows, ref int totalRows);
     }
 }

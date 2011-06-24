@@ -6,5 +6,6 @@ namespace YTech.SIMK.WMTI.Core.RepositoryInterfaces
 {
     public interface IMDepartmentRepository : INHibernateRepositoryWithTypedId<MDepartment, string>
     {
+        IEnumerable<MDepartment> GetPagedDepartmentList(string orderCol, string orderBy, int pageIndex, int maxRows, ref int totalRows);
     }
 }

@@ -1,22 +1,22 @@
 ﻿using System.Web.Mvc;
 
-namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
+namespace YTech.SIMK.WMTI.Web.Controllers.Master
 {
-    public class TransactionAreaRegistration : System.Web.Mvc.AreaRegistration
+    public class MasterAreaRegistration : System.Web.Mvc.AreaRegistration
     {
         public override string AreaName
         {
             get
             {
-                return "Transaction";
+                return "Master";
             }
         }
 
         public override void RegisterArea(System.Web.Mvc.AreaRegistrationContext context)
         {
             context.MapRoute(
-                    "Transaction_default",
-                    "Transaction/{controller}/{action}/{id}",
+                    "Master_default",
+                    "Master/{controller}/{action}/{id}",
                     new { action = "Index", id = UrlParameter.Optional }
                 );
         }

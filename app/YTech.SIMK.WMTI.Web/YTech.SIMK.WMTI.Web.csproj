@@ -209,6 +209,7 @@
     <Content Include="Scripts\grid.locale-en.js" />
     <Content Include="Scripts\jquery-1.5.2-vsdoc.js" />
     <Content Include="Scripts\jquery-1.5.2.min.js" />
+    <Content Include="Scripts\jquery-1.6.1.min.js" />
     <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\jquery.jqGrid.min.js" />
     <Content Include="Scripts\jquery.layout.min.js" />
@@ -233,12 +234,16 @@
     <Content Include="Scripts\Templates\MicrosoftAjaxAdoNet.js" />
     <Content Include="Scripts\Templates\MicrosoftAjaxTemplates.js" />
     <Content Include="Views\Home\Index.aspx" />
+    <Content Include="Views\Master\Department\Index.aspx" />
+    <Content Include="Views\Master\Employee\Index.aspx" />
+    <Content Include="Views\Master\Employee\Search.aspx" />
     <Content Include="Views\Shared\Error.aspx" />
     <Content Include="Views\Shared\DebugFormSubmission.ascx" />
     <Content Include="Views\Shared\Js.ascx" />
     <Content Include="Views\Shared\LogOnUserControl.ascx" />
     <Content Include="Views\Shared\Menu.ascx" />
     <Content Include="Views\Shared\Status.ascx" />
+    <Content Include="Views\Transaction\Installment\Index.aspx" />
     <Content Include="Views\Transaction\Loan\Detail.ascx" />
     <Content Include="Views\Transaction\Loan\Index.aspx" />
     <Content Include="Views\Transaction\Loan\Survey.aspx" />
@@ -262,6 +267,10 @@
     <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\YTech.SIMK.WMTI.ApplicationServices\YTech.SIMK.WMTI.ApplicationServices.csproj">
+      <Project>{EA00777D-3D7A-4406-8BFB-E5A90CF0E8A9}</Project>
+      <Name>YTech.SIMK.WMTI.ApplicationServices</Name>
+    </ProjectReference>
     <ProjectReference Include="..\YTech.SIMK.WMTI.Web.Controllers\YTech.SIMK.WMTI.Web.Controllers.csproj">
       <Project>{518B2E4B-2B9B-48EF-8736-DDB6A0F78E79}</Project>
       <Name>YTech.SIMK.WMTI.Web.Controllers</Name>
@@ -281,6 +290,9 @@
     <Content Include="Views\Shared\ParentMaster.Master" />
     <Content Include="Views\Shared\UIMaster.Master" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\Transaction\Survey\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <Target Name="BeforeBuild">
@@ -295,7 +307,7 @@
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1140</DevelopmentServerPort>
-          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <DevelopmentServerVPath>/WMTI/</DevelopmentServerVPath>
           <IISUrl>http://localhost:81/WMTI</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>

@@ -66,25 +66,63 @@
     <Compile Include="..\..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="NHibernateMaps\Master\MCustomerMap.cs" />
+    <Compile Include="NHibernateMaps\Master\MCustomerMap.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="NHibernateMaps\Master\MDepartmentMap.cs" />
-    <Compile Include="NHibernateMaps\Master\MEmployeeMap.cs" />
-    <Compile Include="NHibernateMaps\Master\MPartnerMap.cs" />
-    <Compile Include="NHibernateMaps\Master\MZoneMap.cs" />
-    <Compile Include="NHibernateMaps\Master\RefAddressMap.cs" />
-    <Compile Include="NHibernateMaps\Master\RefPersonMap.cs" />
-    <Compile Include="NHibernateMaps\Transaction\TLoanMap.cs" />
-    <Compile Include="NHibernateMaps\Transaction\TLoanSurveyMap.cs" />
+    <Compile Include="NHibernateMaps\Master\MEmployeeMap.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NHibernateMaps\Master\MPartnerMap.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NHibernateMaps\Master\MZoneMap.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NHibernateMaps\Master\RefAddressMap.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NHibernateMaps\Master\RefPersonMap.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NHibernateMaps\Transaction\TInstallmentMap.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NHibernateMaps\Transaction\TLoanMap.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NHibernateMaps\Transaction\TLoanSurveyMap.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repository\MCustomerRepository.cs" />
+    <Compile Include="Repository\MCustomerRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Repository\MDepartmentRepository.cs" />
-    <Compile Include="Repository\MEmployeeRepository.cs" />
-    <Compile Include="Repository\MPartnerRepository.cs" />
-    <Compile Include="Repository\MZoneRepository.cs" />
-    <Compile Include="Repository\RefAddressRepository.cs" />
-    <Compile Include="Repository\RefPersonRepository.cs" />
-    <Compile Include="Repository\TLoanRepository.cs" />
-    <Compile Include="Repository\TLoanSurveyRepository.cs" />
+    <Compile Include="Repository\MEmployeeRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repository\MPartnerRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repository\MZoneRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repository\RefAddressRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repository\RefPersonRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repository\TInstallmentRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repository\TLoanRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repository\TLoanSurveyRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\YTech.SIMK.WMTI.Core\YTech.SIMK.WMTI.Core.csproj">

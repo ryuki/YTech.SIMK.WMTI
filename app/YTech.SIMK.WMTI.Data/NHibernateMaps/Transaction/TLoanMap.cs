@@ -44,8 +44,8 @@ namespace YTech.SIMK.WMTI.Data.NHibernateMaps.Transaction
             mapping.Map(x => x.LoanInterestInstallment, "LOAN_INTEREST_INSTALLMENT");
             mapping.Map(x => x.LoanOtherInstallment, "LOAN_OTHER_INSTALLMENT");
             
-            mapping.References(x => x.LoanACCBy, "LOAN_ACC_BY");
-            mapping.Map(x => x.LoanACCDate, "LOAN_ACC_DATE");
+            mapping.References(x => x.LoanAccBy, "LOAN_ACC_BY");
+            mapping.Map(x => x.LoanAccDate, "LOAN_ACC_DATE");
             
             mapping.Map(x => x.LoanAdminFee, "LOAN_ADMIN_FEE");
             mapping.Map(x => x.LoanMateraiFee, "LOAN_MATERAI_FEE");
@@ -60,7 +60,12 @@ namespace YTech.SIMK.WMTI.Data.NHibernateMaps.Transaction
             mapping.Map(x => x.CreatedDate, "CREATED_DATE");
             mapping.Map(x => x.ModifiedBy, "MODIFIED_BY");
             mapping.Map(x => x.ModifiedDate, "MODIFIED_DATE");
-            mapping.Map(x => x.RowVersion, "ROW_VERSION").ReadOnly();
+            mapping.Version(x => x.RowVersion)
+                .Column("ROW_VERSION")
+                //.CustomType("BinaryBlob")
+                .CustomSqlType("Timestamp")
+                .Not.Nullable()
+                .Generated.Always();
         }
 
         #endregion

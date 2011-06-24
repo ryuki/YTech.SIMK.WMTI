@@ -33,18 +33,18 @@ namespace YTech.SIMK.WMTI.Core.Transaction
         public virtual decimal? LoanFactorMultiple { get; set; }
         public virtual decimal? LoanFactorAdd { get; set; }
         public virtual decimal? LoanInterest { get; set; }
-        public virtual byte[] LoanTenor { get; set; }
+        public virtual int? LoanTenor { get; set; }
         public virtual decimal? LoanBasicInstallment { get; set; }
         public virtual decimal? LoanInterestInstallment { get; set; }
         public virtual decimal? LoanOtherInstallment { get; set; }
             
-        public virtual MEmployee LoanACCBy { get; set; }
-        public virtual DateTime? LoanACCDate { get; set; }
+        public virtual MEmployee LoanAccBy { get; set; }
+        public virtual DateTime? LoanAccDate { get; set; }
             
         public virtual decimal? LoanAdminFee { get; set; }
         public virtual decimal? LoanMateraiFee { get; set; }
-        public virtual byte[] LoanMaturityDate { get; set; }
-        public virtual byte[] LoanIsSalesmanKnownCustomer { get; set; }
+        public virtual DateTime? LoanMaturityDate { get; set; }
+        public virtual bool? LoanIsSalesmanKnownCustomer { get; set; }
 
         public virtual string LoanDesc { get; set; }
         public virtual string LoanStatus { get; set; }

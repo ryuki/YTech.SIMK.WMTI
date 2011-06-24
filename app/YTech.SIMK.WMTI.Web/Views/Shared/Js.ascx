@@ -19,11 +19,11 @@
         type="text/javascript"></script>
     <script src="<%= Url.Content("~/Scripts/MicrosoftMvcValidation.debug.js") %>" type="text/javascript"></script>--%>
    <%-- <script src="<%= Url.Content("~/Scripts/json2.js") %>" type="text/javascript"></script>--%>
-    <script src="<%= Url.Content("~/Scripts/jquery-1.5.2.min.js") %>" type="text/javascript"></script>
+    <script src="<%= Url.Content("~/Scripts/jquery-1.6.1.min.js") %>" type="text/javascript"></script>
    <%-- <script src="<%= Url.Content("~/Scripts/samplebrowser.js") %>" type="text/javascript"></script>--%>
-    <link href="<%= Url.Content("~/Content/ui.jqgrid.css") %>" rel="stylesheet" type="text/css" />
+    <link href="<%= Url.Content("~/Content/ui.jqgrid.css") %>" rel="stylesheet" type="text/css" media="screen" />
     <link href="<%= Url.Content("~/Content/css/start/jquery-ui.css") %>" rel="Stylesheet"
-        type="text/css" />
+        type="text/css" media="screen" />
 
     <script src="<%= Url.Content("~/Scripts/jquery-ui.min.js") %>" type="text/javascript"></script>
     <script src="<%= Url.Content("~/Scripts/jquery.validate.min.js") %>" type="text/javascript"></script>
