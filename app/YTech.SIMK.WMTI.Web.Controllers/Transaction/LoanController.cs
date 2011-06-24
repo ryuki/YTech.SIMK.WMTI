@@ -98,6 +98,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             RefPerson person = new RefPerson();
             RefAddress address = new RefAddress();
 
+            //save address
             TransferFormValuesTo(address, formCollection);
             address.SetAssignedIdTo(Guid.NewGuid().ToString());
             address.CreatedDate = DateTime.Now;
@@ -105,6 +106,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             address.DataStatus = EnumDataStatus.New.ToString();
             _refAddressRepository.Save(address);
 
+            //save person
             TransferFormValuesTo(person, formCollection);
             person.SetAssignedIdTo(Guid.NewGuid().ToString());
             person.CreatedDate = DateTime.Now;
@@ -112,13 +114,52 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             person.DataStatus = EnumDataStatus.New.ToString();
             _refPersonRepository.Save(person);
 
+            //save customer
+            customer.SetAssignedIdTo(Guid.NewGuid().ToString());
+            customer.CreatedDate = DateTime.Now;
+            customer.CreatedBy = User.Identity.Name;
+            customer.DataStatus = EnumDataStatus.New.ToString();
+
+            customer.AddressId = address;
+            customer.PersonId = person;
+
+            _mCustomerRepository.Save(customer);
+
+            //save loan
+            loan.SetAssignedIdTo(Guid.NewGuid().ToString());
+            loan.CreatedDate = DateTime.Now;
+            loan.CreatedBy = User.Identity.Name;
+            loan.DataStatus = EnumDataStatus.New.ToString();
+
+            loan.CustomerId = customer;
+
+            _tLoanRepository.Save(loan);
+
+            //save loanSurvey
+            if (loanSurvey == null)
+            {
+                loanSurvey = new TLoanSurvey();
+            }
+            TransferFormValuesTo(loanSurvey, formCollection);
+            loanSurvey.SetAssignedIdTo(formCollection["Id"]);
+            loanSurvey.CreatedDate = DateTime.Now;
+            loanSurvey.CreatedBy = User.Identity.Name;
+            loanSurvey.DataStatus = EnumDataStatus.New.ToString();
+
+            loanSurvey.LoanId = loan;
+
+            _tLoanSurveyRepository.Save(loanSurvey);
+
             try
             {
                 _tLoanSurveyRepository.DbContext.CommitChanges();
+                TempData[EnumCommonViewData.SaveState.ToString()] = EnumSaveState.Success;
             }
             catch (Exception e)
             {
                 _tLoanSurveyRepository.DbContext.RollbackTransaction();
+                TempData[EnumCommonViewData.SaveState.ToString()] = EnumSaveState.Failed;
+                TempData[EnumCommonViewData.ErrorMessage.ToString()] = e.Message;
 
                 var result = new
                 {
@@ -180,6 +221,17 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             address.AddressLine1 = formCollection["AddressLine1"];
             address.AddressLine2 = formCollection["AddressLine2"];
             address.AddressPostCode = formCollection["AddressPostCode"];
+        }
+
+        private void TransferFormValuesTo(TLoanSurvey loanSurvey, FormCollection formCollection)
+        {
+            loanSurvey.SurveyNeighbor = formCollection["SurveyNeighbor"];
+            loanSurvey.SurveyNeighborCharacter = formCollection["SurveyNeighborCharacter"];
+            loanSurvey.SurveyNeighborConclusion = formCollection["SurveyNeighborConclusion"];
+            loanSurvey.SurveyNeighborAsset = formCollection["SurveyNeighborAsset"];
+            loanSurvey.SurveyHouseType = formCollection["SurveyHouseType"];
+            loanSurvey.SurveyUnitDeliverDate = Convert.ToDateTime(formCollection["SurveyUnitDeliverDate"]);
+            loanSurvey.SurveyUnitDeliverAddress = formCollection["SurveyUnitDeliverAddress"];
         }
     }
 }

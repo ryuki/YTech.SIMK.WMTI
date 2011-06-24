@@ -341,7 +341,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label for="SurveyAsset">
+                            <label for="SurveyNeighborAsset">
                                 Accessories :</label>
                         </td>
                         <td>
