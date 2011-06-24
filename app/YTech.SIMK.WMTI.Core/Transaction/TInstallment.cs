@@ -9,6 +9,7 @@ namespace YTech.SIMK.WMTI.Core.Transaction
 {
     public class TInstallment : EntityWithTypedId<string>, IHasAssignedId<string>
     {
+        [DomainSignature]
         public virtual TLoan LoanId { get; set; }
         public virtual MEmployee EmployeeId { get; set; }
 
