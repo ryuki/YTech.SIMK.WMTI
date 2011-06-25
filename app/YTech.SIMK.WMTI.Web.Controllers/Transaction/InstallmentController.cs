@@ -58,6 +58,8 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             installment.InstallmentPaymentDate = viewModel.InstallmentPaymentDate;
             if (!string.IsNullOrEmpty(formCollection["InstallmentPaid"]))
                 installment.InstallmentPaid = Convert.ToDecimal(formCollection["InstallmentPaid"].Replace(",", ""));
+            else
+                installment.InstallmentPaid = null;
             installment.InstallmentStatus = EnumInstallmentStatus.Paid.ToString();
             installment.ModifiedBy = User.Identity.Name;
             installment.ModifiedDate = DateTime.Now;

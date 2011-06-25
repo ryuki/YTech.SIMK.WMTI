@@ -7,6 +7,7 @@ namespace YTech.SIMK.WMTI.Enums
 {
     public enum EnumLoanStatus
     {
-        Approve
+        Approve,
+        Survey
     }
 }

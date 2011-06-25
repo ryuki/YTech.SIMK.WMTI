@@ -17,7 +17,7 @@ namespace YTech.SIMK.WMTI.Data.NHibernateMaps.Transaction
             mapping.Table("T_LOAN_SURVEY");
             mapping.Id(x => x.Id, "LOAN_SURVEY_ID").GeneratedBy.Assigned();
 
-            mapping.References(x => x.LoanId, "LOAN_ID").Fetch.Join();
+            mapping.References(x => x.LoanId, "LOAN_ID");
             //mapping.HasOne(x => x.LoanId);
 
             mapping.Map(x => x.SurveyDate, "SURVEY_DATE");

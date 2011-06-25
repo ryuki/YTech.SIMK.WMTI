@@ -117,7 +117,8 @@
                                 Wilayah :</label>
                         </td>
                         <td> 
-                            <%= Html.TextBox("ZoneId", Model.LoanSurvey.LoanId.ZoneId != null ? Model.LoanSurvey.LoanId.ZoneId.Id : null, new { @style = "width:300px" })%>
+                            <%= Html.DropDownList("ZoneId", Model.ZoneList)%>
+                           <%-- <%= Html.TextBox("ZoneId", Model.LoanSurvey.LoanId.ZoneId != null ? Model.LoanSurvey.LoanId.ZoneId.Id : null, new { @style = "width:300px" })%>--%>
                             <%= Html.ValidationMessage("ZoneId")%> 
                         </td>
                     </tr>
@@ -187,7 +188,7 @@
                                 Penghasilan / Bulan :</label>
                         </td>
                         <td>
-                            <%= Html.TextBox("PersonIncome", Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonIncome, new { @style = "width:300px" })%>
+                            <%= Html.TextBox("PersonIncome", Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonIncome.HasValue ? Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonIncome.Value.ToString(CommonHelper.NumberFormat) : null, new { @style = "width:300px" })%>
                             <%= Html.ValidationMessage("PersonIncome")%>
                         </td>
                     </tr>
@@ -237,7 +238,7 @@
                                 Penghasilan / Bulan :</label>
                         </td>
                         <td>
-                            <%= Html.TextBox("PersonCoupleIncome", Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonCoupleIncome, new { @style = "width:300px" })%>
+                         <%= Html.TextBox("PersonCoupleIncome", Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonCoupleIncome.HasValue ? Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonCoupleIncome.Value.ToString(CommonHelper.NumberFormat) : null, new { @style = "width:300px" })%>
                             <%= Html.ValidationMessage("PersonCoupleIncome")%>
                         </td>
                     </tr>
@@ -319,7 +320,7 @@
                                 Status Tempat Tinggal Penjamin :</label>
                         </td>
                         <td>
-                            <%= Html.DropDownList("PersonGuarantorHouseOwnerStatus", Model.HouseOwnerList)%>
+                            <%= Html.DropDownList("PersonGuarantorHouseOwnerStatus", Model.GuarantorHouseOwnerList)%>
                             <%= Html.ValidationMessage("PersonGuarantorHouseOwnerStatus")%>
                         </td>
                     </tr>
@@ -427,9 +428,10 @@
                                 Nama SA yg mengajukan :</label>
                         </td>
                         <td>
-                            <input type="text" name="LoanSalesman" style="width:300px;" />
-                            <%-- <%= Html.TextBox("LoanSalesman", Model.LoanSurvey.LoanId.SalesmanId.PersonId.PersonFirstName, new { @style = "width:300px" })%> --%>
-                            <%= Html.ValidationMessage("LoanSalesman")%>
+                            <%= Html.DropDownList("SalesmanId", Model.SalesmanList)%>
+                            <%--<input type="text" name="LoanSalesman" style="width:300px;" />--%>
+                             <%--<%= Html.TextBox("LoanSalesman", Model.LoanSurvey.LoanId.SalesmanId.PersonId.PersonFirstName, new { @style = "width:300px" })%>--%> 
+                            <%= Html.ValidationMessage("SalesmanId")%>
                         </td>
                     </tr>
                     <tr>
@@ -438,7 +440,8 @@
                                 Kode TL :</label>
                         </td>
                         <td>
-                            <%= Html.TextBox("TLSId", Model.LoanSurvey.LoanId.TLSId, new { @style = "width:300px" })%>
+                            <%= Html.DropDownList("TLSId", Model.TLSList)%>
+                           <%-- <%= Html.TextBox("TLSId", Model.LoanSurvey.LoanId.TLSId, new { @style = "width:300px" })%>--%>
                             <%= Html.ValidationMessage("TLSId")%>
                         </td>
                     </tr>
@@ -448,7 +451,8 @@
                                 Kode Col :</label>
                         </td>
                         <td>
-                            <%= Html.TextBox("CollectorId", Model.LoanSurvey.LoanId.CollectorId, new { @style = "width:300px" })%>
+                            <%= Html.DropDownList("CollectorId", Model.CollectorList)%>
+                           <%-- <%= Html.TextBox("CollectorId", Model.LoanSurvey.LoanId.CollectorId, new { @style = "width:300px" })%>--%>
                             <%= Html.ValidationMessage("CollectorId")%>
                         </td>
                     </tr>
@@ -458,7 +462,8 @@
                                 Kode Surv :</label>
                         </td>
                         <td>
-                            <%= Html.TextBox("SurveyorId", Model.LoanSurvey.LoanId.SurveyorId, new { @style = "width:300px" })%>
+                            <%= Html.DropDownList("SurveyorId", Model.SurveyorList)%>
+                           <%-- <%= Html.TextBox("SurveyorId", Model.LoanSurvey.LoanId.SurveyorId, new { @style = "width:300px" })%>--%>
                             <%= Html.ValidationMessage("SurveyorId")%>
                         </td>
                     </tr>
@@ -484,6 +489,16 @@
                     </tr>
                     <tr>
                         <td>
+                            <label for="UnitPrice">
+                                Harga Barang :</label>
+                        </td>
+                        <td>
+                            <%= Html.TextBox("UnitPrice", Model.LoanUnit.UnitPrice.HasValue ? Model.LoanUnit.UnitPrice.Value.ToString(CommonHelper.NumberFormat) : null, new { @style = "width:300px" })%>
+                            <%= Html.ValidationMessage("UnitType")%>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
                             <label for="LoanTenor">
                                 Lama Angsuran :</label>
                         </td>
@@ -498,7 +513,7 @@
                                 Jumlah Angsuran per bulan RP:</label>
                         </td>
                         <td>
-                            <%= Html.TextBox("LoanBasicInstallment", Model.LoanSurvey.LoanId.LoanBasicInstallment, new { @style = "width:300px" })%>
+                         <%= Html.TextBox("LoanBasicInstallment", Model.LoanSurvey.LoanId.LoanBasicInstallment.HasValue ? Model.LoanSurvey.LoanId.LoanBasicInstallment.Value.ToString(CommonHelper.NumberFormat) : null, new { @style = "width:300px" })%>
                             <%= Html.ValidationMessage("LoanBasicInstallment")%>
                         </td>
                     </tr>
@@ -518,7 +533,7 @@
                                 Bila memakai DP, maka DP adalah :</label>
                         </td>
                         <td>
-                            <%= Html.TextBox("LoanDownPayment", Model.LoanSurvey.LoanId.LoanDownPayment, new { @style = "width:300px" })%>
+                         <%= Html.TextBox("LoanDownPayment", Model.LoanSurvey.LoanId.LoanDownPayment.HasValue ? Model.LoanSurvey.LoanId.LoanDownPayment.Value.ToString(CommonHelper.NumberFormat) : null, new { @style = "width:300px" })%>
                             <%= Html.ValidationMessage("LoanDownPayment")%>
                         </td>
                     </tr>
@@ -672,6 +687,17 @@
         $("#PersonGuarantorStaySince").datepicker({ dateFormat: "dd-M-yy" });
         $("#SurveyUnitDeliverDate").datepicker({ dateFormat: "dd-M-yy" });
         $("#SurveyDate").datepicker({ dateFormat: "dd-M-yy" });
+
+        $('#PersonIncome').autoNumeric();
+        $('#PersonIncome').attr("style", "text-align:right;");
+        $('#PersonCoupleIncome').autoNumeric();
+        $('#PersonCoupleIncome').attr("style", "text-align:right;");
+        $('#LoanBasicInstallment').autoNumeric();
+        $('#LoanBasicInstallment').attr("style", "text-align:right;");
+        $('#LoanDownPayment').autoNumeric();
+        $('#LoanDownPayment').attr("style", "text-align:right;");
+        $('#UnitPrice').autoNumeric();
+        $('#UnitPrice').attr("style", "text-align:right;");
     });
 
     $(document).ready(function () {
