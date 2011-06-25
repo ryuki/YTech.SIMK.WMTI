@@ -39,8 +39,7 @@ namespace YTech.SIMK.WMTI.Data.NHibernateMaps.Transaction
             mapping.Map(x => x.ModifiedBy, "MODIFIED_BY");
             mapping.Map(x => x.ModifiedDate, "MODIFIED_DATE");
             mapping.Version(x => x.RowVersion)
-                .Column("ROW_VERSION")
-                //.CustomType("BinaryBlob")
+                .Column("ROW_VERSION") 
                 .CustomSqlType("Timestamp")
                 .Not.Nullable()
                 .Generated.Always();

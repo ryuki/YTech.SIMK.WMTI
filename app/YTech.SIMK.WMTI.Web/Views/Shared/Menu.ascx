@@ -38,6 +38,11 @@
             <div>
                 <div><%= Html.ActionLinkForAreas<UserAdministrationController>(c => c.ListUsers(), "Daftar Pengguna")%></div>
             </div>
+            
+            <h3><a href="#">Laporan</a></h3>
+            <div>
+                <div><%= Html.ActionLinkForAreas<ReportController>(c => c.Report(EnumReports.RptDueInstallment), "Lap. Angsuran Jatuh Tempo")%></div>
+            </div>
     <%
         }
 %>
