@@ -28,14 +28,24 @@
                     <tr>
                         <td>
                             <label for="Id">
-                                No :</label>
+                                No PK:</label>
                         </td>
                         <td>
                             <%--<%= Html.TextBox("Id",  Model.Customer.Id ?? string.Empty,new {@readonly= Model.CanEditId ? "true" : "false" })%>--%>
-                            <%= Model.CanEditId ? Html.TextBox("Id", Model.LoanSurvey.Id ?? string.Empty, new { @style = "width:150px" }) :
-                                                  Html.TextBox("Id", Model.LoanSurvey.Id ?? string.Empty, new { @readonly = Model.CanEditId ? "true" : "false", @style = "width:150px" })
+                            <%= Model.CanEditId ? Html.TextBox("Id", Model.LoanSurvey.LoanId.LoanNo ?? string.Empty, new { @style = "width:150px" }) :
+                                                  Html.TextBox("Id", Model.LoanSurvey.LoanId.LoanNo ?? string.Empty, new { @readonly = Model.CanEditId ? "true" : "false", @style = "width:150px" })
                             %>
                             <%= Html.ValidationMessage("Id")%>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="LoanCode">
+                                No Account:</label>
+                        </td>
+                        <td>
+                            <%= Html.TextBox("LoanCode", Model.LoanSurvey.LoanId.LoanCode, new { @style = "width:300px" })%>
+                            <%= Html.ValidationMessage("LoanCode")%>
                         </td>
                     </tr>
                     <tr>
@@ -102,6 +112,16 @@
                                 Kode Pos :</label>
                             <%= Html.TextBox("AddressPostCode", Model.LoanSurvey.LoanId.CustomerId.AddressId.AddressPostCode, new { style = "width:50px" })%>
                             <%= Html.ValidationMessage("AddressPostCode")%>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="ZoneName">
+                                Wilayah :</label>
+                        </td>
+                        <td> 
+                            <%= Html.TextBox("ZoneName", Model.LoanSurvey.LoanId.ZoneId.ZoneName, new { @style = "width:300px" })%>
+                            <%= Html.ValidationMessage("ZoneName")%> 
                         </td>
                     </tr>
                     <tr>
@@ -345,17 +365,17 @@
                                 Accessories :</label>
                         </td>
                         <td>
-                            <input type="checkbox" name="acc" value="CTV" />TV
-                            <input type="checkbox" name="acc" value="SF" />Sofa
-                            <input type="checkbox" name="acc" value="KG" />Kompor Gas
-                            <input type="checkbox" name="acc" value="MC" />Mesin Cuci
-                            <input type="checkbox" name="acc" value="LH" />Lemari Hias
-                            <input type="checkbox" name="acc" value="PC" />Komputer
-                            <input type="checkbox" name="acc" value="MTR" />Motor
-                            <input type="checkbox" name="acc" value="MBL" />Mobil
-                            <input type="checkbox" name="acc" value="AC" />AC
+                            <input type="checkbox" name="SurveyNeighborAsset" value="CTV" />TV
+                            <input type="checkbox" name="SurveyNeighborAsset" value="SF" />Sofa
+                            <input type="checkbox" name="SurveyNeighborAsset" value="KG" />Kompor Gas
+                            <input type="checkbox" name="SurveyNeighborAsset" value="MC" />Mesin Cuci
+                            <input type="checkbox" name="SurveyNeighborAsset" value="LH" />Lemari Hias
+                            <input type="checkbox" name="SurveyNeighborAsset" value="PC" />Komputer
+                            <input type="checkbox" name="SurveyNeighborAsset" value="MTR" />Motor
+                            <input type="checkbox" name="SurveyNeighborAsset" value="MBL" />Mobil
+                            <input type="checkbox" name="SurveyNeighborAsset" value="AC" />AC
                             <%-- <%= Html.DropDownList("AddressStatusOwner")%> --%>
-                            <%= Html.ValidationMessage("SurveyAsset")%>
+                            <%= Html.ValidationMessage("SurveyNeighborAsset")%>
                         </td>
                     </tr>
                     <tr>
@@ -393,10 +413,12 @@
                     </tr>
                     <tr>
                         <td>
-                            <label for="JatuhTempoPembayaran">
+                            <label for="LoanMaturityDate">
                                 Jatuh Tempo Pembayaran Perbulan Setiap Tanggal :</label>
                         </td>
                         <td>
+                            <%= Html.TextBox("LoanMaturityDate", Model.LoanSurvey.LoanId.LoanMaturityDate, new { @style = "width:300px" })%>
+                            <%= Html.ValidationMessage("LoanMaturityDate")%>
                         </td>
                     </tr>
                     <tr>
@@ -415,29 +437,32 @@
                     </tr>
                     <tr>
                         <td>
-                            <label for="TLCode">
+                            <label for="TLSId">
                                 Kode TL :</label>
                         </td>
                         <td>
-                            <input type="text" name="TLCode" style="width:300px;" />
+                            <%= Html.TextBox("TLSId", Model.LoanSurvey.LoanId.TLSId, new { @style = "width:300px" })%>
+                            <%= Html.ValidationMessage("TLSId")%>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label for="CollCode">
+                            <label for="CollectorId">
                                 Kode Col :</label>
                         </td>
                         <td>
-                            <input type="text" name="CollCode" style="width:300px;" />
+                            <%= Html.TextBox("CollectorId", Model.LoanSurvey.LoanId.CollectorId, new { @style = "width:300px" })%>
+                            <%= Html.ValidationMessage("CollectorId")%>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label for="SurvCode">
+                            <label for="SurveyorId">
                                 Kode Surv :</label>
                         </td>
                         <td>
-                            <input type="text" name="SurvCode" style="width:300px;" />
+                            <%= Html.TextBox("SurveyorId", Model.LoanSurvey.LoanId.SurveyorId, new { @style = "width:300px" })%>
+                            <%= Html.ValidationMessage("SurveyorId")%>
                         </td>
                     </tr>
                     <tr>
@@ -446,7 +471,8 @@
                                 Nama Barang yg akan diambil :</label>
                         </td>
                         <td>
-                            <input type="text" name="UnitName" style="width:300px;" />
+                            <%= Html.TextBox("UnitName", Model.LoanUnit.UnitName, new { @style = "width:300px" })%>
+                            <%= Html.ValidationMessage("UnitName")%>
                         </td>
                     </tr>
                     <tr>
@@ -455,23 +481,28 @@
                                 Type Barang :</label>
                         </td>
                         <td>
-                            <input type="text" name="UnitType" style="width:300px;" />
+                            <%= Html.TextBox("UnitType", Model.LoanUnit.UnitType, new { @style = "width:300px" })%>
+                            <%= Html.ValidationMessage("UnitType")%>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label for="LamaAngsuran">
+                            <label for="LoanTenor">
                                 Lama Angsuran :</label>
                         </td>
                         <td>
+                            <%= Html.TextBox("LoanTenor", Model.LoanSurvey.LoanId.LoanTenor, new { @style = "width:300px" })%>
+                            <%= Html.ValidationMessage("LoanTenor")%>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label for="JumlahAngsuran">
+                            <label for="LoanBasicInstallment">
                                 Jumlah Angsuran per bulan RP:</label>
                         </td>
                         <td>
+                            <%= Html.TextBox("LoanBasicInstallment", Model.LoanSurvey.LoanId.LoanBasicInstallment, new { @style = "width:300px" })%>
+                            <%= Html.ValidationMessage("LoanBasicInstallment")%>
                         </td>
                     </tr>
                     <tr>
@@ -486,10 +517,12 @@
                     </tr>
                     <tr>
                         <td>
-                            <label for="DownPayment">
+                            <label for="LoanDownPayment">
                                 Bila memakai DP, maka DP adalah :</label>
                         </td>
                         <td>
+                            <%= Html.TextBox("LoanDownPayment", Model.LoanSurvey.LoanId.LoanDownPayment, new { @style = "width:300px" })%>
+                            <%= Html.ValidationMessage("LoanDownPayment")%>
                         </td>
                     </tr>
                     <tr>
@@ -497,26 +530,32 @@
                     </tr>
                     <tr>
                         <td>
-                            <label for="TglSurvey">
+                            <label for="SurveyDate">
                                 Tanggal :</label>
                         </td>
                         <td>
+                            <%= Html.TextBox("SurveyDate", Model.LoanSurvey.SurveyDate, new { @style = "width:300px" })%>
+                            <%= Html.ValidationMessage("SurveyDate")%>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label for="ReportReceive">
+                            <label for="SurveyReceivedBy">
                                 Laporan diterima oleh :</label>
                         </td>
                         <td>
+                            <%= Html.TextBox("SurveyReceivedBy", Model.LoanSurvey.SurveyReceivedBy, new { @style = "width:300px" })%>
+                            <%= Html.ValidationMessage("SurveyReceivedBy")%>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label for="AdministrationProcess">
+                            <label for="SurveyProcessBy">
                                 Diproses oleh Administrasi :</label>
                         </td>
                         <td>
+                            <%= Html.TextBox("SurveyProcessBy", Model.LoanSurvey.SurveyProcessBy, new { @style = "width:300px" })%>
+                            <%= Html.ValidationMessage("SurveyProcessBy")%>
                         </td>
                     </tr>
                 </table>

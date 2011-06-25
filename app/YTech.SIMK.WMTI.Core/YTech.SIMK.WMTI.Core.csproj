@@ -109,6 +109,7 @@
     <Compile Include="RepositoryInterfaces\ITLoanSurveyRepository.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="RepositoryInterfaces\ITLoanUnitRepository.cs" />
     <Compile Include="Transaction\TInstallment.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -118,6 +119,7 @@
     <Compile Include="Transaction\TLoanSurvey.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Transaction\TLoanUnit.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

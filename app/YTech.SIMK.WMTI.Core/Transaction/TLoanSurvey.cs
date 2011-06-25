@@ -22,6 +22,9 @@ namespace YTech.SIMK.WMTI.Core.Transaction
         public virtual string SurveyDesc { get; set; }
         public virtual string SurveyStatus { get; set; }
 
+        public virtual string SurveyReceivedBy { get; set; }
+        public virtual string SurveyProcessBy { get; set; }
+
         public virtual string DataStatus { get; set; }
         public virtual string CreatedBy { get; set; }
         public virtual DateTime? CreatedDate { get; set; }

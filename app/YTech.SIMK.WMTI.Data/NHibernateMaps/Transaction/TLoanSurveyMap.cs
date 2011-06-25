@@ -30,6 +30,9 @@ namespace YTech.SIMK.WMTI.Data.NHibernateMaps.Transaction
             mapping.Map(x => x.SurveyDesc, "SURVEY_DESC");
             mapping.Map(x => x.SurveyStatus, "SURVEY_STATUS");
 
+            mapping.Map(x => x.SurveyReceivedBy, "SURVEY_RECEIVED_BY");
+            mapping.Map(x => x.SurveyProcessBy, "SURVEY_PROCESS_BY");
+
             mapping.Map(x => x.DataStatus, "DATA_STATUS");
             mapping.Map(x => x.CreatedBy, "CREATED_BY");
             mapping.Map(x => x.CreatedDate, "CREATED_DATE");

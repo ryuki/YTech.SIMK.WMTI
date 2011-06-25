@@ -94,6 +94,7 @@
     <Compile Include="NHibernateMaps\Transaction\TLoanSurveyMap.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="NHibernateMaps\Transaction\TLoanUnitMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\MCustomerRepository.cs">
       <SubType>Code</SubType>
@@ -123,6 +124,7 @@
     <Compile Include="Repository\TLoanSurveyRepository.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Repository\TLoanUnitRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\YTech.SIMK.WMTI.Core\YTech.SIMK.WMTI.Core.csproj">
