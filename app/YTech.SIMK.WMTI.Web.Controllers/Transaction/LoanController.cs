@@ -47,61 +47,36 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         public virtual ActionResult List(string sidx, string sord, int page, int rows)
         {
             int totalRecords = 0;
-            var loanSurveys = _tLoanSurveyRepository.GetPagedLoanSurveyList(sidx, sord, page, rows, ref totalRecords);
+            var loans = _tLoanRepository.GetPagedLoanList(sidx, sord, page, rows, ref totalRecords);
+            //var loanSurveys = _tLoanSurveyRepository.GetPagedLoanSurveyList(sidx, sord, page, rows, ref totalRecords);
             int pageSize = rows;
             int totalPages = (int)Math.Ceiling((float)totalRecords / (float)pageSize);
-            var jsonData = new
-<<<<<<< HEAD
-                               {
-                                   total = totalPages,
-                                   page = page,
-                                   records = totalRecords,
-                                   rows = (
-                                        from loanSurvey in loanSurveys
+            var jsonData = new 
+                                {
+                                    total = totalPages,
+                                    page = page,
+                                    records = totalRecords,
+                                    rows = (
+                                        from loan in loans
                                         select new
-                                                   {
-                                                       i = loanSurvey.Id.ToString(),
-                                                       cell = new string[]
-                                                                  {
-                                                                    string.Empty,
-                                                                    loanSurvey.LoanId.LoanNo,
-                                                                    loanSurvey.SurveyDate.ToString(),
-                                                                    loanSurvey.LoanId.CustomerId.PersonId.PersonFirstName,
-                                                                    loanSurvey.LoanId.SurveyorId.PersonId.PersonFirstName,
-                                                                    loanSurvey.LoanId.ZoneId.ZoneName,
-                                                                    loanSurvey.LoanId.LoanStatus
-                                                                  }
-                                                   }
-                                   ).ToArray()
-                               };
-=======
-            {
-                total = totalPages,
-                page = page,
-                records = totalRecords,
-                rows = (
-                    from loan in loans
-                    select new
-                    {
-                        i = loan.Id,
-                        cell = new string[]
-                            {
-                            string.Empty,
-                           loan.Surveys.Count > 0 ? loan.Surveys[0].Id : null,
-                           loan.Id,
-                            loan.LoanNo,
-                            loan.LoanCode,
-                            loan.LoanSurveyDate.HasValue ? loan.LoanSurveyDate.Value.ToString(Helper.CommonHelper.DateFormat) : null,
-                            loan.PersonId.PersonName,
-                            loan.SurveyorId != null ?  loan.SurveyorId.PersonId.PersonName : null,
-                            loan.ZoneId != null ? loan.ZoneId.ZoneName : null,
-                            loan.LoanStatus
-                            }
-                    }
-                ).ToArray()
-            };
->>>>>>> master
-
+                                        {
+                                            i = loan.Id,
+                                            cell = new string[]
+                                                {
+                                                string.Empty,
+                                               loan.Surveys.Count > 0 ? loan.Surveys[0].Id : null,
+                                               loan.Id,
+                                                loan.LoanNo,
+                                                loan.LoanCode,
+                                                loan.LoanSurveyDate.HasValue ? loan.LoanSurveyDate.Value.ToString(Helper.CommonHelper.DateFormat) : null,
+                                                loan.PersonId.PersonName,
+                                                loan.SurveyorId != null ?  loan.SurveyorId.PersonId.PersonName : null,
+                                                loan.ZoneId != null ? loan.ZoneId.ZoneName : null,
+                                                loan.LoanStatus
+                                                }
+                                        }
+                                    ).ToArray()
+                                };
 
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
