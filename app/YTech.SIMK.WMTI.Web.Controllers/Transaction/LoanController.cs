@@ -20,8 +20,9 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         private readonly IRefAddressRepository _refAddressRepository;
         private readonly IRefPersonRepository _refPersonRepository;
         private readonly ITInstallmentRepository _tInstallmentRepository;
+        private readonly ITLoanUnitRepository _tLoanUnitRepository;
 
-        public LoanController(ITLoanRepository tLoanRepository, ITLoanSurveyRepository tLoanSurveyRepository, IMCustomerRepository mCustomerRepository, IRefAddressRepository refAddressRepository, IRefPersonRepository refPersonRepository, ITInstallmentRepository tInstallmentRepository)
+        public LoanController(ITLoanRepository tLoanRepository, ITLoanSurveyRepository tLoanSurveyRepository, IMCustomerRepository mCustomerRepository, IRefAddressRepository refAddressRepository, IRefPersonRepository refPersonRepository, ITInstallmentRepository tInstallmentRepository, ITLoanUnitRepository tLoanUnitRepository)
         {
             Check.Require(tLoanRepository != null, "tLoanRepository may not be null");
             Check.Require(tLoanSurveyRepository != null, "tLoanSurveyRepository may not be null");
@@ -29,6 +30,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             Check.Require(refAddressRepository != null, "refAddressRepository may not be null");
             Check.Require(refPersonRepository != null, "refPersonRepository may not be null");
             Check.Require(tInstallmentRepository != null, "tInstallmentRepository may not be null");
+            Check.Require(tLoanUnitRepository != null, "tLoanUnitRepository may not be null");
 
             _tLoanRepository = tLoanRepository;
             _tLoanSurveyRepository = tLoanSurveyRepository;
@@ -36,6 +38,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             _refAddressRepository = refAddressRepository;
             _refPersonRepository = refPersonRepository;
             _tInstallmentRepository = tInstallmentRepository;
+            _tLoanUnitRepository = tLoanUnitRepository;
         }
 
         public ActionResult Index()
@@ -48,7 +51,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         {
             int totalRecords = 0;
             var loans = _tLoanRepository.GetPagedLoanList(sidx, sord, page, rows, ref totalRecords);
-            //var loanSurveys = _tLoanSurveyRepository.GetPagedLoanSurveyList(sidx, sord, page, rows, ref totalRecords);
+
             int pageSize = rows;
             int totalPages = (int)Math.Ceiling((float)totalRecords / (float)pageSize);
             var jsonData = new 
@@ -64,8 +67,8 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                                             cell = new string[]
                                                 {
                                                 string.Empty,
-                                               loan.Surveys.Count > 0 ? loan.Surveys[0].Id : null,
-                                               loan.Id,
+                                                loan.Surveys.Count > 0 ? loan.Surveys[0].Id : null,
+                                                loan.Id,
                                                 loan.LoanNo,
                                                 loan.LoanCode,
                                                 loan.LoanSurveyDate.HasValue ? loan.LoanSurveyDate.Value.ToString(Helper.CommonHelper.DateFormat) : null,
@@ -106,89 +109,12 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Survey(TLoanSurvey surveyVM, TLoan loanVM, FormCollection formCollection, string loanSurveyId)
         {
-<<<<<<< HEAD
-            _tLoanSurveyRepository.DbContext.BeginTransaction();
-
-            TLoan loan = new TLoan();
-            TLoanSurvey survey = new TLoanSurvey();
-            MCustomer customer = new MCustomer();
-            RefPerson person = new RefPerson();
-            RefAddress address = new RefAddress();
-
-            //save address
-            TransferFormValuesTo(address, formCollection);
-            address.SetAssignedIdTo(Guid.NewGuid().ToString());
-            address.CreatedDate = DateTime.Now;
-            address.CreatedBy = User.Identity.Name;
-            address.DataStatus = EnumDataStatus.New.ToString();
-            _refAddressRepository.Save(address);
-
-            //save person
-            TransferFormValuesTo(person, formCollection);
-            person.SetAssignedIdTo(Guid.NewGuid().ToString());
-            person.CreatedDate = DateTime.Now;
-            person.CreatedBy = User.Identity.Name;
-            person.DataStatus = EnumDataStatus.New.ToString();
-            _refPersonRepository.Save(person);
-
-            //save customer
-            customer.SetAssignedIdTo(Guid.NewGuid().ToString());
-            customer.CreatedDate = DateTime.Now;
-            customer.CreatedBy = User.Identity.Name;
-            customer.DataStatus = EnumDataStatus.New.ToString();
-
-            customer.AddressId = address;
-            customer.PersonId = person;
-            _mCustomerRepository.Save(customer);
-
-            //save loan
-            loan.SetAssignedIdTo(Guid.NewGuid().ToString());
-            loan.CreatedDate = DateTime.Now;
-            loan.CreatedBy = User.Identity.Name;
-            loan.DataStatus = EnumDataStatus.New.ToString();
-
-            loan.AddressId = address;
-            loan.PersonId = person;
-            loan.CustomerId = customer;
-            loan.CollectorId = loanVM.CollectorId;
-
-            loan.LoanCode = loanVM.LoanCode;
-            loan.LoanCreditPrice = loanVM.LoanCreditPrice;
-            loan.LoanDesc = loanVM.LoanDesc;
-            loan.LoanDownPayment = loanVM.LoanDownPayment;
-            loan.LoanIsSalesmanKnownCustomer = loanVM.LoanIsSalesmanKnownCustomer;
-            loan.LoanTenor = loanVM.LoanTenor;
-            loan.LoanNo = loanVM.LoanNo;
-            loan.LoanStatus = loanVM.LoanStatus;
-            loan.LoanUnitPriceTotal = loanVM.LoanUnitPriceTotal;
-            _tLoanRepository.Save(loan);
-
-            survey.SetAssignedIdTo(Guid.NewGuid().ToString());
-            survey.CreatedDate = DateTime.Now;
-            survey.CreatedBy = User.Identity.Name;
-            survey.DataStatus = EnumDataStatus.New.ToString();
-            
-            survey.LoanId = loan;
-            
-            survey.SurveyDate = surveyVM.SurveyDate;
-            survey.SurveyDesc = surveyVM.SurveyDesc;
-            survey.SurveyHouseType = surveyVM.SurveyHouseType;
-            survey.SurveyNeighbor = surveyVM.SurveyNeighbor;
-            survey.SurveyNeighborAsset = surveyVM.SurveyNeighborAsset;
-            survey.SurveyNeighborCharacter = surveyVM.SurveyNeighborCharacter;
-            survey.SurveyNeighborConclusion = surveyVM.SurveyNeighborConclusion;
-            survey.SurveyStatus = surveyVM.SurveyStatus;
-            survey.SurveyUnitDeliverAddress = surveyVM.SurveyUnitDeliverAddress;
-            survey.SurveyUnitDeliverDate = surveyVM.SurveyUnitDeliverDate;
-            _tLoanSurveyRepository.Save(survey);
-
-=======
->>>>>>> master
             try
             {
                 _tLoanSurveyRepository.DbContext.BeginTransaction();
 
                 TLoan loan = new TLoan();
+                TLoanUnit loanUnit = new TLoanUnit();
                 TLoanSurvey survey = new TLoanSurvey();
                 MCustomer customer = new MCustomer();
                 RefPerson person = new RefPerson();
@@ -280,6 +206,9 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 loan.LoanUnitPriceTotal = loanVM.LoanUnitPriceTotal;
                 loan.LoanBasicInstallment = loanVM.LoanBasicInstallment;
                 loan.LoanMaturityDate = loanVM.LoanMaturityDate;
+
+                loan.LoanSurveyDate = surveyVM.SurveyDate;
+
                 if (isSave)
                 {
                     loan.SetAssignedIdTo(Guid.NewGuid().ToString());
@@ -294,6 +223,27 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                     loan.ModifiedBy = User.Identity.Name;
                     loan.DataStatus = EnumDataStatus.Updated.ToString();
                     _tLoanRepository.Update(loan);
+                }
+
+                //save loan unit
+                loanUnit.LoanId = loan;
+                loanUnit.UnitName = formCollection["UnitName"];
+                loanUnit.UnitType = formCollection["UnitType"];
+                
+                if (isSave)
+                {
+                    loanUnit.SetAssignedIdTo(Guid.NewGuid().ToString());
+                    loanUnit.CreatedDate = DateTime.Now;
+                    loanUnit.CreatedBy = User.Identity.Name;
+                    loanUnit.DataStatus = EnumDataStatus.New.ToString();
+                    _tLoanUnitRepository.Save(loanUnit);
+                }
+                else
+                {
+                    loanUnit.ModifiedDate = DateTime.Now;
+                    loanUnit.ModifiedBy = User.Identity.Name;
+                    loanUnit.DataStatus = EnumDataStatus.Updated.ToString();
+                    _tLoanUnitRepository.Update(loanUnit);
                 }
 
                 //save survey
