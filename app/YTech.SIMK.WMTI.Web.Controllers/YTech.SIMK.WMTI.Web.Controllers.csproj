@@ -36,6 +36,17 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.ProcessingObjectModel, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Microsoft.ReportViewer.ProcessingObjectModel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MvcContrib, Version=2.0.96.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\lib\MvcContrib.dll</HintPath>
     </Reference>
@@ -98,6 +109,7 @@
     <Compile Include="Transaction\LoanController.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Transaction\ReportController.cs" />
     <Compile Include="Transaction\TransactionAreaRegistration.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -105,6 +117,8 @@
     <Compile Include="Utility\UserAdministrationController.cs" />
     <Compile Include="Utility\UtilityAreaRegistration.cs" />
     <Compile Include="ViewModel\InstallmentPaymentFormViewModel.cs" />
+    <Compile Include="ViewModel\ReportParamViewModel.cs" />
+    <Compile Include="ViewModel\Reports\InstallmentViewModel.cs" />
     <Compile Include="ViewModel\SurveyFormViewModel.cs" />
     <Compile Include="ViewModel\UserAdministration\DetailsViewModel.cs" />
     <Compile Include="ViewModel\UserAdministration\IndexViewModel.cs" />

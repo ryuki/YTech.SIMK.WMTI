@@ -56,5 +56,21 @@ namespace YTech.SIMK.WMTI.Data.Repository
 
             return q.UniqueResult<TInstallment>(); 
         }
+
+        IEnumerable<TInstallment> ITInstallmentRepository.GetListDueByDate(DateTime? dateFrom)
+        {
+            StringBuilder sql = new StringBuilder();
+            sql.AppendLine(@"  from TInstallment as ins
+                                               inner join ins.LoanId as loan ");
+
+            sql.AppendLine(@" where ins.InstallmentStatus = :status and ins.InstallmentMaturityDate <= :dateFrom  ");
+
+            string query = string.Format(" select ins {0}  order by loan.LoanCode ", sql);
+            IQuery q = Session.CreateQuery(query);
+            q.SetDateTime("dateFrom", dateFrom.Value);
+            q.SetString("status", EnumInstallmentStatus.Not_Paid.ToString());
+
+            return q.List<TInstallment>(); 
+        } 
     }
 }

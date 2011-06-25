@@ -7,6 +7,6 @@ namespace YTech.SIMK.WMTI.Enums
 {
     public enum EnumReports
     {
-        RptBrand
+        RptDueInstallment
     }
 }

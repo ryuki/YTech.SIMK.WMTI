@@ -17,11 +17,11 @@ namespace YTech.SIMK.WMTI.Data.NHibernateMaps.Transaction
             mapping.Table("T_LOAN");
             mapping.Id(x => x.Id, "LOAN_ID").GeneratedBy.Assigned();
             
-            mapping.References(x => x.ZoneId, "ZONE_ID").Fetch.Join();
-            mapping.References(x => x.PartnerId, "PARTNER_ID").Fetch.Join();
-            mapping.References(x => x.CustomerId, "CUSTOMER_ID").Fetch.Join();
-            mapping.References(x => x.PersonId, "PERSON_ID").Fetch.Join();
-            mapping.References(x => x.AddressId, "ADDRESS_ID").Fetch.Join();
+            mapping.References(x => x.ZoneId, "ZONE_ID");
+            mapping.References(x => x.PartnerId, "PARTNER_ID");
+            mapping.References(x => x.CustomerId, "CUSTOMER_ID");
+            mapping.References(x => x.PersonId, "PERSON_ID");
+            mapping.References(x => x.AddressId, "ADDRESS_ID");
             
             mapping.References(x => x.TLSId, "TLS_ID");
             mapping.References(x => x.SalesmanId, "SALESMAN_ID");
@@ -59,6 +59,11 @@ namespace YTech.SIMK.WMTI.Data.NHibernateMaps.Transaction
                 .AsBag()
                 .Inverse()
                 .KeyColumn("LOAN_ID");
+
+            mapping.HasMany(x => x.LoanUnits)
+                .AsBag()
+                .Inverse()
+                .KeyColumn("LOAN_ID");
             
             mapping.Map(x => x.DataStatus, "DATA_STATUS");
             mapping.Map(x => x.CreatedBy, "CREATED_BY");
@@ -66,8 +71,7 @@ namespace YTech.SIMK.WMTI.Data.NHibernateMaps.Transaction
             mapping.Map(x => x.ModifiedBy, "MODIFIED_BY");
             mapping.Map(x => x.ModifiedDate, "MODIFIED_DATE");
             mapping.Version(x => x.RowVersion)
-                .Column("ROW_VERSION")
-                //.CustomType("BinaryBlob")
+                .Column("ROW_VERSION") 
                 .CustomSqlType("Timestamp")
                 .Not.Nullable()
                 .Generated.Always();

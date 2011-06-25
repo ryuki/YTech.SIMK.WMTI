@@ -52,7 +52,7 @@
                 , afterShowForm: function (eparams) {
                     $('#Id').attr('disabled', 'disabled');
                     $('#PersonDob').datepicker({ dateFormat: "dd-M-yy" });
-                    alert('editDialog');
+                    //alert('editDialog');
                 }
                 , width: "400"
                 , afterComplete: function (response, postdata, formid) {
@@ -68,7 +68,7 @@
                 , afterShowForm: function (eparams) {
                     $('#Id').removeAttr('disabled');
                     $('#PersonDob').datepicker({ dateFormat: "dd-M-yy" });
-                    alert('insertDialog');
+                    //alert('insertDialog');
                 }
                 , afterComplete: function (response, postdata, formid) {
                     $('#dialog p:first').text(response.responseText);

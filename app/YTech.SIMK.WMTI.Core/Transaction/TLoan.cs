@@ -50,6 +50,7 @@ namespace YTech.SIMK.WMTI.Core.Transaction
         public virtual string LoanStatus { get; set; }
 
         public virtual IList<TLoanSurvey> Surveys { get; set; }
+        public virtual IList<TLoanUnit> LoanUnits { get; set; }
 
         public virtual string DataStatus { get; set; }
         public virtual string CreatedBy { get; set; }

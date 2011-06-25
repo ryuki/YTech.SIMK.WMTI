@@ -11,5 +11,7 @@ namespace YTech.SIMK.WMTI.Core.RepositoryInterfaces
         IEnumerable<TInstallment> GetPagedInstallmentList(string orderCol, string orderBy, int pageIndex, int maxRows, ref int totalRows, string loanCode);
 
         TInstallment GetLastInstallment(string loanCode);
+
+        IEnumerable<TInstallment> GetListDueByDate(System.DateTime? dateFrom);
     }
 }

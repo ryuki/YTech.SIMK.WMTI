@@ -16,7 +16,7 @@
             <h3><a href="#">Pengajuan Kredit</a></h3>
             <div>
                 <div><%= Html.ActionLinkForAreas<LoanController>(c => c.Survey(null), "Form Survey") %></div>
-                <div><%= Html.ActionLinkForAreas<LoanController>(c => c.Index(), "Daftar Survey")%></div>
+                <div><%= Html.ActionLinkForAreas<LoanController>(c => c.Index(), "Daftar Kredit")%></div>
             </div>
 
             <h3><a href="#">Angsuran & Pelunasan</a></h3>
@@ -37,6 +37,11 @@
             <h3><a href="#">Utiliti</a></h3>
             <div>
                 <div><%= Html.ActionLinkForAreas<UserAdministrationController>(c => c.ListUsers(), "Daftar Pengguna")%></div>
+            </div>
+            
+            <h3><a href="#">Laporan</a></h3>
+            <div>
+                <div><%= Html.ActionLinkForAreas<ReportController>(c => c.Report(EnumReports.RptDueInstallment), "Lap. Angsuran Jatuh Tempo")%></div>
             </div>
     <%
         }
