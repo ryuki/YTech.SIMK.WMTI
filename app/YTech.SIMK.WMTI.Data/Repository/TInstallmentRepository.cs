@@ -8,6 +8,7 @@ using YTech.SIMK.WMTI.Core.Master;
 using YTech.SIMK.WMTI.Core.RepositoryInterfaces;
 using YTech.SIMK.WMTI.Core.Transaction;
 using YTech.SIMK.WMTI.Data;
+using YTech.SIMK.WMTI.Enums;
 
 namespace YTech.SIMK.WMTI.Data.Repository
 {
@@ -17,12 +18,13 @@ namespace YTech.SIMK.WMTI.Data.Repository
         {
             StringBuilder sql = new StringBuilder();
             sql.AppendLine(@"  from TInstallment as ins
-                                                left outer join ins.LoanId as loan ");
+                               left outer join ins.LoanId as loan ");
 
-            sql.AppendLine(@" where loan.LoanCode = :loanCode ");
+            sql.AppendLine(@" where loan.LoanCode = :loanCode");
 
             string queryCount = string.Format(" select count(ins.Id) {0}", sql);
             IQuery q = Session.CreateQuery(queryCount);
+            q.SetString("loanCode", loanCode);
             q.SetString("loanCode", loanCode);
 
             totalRows = Convert.ToInt32(q.UniqueResult());
@@ -43,11 +45,12 @@ namespace YTech.SIMK.WMTI.Data.Repository
             sql.AppendLine(@"  from TInstallment as ins
                                                inner join ins.LoanId as loan ");
 
-            sql.AppendLine(@" where loan.LoanCode = :loanCode and ins.InstallmentStatus is null ");
+            sql.AppendLine(@" where loan.LoanCode = :loanCode and ins.InstallmentStatus = :status  ");
 
             string query = string.Format(" select ins {0}  order by ins.InstallmentNo ", sql);
             IQuery q = Session.CreateQuery(query);
             q.SetString("loanCode", loanCode);
+            q.SetString("status", EnumInstallmentStatus.Not_Paid.ToString());
             //q.SetString("status", loanId);
             q.SetMaxResults(1);
 

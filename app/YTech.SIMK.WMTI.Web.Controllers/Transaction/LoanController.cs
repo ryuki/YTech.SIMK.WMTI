@@ -19,20 +19,23 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         private readonly IMCustomerRepository _mCustomerRepository;
         private readonly IRefAddressRepository _refAddressRepository;
         private readonly IRefPersonRepository _refPersonRepository;
+        private readonly ITInstallmentRepository _tInstallmentRepository;
 
-        public LoanController(ITLoanRepository tLoanRepository, ITLoanSurveyRepository tLoanSurveyRepository, IMCustomerRepository mCustomerRepository, IRefAddressRepository refAddressRepository, IRefPersonRepository refPersonRepository)
+        public LoanController(ITLoanRepository tLoanRepository, ITLoanSurveyRepository tLoanSurveyRepository, IMCustomerRepository mCustomerRepository, IRefAddressRepository refAddressRepository, IRefPersonRepository refPersonRepository, ITInstallmentRepository tInstallmentRepository)
         {
             Check.Require(tLoanRepository != null, "tLoanRepository may not be null");
             Check.Require(tLoanSurveyRepository != null, "tLoanSurveyRepository may not be null");
             Check.Require(mCustomerRepository != null, "mCustomerRepository may not be null");
             Check.Require(refAddressRepository != null, "refAddressRepository may not be null");
             Check.Require(refPersonRepository != null, "refPersonRepository may not be null");
+            Check.Require(tInstallmentRepository != null, "tInstallmentRepository may not be null");
 
             _tLoanRepository = tLoanRepository;
             _tLoanSurveyRepository = tLoanSurveyRepository;
             _mCustomerRepository = mCustomerRepository;
             _refAddressRepository = refAddressRepository;
             _refPersonRepository = refPersonRepository;
+            _tInstallmentRepository = tInstallmentRepository;
         }
 
         public ActionResult Index()
@@ -48,6 +51,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             int pageSize = rows;
             int totalPages = (int)Math.Ceiling((float)totalRecords / (float)pageSize);
             var jsonData = new
+<<<<<<< HEAD
                                {
                                    total = totalPages,
                                    page = page,
@@ -70,6 +74,33 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                                                    }
                                    ).ToArray()
                                };
+=======
+            {
+                total = totalPages,
+                page = page,
+                records = totalRecords,
+                rows = (
+                    from loan in loans
+                    select new
+                    {
+                        i = loan.Id,
+                        cell = new string[]
+                            {
+                            string.Empty,
+                           loan.Surveys.Count > 0 ? loan.Surveys[0].Id : null,
+                           loan.Id,
+                            loan.LoanNo,
+                            loan.LoanCode,
+                            loan.LoanSurveyDate.HasValue ? loan.LoanSurveyDate.Value.ToString(Helper.CommonHelper.DateFormat) : null,
+                            loan.PersonId.PersonName,
+                            loan.SurveyorId != null ?  loan.SurveyorId.PersonId.PersonName : null,
+                            loan.ZoneId != null ? loan.ZoneId.ZoneName : null,
+                            loan.LoanStatus
+                            }
+                    }
+                ).ToArray()
+            };
+>>>>>>> master
 
 
             return Json(jsonData, JsonRequestBehavior.AllowGet);
@@ -85,15 +116,25 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             return View(viewModel);
         }
 
+        [Transaction]
+        public ActionResult EditSurvey(string loanSurveyId)
+        {
+            ViewData["CurrentItem"] = "Lembaran Survey";
+            SurveyFormViewModel viewModel =
+                SurveyFormViewModel.CreateSurveyFormViewModel(_tLoanSurveyRepository, loanSurveyId);
+
+            return View(viewModel);
+        }
+
         [ValidateAntiForgeryToken]      // Helps avoid CSRF attacks
         [Transaction]                   // Wraps a transaction around the action
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Survey(TLoanSurvey surveyVM, TLoan  loanVM, FormCollection formCollection)
+        public ActionResult Survey(TLoanSurvey surveyVM, TLoan loanVM, FormCollection formCollection)
         {
             _tLoanSurveyRepository.DbContext.BeginTransaction();
 
             TLoan loan = new TLoan();
-            TLoanSurvey survey = new TLoanSurvey(); 
+            TLoanSurvey survey = new TLoanSurvey();
             MCustomer customer = new MCustomer();
             RefPerson person = new RefPerson();
             RefAddress address = new RefAddress();
@@ -119,7 +160,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             customer.CreatedDate = DateTime.Now;
             customer.CreatedBy = User.Identity.Name;
             customer.DataStatus = EnumDataStatus.New.ToString();
-			
+
             customer.AddressId = address;
             customer.PersonId = person;
             _mCustomerRepository.Save(customer);
@@ -251,6 +292,74 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             loanSurvey.SurveyHouseType = formCollection["SurveyHouseType"];
             loanSurvey.SurveyUnitDeliverDate = Convert.ToDateTime(formCollection["SurveyUnitDeliverDate"]);
             loanSurvey.SurveyUnitDeliverAddress = formCollection["SurveyUnitDeliverAddress"];
+        }
+
+        [Transaction]                   // Wraps a transaction around the action
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Approve(string loanId)
+        {
+            _tLoanSurveyRepository.DbContext.BeginTransaction();
+            TLoan loan = _tLoanRepository.Get(loanId);
+            if (loan != null)
+            {
+                //loan.LoanAccBy = User.Identity.Name;
+                loan.LoanAccDate = DateTime.Now;
+                loan.LoanStatus = EnumLoanStatus.Approve.ToString();
+
+                loan.ModifiedBy = User.Identity.Name;
+                loan.ModifiedDate = DateTime.Now;
+                loan.DataStatus = EnumDataStatus.Updated.ToString();
+                _tLoanRepository.Update(loan);
+
+                //save installment
+                SaveInstallment(loan);
+            }
+
+            string Message = string.Empty;
+            bool Success = true;
+            try
+            {
+                _tLoanSurveyRepository.DbContext.CommitTransaction();
+                Success = true;
+                Message = "Approve Kredit Berhasil.";
+            }
+            catch (Exception ex)
+            {
+                Success = false;
+                Message = ex.GetBaseException().Message;
+                _tLoanSurveyRepository.DbContext.RollbackTransaction();
+            }
+            var e = new
+            {
+                Success,
+                Message
+            };
+            return Json(e, JsonRequestBehavior.AllowGet);
+        }
+
+        private void SaveInstallment(TLoan loan)
+        {
+            if (loan.LoanTenor.HasValue)
+            {
+                TInstallment ins = null;
+                DateTime startDate = Convert.ToDateTime(string.Format("{1:yyyy-MM}-{0}", loan.LoanMaturityDate.Value, loan.LoanAccDate.Value));
+                for (int i = 0; i < loan.LoanTenor.Value; i++)
+                {
+                    ins = new TInstallment();
+                    ins.SetAssignedIdTo(Guid.NewGuid().ToString());
+                    ins.LoanId = loan;
+                    ins.InstallmentBasic = loan.LoanBasicInstallment;
+                    ins.InstallmentInterest = loan.LoanInterest;
+                    ins.InstallmentOthers = loan.LoanOtherInstallment;
+                    ins.InstallmentNo = i + 1;
+                    ins.InstallmentStatus = EnumInstallmentStatus.Not_Paid.ToString();
+                    ins.InstallmentMaturityDate = startDate.AddMonths(i + 1);
+                    ins.DataStatus = EnumDataStatus.New.ToString();
+                    ins.CreatedBy = User.Identity.Name;
+                    ins.CreatedDate = DateTime.Now;
+                    _tInstallmentRepository.Save(ins);
+                }
+            }
         }
     }
 }

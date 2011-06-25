@@ -84,21 +84,23 @@
             $.jgrid.del.caption = "Hapus Survey";
             $.jgrid.del.msg = "Anda yakin menghapus Survey yang dipilih?";
             $("#list").jqGrid({
-                url: '<%= Url.Action("List", "Customer") %>',
+                url: '<%= Url.Action("List", "Loan") %>',
                 datatype: 'json',
                 mtype: 'GET',
-                colNames: ['', 'Kode Survey', 'Tgl Survey', 'Pemohon', 'Surveyor', 'Alamat', 'Wilayah', 'Status'],
+                colNames: ['', 'Id', 'LoanId', 'No PK', 'No Account', 'Tgl Survey', 'Pemohon', 'Surveyor', 'Wilayah', 'Status'],
                 colModel: [
                     {
-                        name: 'act', index: 'act', width: 75, sortable: false
+                        name: 'act', index: 'act', width: 175, sortable: false
                     },
-                   { name: 'Id', index: 'Id', width: 100, align: 'left', key: true, editrules: { required: true, edithidden: false }, hidedlg: true, hidden: false, editable: true },
-                    { name: 'PersonFirstName', index: 'PersonFirstName', width: 100, align: 'left', editable: true, edittype: 'text', editrules: { required: true, edithidden: true }, hidden: true, formoptions: { elmsuffix: ' *'} },
-                    { name: 'PersonName', index: 'PersonName', width: 200, align: 'left', editable: false, edittype: 'text', editrules: { required: false} },
-                   { name: 'AddressLine1', index: 'AddressLine1', width: 200, align: 'left', editable: true, edittype: 'text', editrules: { required: false} },
-                   { name: 'AddressLine2', index: 'AddressLine2', width: 200, hidden: true, align: 'left', editable: true, edittype: 'text', editrules: { required: false, edithidden: true} },
-                   { name: 'AddressLine3', index: 'AddressLine3', width: 200, hidden: true, align: 'left', editable: true, edittype: 'text', editrules: { required: false, edithidden: true} },
-                     { name: 'CustomerDesc', index: 'CustomerDesc', width: 200, hidden: true, sortable: false, align: 'left', editable: true, edittype: 'textarea', editoptions: { rows: "3", cols: "20" }, editrules: { required: false, edithidden: true} }
+                   { name: 'Id', index: 'Id', width: 100, align: 'left', key: true, editrules: { required: true, edithidden: false }, hidedlg: true, hidden: true, editable: false },
+                   { name: 'LoanId', index: 'LoanId', width: 100, align: 'left', editrules: { required: true, edithidden: false }, hidedlg: true, hidden: true, editable: false },
+                    { name: 'LoanNo', index: 'LoanNo', width: 200, align: 'left', editable: false, edittype: 'text', editrules: { required: false} },
+                    { name: 'LoanCode', index: 'LoanCode', width: 200, align: 'left', editable: false, edittype: 'text', editrules: { required: false} },
+                    { name: 'LoanSurveyDate', index: 'LoanSurveyDate', width: 200, align: 'left', editable: false, edittype: 'text', editrules: { required: false} },
+                    { name: 'CustomerName', index: 'CustomerName', width: 200, align: 'left', editable: false, edittype: 'text', editrules: { required: false} },
+                   { name: 'SurveyorName', index: 'SurveyorName', width: 200, align: 'left', editable: true, edittype: 'text', editrules: { required: false} },
+                   { name: 'ZoneName', index: 'ZoneName', width: 200,  align: 'left', editable: true, edittype: 'text', editrules: { required: false, edithidden: true} },
+                     { name: 'LoanStatus', index: 'LoanStatus', width: 200, align: 'left', editable: true, edittype: 'text', editrules: { required: false, edithidden: true} } 
                    ],
 
                 pager: $('#listPager'),
@@ -115,7 +117,9 @@
                     var ids = jQuery("#list").getDataIDs();
                     for (var i = 0; i < ids.length; i++) {
                         var cl = ids[i];
+                        var row = $("#list").getRowData(cl);  
                         var be = "<input type='button' value='Edit' tooltips='Edit Survey'  onClick=\"OpenPopup('" + cl + "');\" />";
+                        be = be + "<input type='button' value='Approve' tooltips='Approve Kredit'  onClick=\"OpenPopupApprove('" + row.LoanId + "');\" />";
 
                         //                                                alert(be); 
                         $(this).setRowData(ids[i], { act: be });
@@ -124,14 +128,15 @@
                 ondblClickRow: function (rowid, iRow, iCol, e) {
 
                 }
-            }).navGrid('#listPager',
-                {
-                    edit: false, add: false, del: true, search: false, refresh: true
-                },
-                editDialog,
-                insertDialog,
-                deleteDialog
-            )
+            })
+//            .navGrid('#listPager',
+//                {
+//                    edit: false, add: false, del: true, search: false, refresh: true
+//                },
+//                editDialog,
+//                insertDialog,
+//                deleteDialog
+//            )
 
             .navButtonAdd('#listPager', {
                 caption: "Tambah",
@@ -140,17 +145,34 @@
                     OpenPopup(null);
                 },
                 position: "first"
-            })
+            });
+            jQuery("#list").jqGrid('navGrid', '#listPager',
+                 { edit: false, add: false, del: false, search: false, refresh: true }, //options 
+                  editDialog,
+                insertDialog,
+                deleteDialog,
+                {}
+            );
         });
         function OpenPopup(id) {
-            var url = '<%= Url.Action("Edit", "Customer" ) %>?';
+            var url = '<%= Url.Action("EditSurvey", "Loan" ) %>?';
             if (id) {
-                url += 'customerId=' + id;
+                url += 'loanSurveyId=' + id;
+                url += '&rand=' + Math.floor(Math.random() * 11111);
             }
             $("#popup_frame").attr("src", url);
             $("#popup").dialog("open");
             return false;
-        }      
+        }
+        function OpenPopupApprove(loanId) {
+            alert(loanId);
+            var t = $.ajax({ url: '<%= Url.Action("Approve","Loan") %>?loanId=' + loanId, async: false, type: 'POST', cache: false, success: function (data, result) { if (!result) alert('Failure to retrieve the Approve.'); } }).responseText;
+            alert(t);
+//            var result = $.parseJSON(t);
+//            alert(result.Message);
+            $("#list").trigger("reloadGrid");
+            return false;
+        }    
     </script>
     <div id="dialog" title="Status">
         <p>

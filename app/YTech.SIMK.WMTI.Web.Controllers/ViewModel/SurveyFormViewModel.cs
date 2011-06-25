@@ -23,8 +23,8 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
             if (!string.IsNullOrEmpty(loanSurveyId))
             {
                 loanSurvey = tLoanSurveyRepository.Get(loanSurveyId);
-                person = loanSurvey.LoanId.CustomerId.PersonId;
-                address = loanSurvey.LoanId.CustomerId.AddressId;
+                person = loanSurvey.LoanId.PersonId;
+                address = loanSurvey.LoanId.AddressId;
                 viewModel.CanEditId = false;
             }
             if (loanSurvey == null)
