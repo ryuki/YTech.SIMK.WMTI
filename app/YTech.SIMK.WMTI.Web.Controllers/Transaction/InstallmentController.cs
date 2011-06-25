@@ -44,7 +44,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         public ActionResult Payment(string loanCode)
         {
             ViewData["CurrentItem"] = "Pembayaran Angsuran";
-            InstallmentPaymentFormViewModel viewModel = InstallmentPaymentFormViewModel.Create(_installmentRepository, loanCode); 
+            InstallmentPaymentFormViewModel viewModel = InstallmentPaymentFormViewModel.Create(_installmentRepository, loanCode);
             return View(viewModel);
         }
 
@@ -56,7 +56,8 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             _installmentRepository.DbContext.BeginTransaction();
             TInstallment installment = _installmentRepository.Get(viewModel.Id);
             installment.InstallmentPaymentDate = viewModel.InstallmentPaymentDate;
-            installment.InstallmentPaid = viewModel.InstallmentPaid;
+            if (!string.IsNullOrEmpty(formCollection["InstallmentPaid"]))
+                installment.InstallmentPaid = Convert.ToDecimal(formCollection["InstallmentPaid"].Replace(",", ""));
             installment.InstallmentStatus = EnumInstallmentStatus.Paid.ToString();
             installment.ModifiedBy = User.Identity.Name;
             installment.ModifiedDate = DateTime.Now;
@@ -75,7 +76,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             {
                 Success = false;
                 Message = ex.Message;
-                _installmentRepository.DbContext.RollbackTransaction(); 
+                _installmentRepository.DbContext.RollbackTransaction();
             }
             var e = new
             {

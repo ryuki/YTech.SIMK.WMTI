@@ -119,7 +119,12 @@
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\YTech.SIMK.WMTI.Enums\YTech.SIMK.WMTI.Enums.csproj">
+      <Project>{BA38EA0F-99DF-4860-B8BD-663B6F5D42F5}</Project>
+      <Name>YTech.SIMK.WMTI.Enums</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

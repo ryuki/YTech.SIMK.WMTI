@@ -5,9 +5,8 @@ using System.Text;
 
 namespace YTech.SIMK.WMTI.Enums
 {
-    public enum EnumInstallmentStatus
+    public enum EnumLoanStatus
     {
-        Paid,
-        Not_Paid
+        Approve
     }
 }

@@ -18,6 +18,7 @@ namespace YTech.SIMK.WMTI.Data.NHibernateMaps.Transaction
             mapping.Id(x => x.Id, "LOAN_SURVEY_ID").GeneratedBy.Assigned();
 
             mapping.References(x => x.LoanId, "LOAN_ID").Fetch.Join();
+            //mapping.HasOne(x => x.LoanId);
 
             mapping.Map(x => x.SurveyDate, "SURVEY_DATE");
             mapping.Map(x => x.SurveyNeighbor, "SURVEY_NEIGHBOR");
@@ -29,6 +30,7 @@ namespace YTech.SIMK.WMTI.Data.NHibernateMaps.Transaction
             mapping.Map(x => x.SurveyUnitDeliverAddress, "SURVEY_UNIT_DELIVER_ADDRESS");
             mapping.Map(x => x.SurveyDesc, "SURVEY_DESC");
             mapping.Map(x => x.SurveyStatus, "SURVEY_STATUS");
+
 
             mapping.Map(x => x.DataStatus, "DATA_STATUS");
             mapping.Map(x => x.CreatedBy, "CREATED_BY");

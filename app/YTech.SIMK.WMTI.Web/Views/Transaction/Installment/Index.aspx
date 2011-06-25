@@ -50,7 +50,7 @@
                 width: '80%',
                 modal: true,
                 close: function (event, ui) {
-                     
+                    $("#list").trigger("reloadGrid");
                 }
             }); 
 
@@ -143,8 +143,10 @@
          function OpenPopupInstallmentPayment() {
              var src = '<%= Url.Action("Payment", "Installment") %>';
              src = src + '?loanCode=' + $("#txtLoanCode").val();
+             src = src + '&rand=' + Math.floor(Math.random() * 11111);
              $("#popup_frame").attr("src", src);
-            $("#popup").dialog("open");
+             $("#popup").dialog("open");
+            
             return false;   
         }   
     </script>

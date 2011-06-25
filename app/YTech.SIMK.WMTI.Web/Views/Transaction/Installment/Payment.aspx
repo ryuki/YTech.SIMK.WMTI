@@ -85,7 +85,7 @@
         </tr>
         <tr>
             <td colspan="2" align="center">
-                <input id="btnSave" type="button" value="Simpan"  <% if (string.IsNullOrEmpty(ViewData.Model.installment.Id)) { %>disabled='disabled' <% } %> />
+                <input id="btnSave" type="submit" value="Simpan"  <% if (string.IsNullOrEmpty(ViewData.Model.installment.Id)) { %>disabled='disabled' <% } %> />
             </td>
         </tr>
     </table>
@@ -93,9 +93,12 @@
                        }%>
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#btnSave').click(function () {
-                $('form').submit();
-            });
+            $('#InstallmentPaid').autoNumeric();
+            $('#InstallmentPaid').attr("style", "text-align:right;");
+//            $('#btnSave').click(function () {
+//                alert('submit;');
+//                //$('form').submit();
+//            });
         });
 
         function onSavedSuccess(e) {
