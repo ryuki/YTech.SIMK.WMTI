@@ -15,7 +15,7 @@
 
             <h3><a href="#">Pengajuan Kredit</a></h3>
             <div>
-                <div><%= Html.ActionLinkForAreas<LoanController>(c => c.Survey(), "Form Survey") %></div>
+                <div><%= Html.ActionLinkForAreas<LoanController>(c => c.Survey(null), "Form Survey") %></div>
                 <div><%= Html.ActionLinkForAreas<LoanController>(c => c.Index(), "Daftar Survey")%></div>
             </div>
 

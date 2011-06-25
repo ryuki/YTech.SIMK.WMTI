@@ -64,6 +64,7 @@
     <Compile Include="EnumReligion.cs" />
     <Compile Include="EnumReports.cs" />
     <Compile Include="EnumSaveState.cs" />
+    <Compile Include="EnumSurveyStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringValueAttribute.cs" />
   </ItemGroup>

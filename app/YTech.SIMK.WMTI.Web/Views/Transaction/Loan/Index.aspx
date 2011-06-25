@@ -155,7 +155,7 @@
             );
         });
         function OpenPopup(id) {
-            var url = '<%= Url.Action("EditSurvey", "Loan" ) %>?';
+            var url = '<%= Url.Action("Survey", "Loan" ) %>?';
             if (id) {
                 url += 'loanSurveyId=' + id;
                 url += '&rand=' + Math.floor(Math.random() * 11111);
