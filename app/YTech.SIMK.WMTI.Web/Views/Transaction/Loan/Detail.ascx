@@ -639,7 +639,7 @@
                 "PersonFirstName": { required: true }
             },
             messages: {
-                "Id": { required: "<img id='Iderror' src='" + errorimg + "' hovertext='No Pasien harus diisi' />"
+                "Id": { required: "<img id='Iderror' src='" + errorimg + "' hovertext='No PK harus diisi' />"
                     //                     <% if (string.IsNullOrEmpty(Request.QueryString["customerId"])) {	%>
                     //                    , remote: "<img id='remoteIderror' src='" + errorimg + "' hovertext='No Pasien sudah pernah diinput.' />" <% } %>
                 },
