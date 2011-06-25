@@ -3,13 +3,10 @@
    { %>
 <script src="../../../Scripts/jquery-1.5.2-vsdoc.js" type="text/javascript"></script>
 <% } %>
-<%-- <% using (Html.BeginForm())
-   {%> --%>
 <% using (Ajax.BeginForm(new AjaxOptions
                                        {
                                            //UpdateTargetId = "status",
                                            InsertionMode = InsertionMode.Replace,
-                                           OnBegin = "ajaxValidate",
                                            OnSuccess = "onSavedSuccess"
                                        }
 
@@ -32,8 +29,8 @@
                         </td>
                         <td>
                             <%--<%= Html.TextBox("Id",  Model.Customer.Id ?? string.Empty,new {@readonly= Model.CanEditId ? "true" : "false" })%>--%>
-                            <%= Model.CanEditId ? Html.TextBox("Id", Model.LoanSurvey.LoanId.LoanNo ?? string.Empty, new { @style = "width:150px" }) :
-                                                  Html.TextBox("Id", Model.LoanSurvey.LoanId.LoanNo ?? string.Empty, new { @readonly = Model.CanEditId ? "true" : "false", @style = "width:150px" })
+                            <%= Model.CanEditId ? Html.TextBox("LoanNo", Model.LoanSurvey.LoanId.LoanNo ?? string.Empty, new { @style = "width:150px" }) :
+                                                         Html.TextBox("LoanNo", Model.LoanSurvey.LoanId.LoanNo ?? string.Empty, new { @readonly = Model.CanEditId ? "true" : "false", @style = "width:150px" })
                             %>
                             <%= Html.ValidationMessage("Id")%>
                         </td>
@@ -120,8 +117,8 @@
                                 Wilayah :</label>
                         </td>
                         <td> 
-                            <%= Html.TextBox("ZoneName", Model.LoanSurvey.LoanId.ZoneId.ZoneName, new { @style = "width:300px" })%>
-                            <%= Html.ValidationMessage("ZoneName")%> 
+                            <%= Html.TextBox("ZoneId", Model.LoanSurvey.LoanId.ZoneId != null ? Model.LoanSurvey.LoanId.ZoneId.Id : null, new { @style = "width:300px" })%>
+                            <%= Html.ValidationMessage("ZoneId")%> 
                         </td>
                     </tr>
                     <tr>
@@ -471,7 +468,7 @@
                                 Nama Barang yg akan diambil :</label>
                         </td>
                         <td>
-                            <%= Html.TextBox("UnitName", Model.LoanUnit.UnitName, new { @style = "width:300px" })%>
+                            <%= Html.TextBox("UnitName", Model.LoanUnit != null ? Model.LoanUnit.UnitName : null, new { @style = "width:300px" })%>
                             <%= Html.ValidationMessage("UnitName")%>
                         </td>
                     </tr>
@@ -481,7 +478,7 @@
                                 Type Barang :</label>
                         </td>
                         <td>
-                            <%= Html.TextBox("UnitType", Model.LoanUnit.UnitType, new { @style = "width:300px" })%>
+                            <%= Html.TextBox("UnitType", Model.LoanUnit != null ? Model.LoanUnit.UnitType : null, new { @style = "width:300px" })%>
                             <%= Html.ValidationMessage("UnitType")%>
                         </td>
                     </tr>
@@ -534,7 +531,7 @@
                                 Tanggal :</label>
                         </td>
                         <td>
-                            <%= Html.TextBox("SurveyDate", Model.LoanSurvey.SurveyDate, new { @style = "width:300px" })%>
+                         <%= Html.TextBox("SurveyDate", Model.LoanSurvey.SurveyDate.HasValue ? Model.LoanSurvey.SurveyDate.Value.ToString(CommonHelper.DateFormat) : null, new { @style = "width:300px" })%>
                             <%= Html.ValidationMessage("SurveyDate")%>
                         </td>
                     </tr>
@@ -611,7 +608,7 @@
                 $('#status').html(msg);
             }
             else {
-                $("#Save").attr('disabled', '');
+                $("#Save").removeAttr('disabled');
                 if (msg) {
                     $('#dialog p:first').text(msg);
                     $("#dialog").dialog("open");
@@ -669,8 +666,12 @@
 
     $(function () {
         $("#newCustomer").button();
-        $("#Save").button();
+        //$("#Save").button();
         $("#PersonDob").datepicker({ dateFormat: "dd-M-yy" });
+        $("#PersonStaySince").datepicker({ dateFormat: "dd-M-yy" });
+        $("#PersonGuarantorStaySince").datepicker({ dateFormat: "dd-M-yy" });
+        $("#SurveyUnitDeliverDate").datepicker({ dateFormat: "dd-M-yy" });
+        $("#SurveyDate").datepicker({ dateFormat: "dd-M-yy" });
     });
 
     $(document).ready(function () {

@@ -44,7 +44,7 @@ namespace YTech.SIMK.WMTI.Core.Transaction
         public virtual decimal? LoanAdminFee { get; set; }
         public virtual decimal? LoanMateraiFee { get; set; }
         public virtual int? LoanMaturityDate { get; set; }
-        public virtual bool? LoanIsSalesmanKnownCustomer { get; set; }
+        public virtual string LoanIsSalesmanKnownCustomer { get; set; }
 
         public virtual string LoanDesc { get; set; }
         public virtual string LoanStatus { get; set; }

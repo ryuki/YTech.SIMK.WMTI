@@ -82,11 +82,11 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         }
 
         [Transaction]
-        public ActionResult Survey()
+        public ActionResult Survey(string loanSurveyId)
         {
             ViewData["CurrentItem"] = "Lembaran Survey";
             SurveyFormViewModel viewModel =
-                SurveyFormViewModel.CreateSurveyFormViewModel(_tLoanSurveyRepository, null);
+                SurveyFormViewModel.CreateSurveyFormViewModel(_tLoanSurveyRepository, loanSurveyId);
 
             return View(viewModel);
         }
@@ -104,91 +104,155 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         [ValidateAntiForgeryToken]      // Helps avoid CSRF attacks
         [Transaction]                   // Wraps a transaction around the action
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Survey(TLoanSurvey surveyVM, TLoan loanVM, FormCollection formCollection)
+        public ActionResult Survey(TLoanSurvey surveyVM, TLoan loanVM, FormCollection formCollection, string loanSurveyId)
         {
-            _tLoanSurveyRepository.DbContext.BeginTransaction();
-
-            TLoan loan = new TLoan();
-            TLoanSurvey survey = new TLoanSurvey();
-            MCustomer customer = new MCustomer();
-            RefPerson person = new RefPerson();
-            RefAddress address = new RefAddress();
-
-            //save address
-            TransferFormValuesTo(address, formCollection);
-            address.SetAssignedIdTo(Guid.NewGuid().ToString());
-            address.CreatedDate = DateTime.Now;
-            address.CreatedBy = User.Identity.Name;
-            address.DataStatus = EnumDataStatus.New.ToString();
-            _refAddressRepository.Save(address);
-
-            //save person
-            TransferFormValuesTo(person, formCollection);
-            person.SetAssignedIdTo(Guid.NewGuid().ToString());
-            person.CreatedDate = DateTime.Now;
-            person.CreatedBy = User.Identity.Name;
-            person.DataStatus = EnumDataStatus.New.ToString();
-            _refPersonRepository.Save(person);
-
-            //save customer
-            customer.SetAssignedIdTo(Guid.NewGuid().ToString());
-            customer.CreatedDate = DateTime.Now;
-            customer.CreatedBy = User.Identity.Name;
-            customer.DataStatus = EnumDataStatus.New.ToString();
-
-            customer.AddressId = address;
-            customer.PersonId = person;
-            _mCustomerRepository.Save(customer);
-
-            //save loan
-            loan.SetAssignedIdTo(Guid.NewGuid().ToString());
-            loan.CreatedDate = DateTime.Now;
-            loan.CreatedBy = User.Identity.Name;
-            loan.DataStatus = EnumDataStatus.New.ToString();
-
-            loan.AddressId = address;
-            loan.PersonId = person;
-            loan.CustomerId = customer;
-
-            loan.CollectorId = loanVM.CollectorId;
-            loan.LoanCode = loanVM.LoanCode;
-            loan.LoanCreditPrice = loanVM.LoanCreditPrice;
-            loan.LoanDesc = loanVM.LoanDesc;
-            loan.LoanDownPayment = loanVM.LoanDownPayment;
-            loan.LoanIsSalesmanKnownCustomer = loanVM.LoanIsSalesmanKnownCustomer;
-            loan.LoanTenor = loanVM.LoanTenor;
-            loan.LoanNo = loanVM.LoanNo;
-            loan.LoanStatus = loanVM.LoanStatus;
-            loan.LoanUnitPriceTotal = loanVM.LoanUnitPriceTotal;
-            _tLoanRepository.Save(loan);
-
-            survey.SetAssignedIdTo(Guid.NewGuid().ToString());
-            survey.CreatedDate = DateTime.Now;
-            survey.CreatedBy = User.Identity.Name;
-            survey.DataStatus = EnumDataStatus.New.ToString();
-            survey.LoanId = loan;
-            survey.SurveyDate = surveyVM.SurveyDate;
-            survey.SurveyDesc = surveyVM.SurveyDesc;
-            survey.SurveyHouseType = surveyVM.SurveyHouseType;
-            survey.SurveyNeighbor = surveyVM.SurveyNeighbor;
-            survey.SurveyNeighborAsset = surveyVM.SurveyNeighborAsset;
-            survey.SurveyNeighborCharacter = surveyVM.SurveyNeighborCharacter;
-            survey.SurveyNeighborConclusion = surveyVM.SurveyNeighborConclusion;
-            survey.SurveyStatus = surveyVM.SurveyStatus;
-            survey.SurveyUnitDeliverAddress = surveyVM.SurveyUnitDeliverAddress;
-            survey.SurveyUnitDeliverDate = surveyVM.SurveyUnitDeliverDate;
-            _tLoanSurveyRepository.Save(survey);
-
             try
             {
+                _tLoanSurveyRepository.DbContext.BeginTransaction();
+
+                TLoan loan = new TLoan();
+                TLoanSurvey survey = new TLoanSurvey();
+                MCustomer customer = new MCustomer();
+                RefPerson person = new RefPerson();
+                RefAddress address = new RefAddress();
+                bool isSave = true;
+                if (!string.IsNullOrEmpty(loanSurveyId))
+                {
+                    survey = _tLoanSurveyRepository.Get(loanSurveyId);
+                    if (survey != null)
+                    {
+                        isSave = false;
+                        loan = survey.LoanId;
+                        address = loan.AddressId;
+                        person = loan.PersonId;
+                        customer = loan.CustomerId;
+                    }
+                } 
+
+                //save address
+                TransferFormValuesTo(address, formCollection);
+                if (isSave)
+                {
+                    address.SetAssignedIdTo(Guid.NewGuid().ToString());
+                    address.CreatedDate = DateTime.Now;
+                    address.CreatedBy = User.Identity.Name;
+                    address.DataStatus = EnumDataStatus.New.ToString();
+                    _refAddressRepository.Save(address);
+                }
+                else
+                {
+                    address.ModifiedDate = DateTime.Now;
+                    address.ModifiedBy = User.Identity.Name;
+                    address.DataStatus = EnumDataStatus.Updated.ToString();
+                    _refAddressRepository.Update(address);
+                }
+                
+                //save person
+                TransferFormValuesTo(person, formCollection);
+                if (isSave)
+                {
+                    person.SetAssignedIdTo(Guid.NewGuid().ToString());
+                    person.CreatedDate = DateTime.Now;
+                    person.CreatedBy = User.Identity.Name;
+                    person.DataStatus = EnumDataStatus.New.ToString();
+                    _refPersonRepository.Save(person);
+                }
+                else
+                {
+                    person.ModifiedDate = DateTime.Now;
+                    person.ModifiedBy = User.Identity.Name;
+                    person.DataStatus = EnumDataStatus.Updated.ToString();
+                    _refPersonRepository.Update(person);
+                }
+
+                //save customer
+                customer.AddressId = address;
+                customer.PersonId = person;
+                if (isSave)
+                {
+                    customer.SetAssignedIdTo(Guid.NewGuid().ToString());
+                    customer.CreatedDate = DateTime.Now;
+                    customer.CreatedBy = User.Identity.Name;
+                    customer.DataStatus = EnumDataStatus.New.ToString();
+
+                    _mCustomerRepository.Save(customer);
+                }
+                else
+                {
+                    customer.ModifiedDate = DateTime.Now;
+                    customer.ModifiedBy = User.Identity.Name;
+                    customer.DataStatus = EnumDataStatus.Updated.ToString();
+                    _mCustomerRepository.Update(customer);
+                }
+
+                //save loan
+                loan.AddressId = address;
+                loan.PersonId = person;
+                loan.CustomerId = customer;
+
+                loan.CollectorId = loanVM.CollectorId;
+                loan.LoanCode = loanVM.LoanCode;
+                loan.LoanCreditPrice = loanVM.LoanCreditPrice;
+                loan.LoanDesc = loanVM.LoanDesc;
+                loan.LoanDownPayment = loanVM.LoanDownPayment;
+                loan.LoanIsSalesmanKnownCustomer = loanVM.LoanIsSalesmanKnownCustomer;
+                loan.LoanTenor = loanVM.LoanTenor;
+                loan.LoanNo = loanVM.LoanNo;
+                loan.LoanStatus = loanVM.LoanStatus;
+                loan.LoanUnitPriceTotal = loanVM.LoanUnitPriceTotal;
+                loan.LoanBasicInstallment = loanVM.LoanBasicInstallment;
+                loan.LoanMaturityDate = loanVM.LoanMaturityDate;
+                if (isSave)
+                {
+                    loan.SetAssignedIdTo(Guid.NewGuid().ToString());
+                    loan.CreatedDate = DateTime.Now;
+                    loan.CreatedBy = User.Identity.Name;
+                    loan.DataStatus = EnumDataStatus.New.ToString();
+                    _tLoanRepository.Save(loan);
+                }
+                else
+                {
+                    loan.ModifiedDate = DateTime.Now;
+                    loan.ModifiedBy = User.Identity.Name;
+                    loan.DataStatus = EnumDataStatus.Updated.ToString();
+                    _tLoanRepository.Update(loan);
+                }
+
+                //save survey
+                survey.LoanId = loan;
+                survey.SurveyDate = surveyVM.SurveyDate;
+                survey.SurveyDesc = surveyVM.SurveyDesc;
+                survey.SurveyHouseType = surveyVM.SurveyHouseType;
+                survey.SurveyNeighbor = surveyVM.SurveyNeighbor;
+                survey.SurveyNeighborAsset = surveyVM.SurveyNeighborAsset;
+                survey.SurveyNeighborCharacter = surveyVM.SurveyNeighborCharacter;
+                survey.SurveyNeighborConclusion = surveyVM.SurveyNeighborConclusion;
+                survey.SurveyStatus = EnumSurveyStatus.New.ToString();
+                survey.SurveyUnitDeliverAddress = surveyVM.SurveyUnitDeliverAddress;
+                survey.SurveyUnitDeliverDate = surveyVM.SurveyUnitDeliverDate;
+                survey.SurveyReceivedBy = surveyVM.SurveyReceivedBy;
+                survey.SurveyProcessBy = surveyVM.SurveyProcessBy;
+                if (isSave)
+                {
+                    survey.SetAssignedIdTo(Guid.NewGuid().ToString());
+                    survey.CreatedDate = DateTime.Now;
+                    survey.CreatedBy = User.Identity.Name;
+                    survey.DataStatus = EnumDataStatus.New.ToString();
+                    _tLoanSurveyRepository.Save(survey);
+                }
+                else
+                {
+                    survey.ModifiedDate = DateTime.Now;
+                    survey.ModifiedBy = User.Identity.Name;
+                    survey.DataStatus = EnumDataStatus.Updated.ToString();
+                    _tLoanSurveyRepository.Update(survey);
+                }
+
                 _tLoanSurveyRepository.DbContext.CommitChanges();
-                TempData[EnumCommonViewData.SaveState.ToString()] = EnumSaveState.Success;
             }
             catch (Exception e)
             {
                 _tLoanSurveyRepository.DbContext.RollbackTransaction();
-                TempData[EnumCommonViewData.SaveState.ToString()] = EnumSaveState.Failed;
-                TempData[EnumCommonViewData.ErrorMessage.ToString()] = e.Message;
 
                 var result = new
                 {
