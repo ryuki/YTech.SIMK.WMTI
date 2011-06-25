@@ -292,6 +292,7 @@
     <Content Include="Views\Shared\Status.ascx" />
     <Content Include="Views\Transaction\Installment\Index.aspx" />
     <Content Include="Views\Transaction\Installment\Payment.aspx" />
+    <Content Include="Views\Transaction\Loan\EditSurvey.aspx" />
     <Content Include="Views\Transaction\Loan\Detail.ascx" />
     <Content Include="Views\Transaction\Loan\Index.aspx" />
     <Content Include="Views\Transaction\Loan\Survey.aspx" />
