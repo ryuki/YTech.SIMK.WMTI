@@ -20,8 +20,11 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         private readonly IRefAddressRepository _refAddressRepository;
         private readonly IRefPersonRepository _refPersonRepository;
         private readonly ITInstallmentRepository _tInstallmentRepository;
+        private readonly IMEmployeeRepository _mEmployeeRepository;
+        private readonly ITLoanUnitRepository _tLoanUnitRepository;
+        private readonly IMZoneRepository _mZoneRepository;
 
-        public LoanController(ITLoanRepository tLoanRepository, ITLoanSurveyRepository tLoanSurveyRepository, IMCustomerRepository mCustomerRepository, IRefAddressRepository refAddressRepository, IRefPersonRepository refPersonRepository, ITInstallmentRepository tInstallmentRepository)
+        public LoanController(ITLoanRepository tLoanRepository, ITLoanSurveyRepository tLoanSurveyRepository, IMCustomerRepository mCustomerRepository, IRefAddressRepository refAddressRepository, IRefPersonRepository refPersonRepository, ITInstallmentRepository tInstallmentRepository, IMEmployeeRepository mEmployeeRepository, ITLoanUnitRepository tLoanUnitRepository, IMZoneRepository mZoneRepository)
         {
             Check.Require(tLoanRepository != null, "tLoanRepository may not be null");
             Check.Require(tLoanSurveyRepository != null, "tLoanSurveyRepository may not be null");
@@ -29,6 +32,9 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             Check.Require(refAddressRepository != null, "refAddressRepository may not be null");
             Check.Require(refPersonRepository != null, "refPersonRepository may not be null");
             Check.Require(tInstallmentRepository != null, "tInstallmentRepository may not be null");
+            Check.Require(mEmployeeRepository != null, "mEmployeeRepository may not be null");
+            Check.Require(tLoanUnitRepository != null, "tLoanUnitRepository may not be null");
+            Check.Require(mZoneRepository != null, "mZoneRepository may not be null");
 
             _tLoanRepository = tLoanRepository;
             _tLoanSurveyRepository = tLoanSurveyRepository;
@@ -36,6 +42,9 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             _refAddressRepository = refAddressRepository;
             _refPersonRepository = refPersonRepository;
             _tInstallmentRepository = tInstallmentRepository;
+            _mEmployeeRepository = mEmployeeRepository;
+            _tLoanUnitRepository = tLoanUnitRepository;
+            _mZoneRepository = mZoneRepository;
         }
 
         public ActionResult Index()
@@ -48,35 +57,35 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         {
             int totalRecords = 0;
             var loans = _tLoanRepository.GetPagedLoanList(sidx, sord, page, rows, ref totalRecords);
+
             int pageSize = rows;
             int totalPages = (int)Math.Ceiling((float)totalRecords / (float)pageSize);
-            var jsonData = new
-            {
-                total = totalPages,
-                page = page,
-                records = totalRecords,
-                rows = (
-                    from loan in loans
-                    select new
-                    {
-                        i = loan.Id,
-                        cell = new string[]
-                            {
-                            string.Empty,
-                           loan.Surveys.Count > 0 ? loan.Surveys[0].Id : null,
-                           loan.Id,
-                            loan.LoanNo,
-                            loan.LoanCode,
-                            loan.LoanSurveyDate.HasValue ? loan.LoanSurveyDate.Value.ToString(Helper.CommonHelper.DateFormat) : null,
-                            loan.PersonId.PersonName,
-                            loan.SurveyorId != null ?  loan.SurveyorId.PersonId.PersonName : null,
-                            loan.ZoneId != null ? loan.ZoneId.ZoneName : null,
-                            loan.LoanStatus
-                            }
-                    }
-                ).ToArray()
-            };
-
+            var jsonData = new 
+                                {
+                                    total = totalPages,
+                                    page = page,
+                                    records = totalRecords,
+                                    rows = (
+                                        from loan in loans
+                                        select new
+                                        {
+                                            i = loan.Id,
+                                            cell = new string[]
+                                                {
+                                                string.Empty,
+                                                loan.Surveys.Count > 0 ? loan.Surveys[0].Id : null,
+                                                loan.Id,
+                                                loan.LoanNo,
+                                                loan.LoanCode,
+                                                loan.LoanSurveyDate.HasValue ? loan.LoanSurveyDate.Value.ToString(Helper.CommonHelper.DateFormat) : null,
+                                                loan.PersonId.PersonName,
+                                                loan.SurveyorId != null ?  loan.SurveyorId.PersonId.PersonName : null,
+                                                loan.ZoneId != null ? loan.ZoneId.ZoneName : null,
+                                                loan.LoanStatus
+                                                }
+                                        }
+                                    ).ToArray()
+                                };
 
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
@@ -86,7 +95,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         {
             ViewData["CurrentItem"] = "Lembaran Survey";
             SurveyFormViewModel viewModel =
-                SurveyFormViewModel.CreateSurveyFormViewModel(_tLoanSurveyRepository, loanSurveyId);
+                SurveyFormViewModel.CreateSurveyFormViewModel(_tLoanSurveyRepository,_mEmployeeRepository,_mZoneRepository, loanSurveyId);
 
             return View(viewModel);
         }
@@ -96,7 +105,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         {
             ViewData["CurrentItem"] = "Lembaran Survey";
             SurveyFormViewModel viewModel =
-                SurveyFormViewModel.CreateSurveyFormViewModel(_tLoanSurveyRepository, loanSurveyId);
+                SurveyFormViewModel.CreateSurveyFormViewModel(_tLoanSurveyRepository,_mEmployeeRepository,_mZoneRepository, loanSurveyId);
 
             return View(viewModel);
         }
@@ -104,7 +113,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         [ValidateAntiForgeryToken]      // Helps avoid CSRF attacks
         [Transaction]                   // Wraps a transaction around the action
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Survey(TLoanSurvey surveyVM, TLoan loanVM, FormCollection formCollection, string loanSurveyId)
+        public ActionResult Survey(TLoanSurvey surveyVM, TLoan loanVM, TLoanUnit loanUnitVM, FormCollection formCollection, string loanSurveyId)
         {
             try
             {
@@ -112,6 +121,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
 
                 TLoan loan = new TLoan();
                 TLoanSurvey survey = new TLoanSurvey();
+                TLoanUnit unit = new TLoanUnit();
                 MCustomer customer = new MCustomer();
                 RefPerson person = new RefPerson();
                 RefAddress address = new RefAddress();
@@ -126,6 +136,10 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                         address = loan.AddressId;
                         person = loan.PersonId;
                         customer = loan.CustomerId;
+                        if (loan.LoanUnits.Count > 0)
+                            unit = loan.LoanUnits[0];
+                        else
+                            unit = new TLoanUnit();
                     }
                 } 
 
@@ -191,23 +205,45 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 loan.CustomerId = customer;
 
                 loan.CollectorId = loanVM.CollectorId;
+                loan.SalesmanId = loanVM.SalesmanId;
+                loan.SurveyorId = loanVM.SurveyorId;
+                loan.TLSId = loanVM.TLSId;
                 loan.LoanCode = loanVM.LoanCode;
                 loan.LoanCreditPrice = loanVM.LoanCreditPrice;
                 loan.LoanDesc = loanVM.LoanDesc;
-                loan.LoanDownPayment = loanVM.LoanDownPayment;
+                loan.ZoneId = loanVM.ZoneId;
+
+                if (!string.IsNullOrEmpty(formCollection["LoanDownPayment"]))
+                    loan.LoanDownPayment = Convert.ToDecimal(formCollection["LoanDownPayment"].Replace(",", ""));
+                else
+                    loan.LoanDownPayment = null;
+
+                //loan.LoanDownPayment = loanVM.LoanDownPayment;
                 loan.LoanIsSalesmanKnownCustomer = loanVM.LoanIsSalesmanKnownCustomer;
                 loan.LoanTenor = loanVM.LoanTenor;
                 loan.LoanNo = loanVM.LoanNo;
-                loan.LoanStatus = loanVM.LoanStatus;
-                loan.LoanUnitPriceTotal = loanVM.LoanUnitPriceTotal;
-                loan.LoanBasicInstallment = loanVM.LoanBasicInstallment;
+
+                if (!string.IsNullOrEmpty(formCollection["LoanUnitPriceTotal"]))
+                    loan.LoanUnitPriceTotal = Convert.ToDecimal(formCollection["LoanUnitPriceTotal"].Replace(",", ""));
+                else
+                    loan.LoanUnitPriceTotal = null;
+
+                if (!string.IsNullOrEmpty(formCollection["LoanBasicInstallment"]))
+                    loan.LoanBasicInstallment = Convert.ToDecimal(formCollection["LoanBasicInstallment"].Replace(",", ""));
+                else
+                    loan.LoanBasicInstallment = null;
+
                 loan.LoanMaturityDate = loanVM.LoanMaturityDate;
+
+                loan.LoanSurveyDate = surveyVM.SurveyDate;
+
                 if (isSave)
                 {
                     loan.SetAssignedIdTo(Guid.NewGuid().ToString());
                     loan.CreatedDate = DateTime.Now;
                     loan.CreatedBy = User.Identity.Name;
                     loan.DataStatus = EnumDataStatus.New.ToString();
+                    loan.LoanStatus = EnumLoanStatus.Survey.ToString();
                     _tLoanRepository.Save(loan);
                 }
                 else
@@ -216,6 +252,30 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                     loan.ModifiedBy = User.Identity.Name;
                     loan.DataStatus = EnumDataStatus.Updated.ToString();
                     _tLoanRepository.Update(loan);
+                }
+
+                //save unit
+                unit.LoanId = loan;
+                unit.UnitType = loanUnitVM.UnitType;
+                unit.UnitName = loanUnitVM.UnitName;
+                if (!string.IsNullOrEmpty(formCollection["UnitPrice"]))
+                    unit.UnitPrice = Convert.ToDecimal(formCollection["UnitPrice"].Replace(",", ""));
+                else
+                    unit.UnitPrice = null; 
+                if (isSave)
+                {
+                    unit.SetAssignedIdTo(Guid.NewGuid().ToString());
+                    unit.CreatedDate = DateTime.Now;
+                    unit.CreatedBy = User.Identity.Name;
+                    unit.DataStatus = EnumDataStatus.New.ToString();
+                    _tLoanUnitRepository.Save(unit);
+                }
+                else
+                {
+                    unit.ModifiedDate = DateTime.Now;
+                    unit.ModifiedBy = User.Identity.Name;
+                    unit.DataStatus = EnumDataStatus.Updated.ToString();
+                    _tLoanUnitRepository.Update(unit);
                 }
 
                 //save survey
@@ -292,25 +352,43 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             person.PersonLastEducation = formCollection["PersonLastEducation"];
             if (!string.IsNullOrEmpty(formCollection["PersonAge"]))
                 person.PersonAge = Convert.ToDecimal(formCollection["PersonAge"]);
-            person.PersonReligion = formCollection["PersonReligion"];
+            person.PersonReligion = formCollection["PersonReligion"]; 
+
             if (!string.IsNullOrEmpty(formCollection["PersonIncome"]))
-                person.PersonIncome = Convert.ToDecimal(formCollection["PersonIncome"]);
+                person.PersonIncome = Convert.ToDecimal(formCollection["PersonIncome"].Replace(",", ""));
+            else
+                person.PersonIncome = null;
+
             if (!string.IsNullOrEmpty(formCollection["PersonNoOfChildren"]))
-                person.PersonNoOfChildren = Convert.ToDecimal(formCollection["PersonNoOfChildren"]);
+                person.PersonNoOfChildren = Convert.ToDecimal(formCollection["PersonNoOfChildren"].Replace(",", ""));
+            else
+                person.PersonNoOfChildren = null;
+
             person.PersonMarriedStatus = formCollection["PersonMarriedStatus"];
             person.PersonCoupleName = formCollection["PersonCoupleName"];
             person.PersonCoupleOccupation = formCollection["PersonCoupleOccupation"];
+
             if (!string.IsNullOrEmpty(formCollection["PersonCoupleIncome"]))
-                person.PersonCoupleIncome = Convert.ToDecimal(formCollection["PersonCoupleIncome"]);
+                person.PersonCoupleIncome = Convert.ToDecimal(formCollection["PersonCoupleIncome"].Replace(",", ""));
+            else
+                person.PersonCoupleIncome = null;
+
             if (!string.IsNullOrEmpty(formCollection["PersonStaySince"]))
                 person.PersonStaySince = Convert.ToDateTime(formCollection["PersonStaySince"]);
+            else
+                person.PersonStaySince = null;
+
             person.PersonGuarantorName = formCollection["PersonGuarantorName"];
             person.PersonGuarantorRelationship = formCollection["PersonGuarantorRelationship"];
             person.PersonGuarantorOccupation = formCollection["PersonGuarantorOccupation"];
             person.PersonGuarantorPhone = formCollection["PersonGuarantorPhone"];
+
             if (!string.IsNullOrEmpty(formCollection["PersonGuarantorStaySince"]))
                 person.PersonGuarantorStaySince = Convert.ToDateTime(formCollection["PersonGuarantorStaySince"]);
-            person.PersonGuarantorHouseOwnerStatus = formCollection["PersonGuarantorHouseOwnerStatus"];
+            else
+                person.PersonGuarantorStaySince = null;
+
+            person.PersonGuarantorHouseOwnerStatus = formCollection["PersonGuarantorHouseOwnerStatus"]; 
         }
 
         private void TransferFormValuesTo(RefAddress address, FormCollection formCollection)
@@ -318,6 +396,8 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             address.AddressLine1 = formCollection["AddressLine1"];
             address.AddressLine2 = formCollection["AddressLine2"];
             address.AddressPostCode = formCollection["AddressPostCode"];
+            address.AddressStatusOwner = formCollection["AddressStatusOwner"];
+
         }
 
         private void TransferFormValuesTo(TLoanSurvey loanSurvey, FormCollection formCollection)
@@ -327,7 +407,10 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             loanSurvey.SurveyNeighborConclusion = formCollection["SurveyNeighborConclusion"];
             loanSurvey.SurveyNeighborAsset = formCollection["SurveyNeighborAsset"];
             loanSurvey.SurveyHouseType = formCollection["SurveyHouseType"];
-            loanSurvey.SurveyUnitDeliverDate = Convert.ToDateTime(formCollection["SurveyUnitDeliverDate"]);
+            if (!string.IsNullOrEmpty(formCollection["PersonGuarantorStaySince"]))
+                loanSurvey.SurveyUnitDeliverDate = Convert.ToDateTime(formCollection["SurveyUnitDeliverDate"]);
+            else
+                loanSurvey.SurveyUnitDeliverDate = null;
             loanSurvey.SurveyUnitDeliverAddress = formCollection["SurveyUnitDeliverAddress"];
         }
 
