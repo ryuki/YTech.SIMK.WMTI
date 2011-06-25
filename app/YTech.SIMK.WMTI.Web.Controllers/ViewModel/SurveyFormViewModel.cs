@@ -87,6 +87,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
         }
 
         public TLoanSurvey LoanSurvey { get; internal set; }
+        public TLoanUnit LoanUnit { get; internal set; }
         public SelectList GenderList { get; internal set; }
         public SelectList LetterList { get; internal set; }
         public SelectList EducationList { get; internal set; }
