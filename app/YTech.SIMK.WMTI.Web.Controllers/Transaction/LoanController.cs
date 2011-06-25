@@ -134,8 +134,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             loan.AddressId = address;
             loan.PersonId = person;
             loan.CustomerId = customer;
-            loan.CollectorId = loanVM.CollectorId;
-            loan.LoanDownPayment = loanVM.LoanDownPayment;
+
             loan.CollectorId = loanVM.CollectorId;
             loan.LoanCode = loanVM.LoanCode;
             loan.LoanCreditPrice = loanVM.LoanCreditPrice;

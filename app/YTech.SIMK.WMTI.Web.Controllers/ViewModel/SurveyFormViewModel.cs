@@ -32,12 +32,14 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
                 //MEmployee employee = new MEmployee();
                 MCustomer customer = new MCustomer();
                 loanSurvey = new TLoanSurvey();
+                MZone zone = new MZone();
 
                 loanSurvey.LoanId = loan;
                 //loanSurvey.LoanId.SalesmanId = employee;
                 loanSurvey.LoanId.CustomerId = customer;
                 loanSurvey.LoanId.CustomerId.PersonId = person;
                 loanSurvey.LoanId.CustomerId.AddressId = address;
+                loanSurvey.LoanId.ZoneId = zone;
             }
             viewModel.LoanSurvey = loanSurvey;
 
