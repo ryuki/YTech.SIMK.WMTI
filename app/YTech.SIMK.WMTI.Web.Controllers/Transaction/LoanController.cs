@@ -44,7 +44,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         public virtual ActionResult List(string sidx, string sord, int page, int rows)
         {
             int totalRecords = 0;
-            var loans = _tLoanRepository.GetPagedLoanList(sidx, sord, page, rows, ref totalRecords);
+            var loanSurveys = _tLoanSurveyRepository.GetPagedLoanSurveyList(sidx, sord, page, rows, ref totalRecords);
             int pageSize = rows;
             int totalPages = (int)Math.Ceiling((float)totalRecords / (float)pageSize);
             var jsonData = new
@@ -53,20 +53,19 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                                    page = page,
                                    records = totalRecords,
                                    rows = (
-                                        from loan in loans
+                                        from loanSurvey in loanSurveys
                                         select new
                                                    {
-                                                       i = loan.Id.ToString(),
+                                                       i = loanSurvey.Id.ToString(),
                                                        cell = new string[]
                                                                   {
                                                                     string.Empty,
-                                                                    loan.Id,
-                                                                    loan.LoanSurveyDate.ToString(),
-                                                                    loan.CustomerId.PersonId.PersonFirstName,
-                                                                    loan.CustomerId.PersonId.PersonLastName,
-                                                                    loan.SurveyorId.PersonId.PersonFirstName,
-                                                                    loan.ZoneId.ZoneName,
-                                                                    loan.LoanStatus
+                                                                    loanSurvey.LoanId.LoanNo,
+                                                                    loanSurvey.SurveyDate.ToString(),
+                                                                    loanSurvey.LoanId.CustomerId.PersonId.PersonFirstName,
+                                                                    loanSurvey.LoanId.SurveyorId.PersonId.PersonFirstName,
+                                                                    loanSurvey.LoanId.ZoneId.ZoneName,
+                                                                    loanSurvey.LoanId.LoanStatus
                                                                   }
                                                    }
                                    ).ToArray()
@@ -134,8 +133,8 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             loan.AddressId = address;
             loan.PersonId = person;
             loan.CustomerId = customer;
-
             loan.CollectorId = loanVM.CollectorId;
+
             loan.LoanCode = loanVM.LoanCode;
             loan.LoanCreditPrice = loanVM.LoanCreditPrice;
             loan.LoanDesc = loanVM.LoanDesc;
@@ -151,7 +150,9 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             survey.CreatedDate = DateTime.Now;
             survey.CreatedBy = User.Identity.Name;
             survey.DataStatus = EnumDataStatus.New.ToString();
+            
             survey.LoanId = loan;
+            
             survey.SurveyDate = surveyVM.SurveyDate;
             survey.SurveyDesc = surveyVM.SurveyDesc;
             survey.SurveyHouseType = surveyVM.SurveyHouseType;

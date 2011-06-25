@@ -6,5 +6,6 @@ namespace YTech.SIMK.WMTI.Core.RepositoryInterfaces
 {
     public interface ITLoanSurveyRepository : INHibernateRepositoryWithTypedId<TLoanSurvey, string>
     {
+        IEnumerable<TLoanSurvey> GetPagedLoanSurveyList(string orderCol, string orderBy, int pageIndex, int maxRows, ref int totalRows);
     }
 }
