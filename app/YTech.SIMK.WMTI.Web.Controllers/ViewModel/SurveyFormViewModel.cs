@@ -17,6 +17,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
             viewModel.CanEditId = true;
 
             TLoanSurvey loanSurvey = null;
+            TLoanUnit loanUnit = null;
             RefPerson person = new RefPerson();
             RefAddress address = new RefAddress();
             if (!string.IsNullOrEmpty(loanSurveyId))
@@ -29,6 +30,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
             if (loanSurvey == null)
             {
                 TLoan loan = new TLoan();
+                loanUnit = new TLoanUnit();
                 //MEmployee employee = new MEmployee();
                 MCustomer customer = new MCustomer();
                 loanSurvey = new TLoanSurvey();
@@ -42,6 +44,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
                 loanSurvey.LoanId.ZoneId = zone;
             }
             viewModel.LoanSurvey = loanSurvey;
+            viewModel.LoanUnit = loanUnit;
 
             //fill gender
             var values = from EnumGender e in Enum.GetValues(typeof(EnumGender))
