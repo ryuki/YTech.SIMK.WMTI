@@ -98,6 +98,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="NHibernateMaps\Transaction\TLoanUnitMap.cs" />
+    <Compile Include="NHibernateMaps\Transaction\TReferenceMap.cs" />
+    <Compile Include="NHibernateMaps\Transaction\TSettleMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\MCommissionDetRepository.cs" />
     <Compile Include="Repository\MCommissionRepository.cs" />
@@ -131,6 +133,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Repository\TLoanUnitRepository.cs" />
+    <Compile Include="Repository\TReferenceRepository.cs" />
+    <Compile Include="Repository\TSettleRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\YTech.SIMK.WMTI.Core\YTech.SIMK.WMTI.Core.csproj">
