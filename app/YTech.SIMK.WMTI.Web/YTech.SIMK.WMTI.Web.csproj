@@ -161,13 +161,6 @@
     <Compile Include="ReportViewer.aspx.designer.cs">
       <DependentUpon>ReportViewer.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Transaction\Loan\Survey.aspx.cs">
-      <DependentUpon>Survey.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\Transaction\Loan\Survey.aspx.designer.cs">
-      <DependentUpon>Survey.aspx</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\css\buttons.css" />
@@ -310,6 +303,7 @@
     <Content Include="Views\Master\Department\Index.aspx" />
     <Content Include="Views\Master\Employee\Index.aspx" />
     <Content Include="Views\Master\Employee\Search.aspx" />
+    <Content Include="Views\Master\Zone\Index.aspx" />
     <Content Include="Views\Shared\Error.aspx" />
     <Content Include="Views\Shared\DebugFormSubmission.ascx" />
     <Content Include="Views\Shared\Js.ascx" />

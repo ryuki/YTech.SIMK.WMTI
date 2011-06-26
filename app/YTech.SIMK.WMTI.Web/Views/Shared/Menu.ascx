@@ -32,6 +32,9 @@
         <div>
             <%= Html.ActionLinkForAreas<EmployeeController>(c => c.Index(), "Master Karyawan")%>
         </div>
+        <div>
+            <%= Html.ActionLinkForAreas<ZoneController>(c => c.Index(), "Master Wilayah")%>
+        </div>
     </div>
 
             <h3><a href="#">Utiliti</a></h3>

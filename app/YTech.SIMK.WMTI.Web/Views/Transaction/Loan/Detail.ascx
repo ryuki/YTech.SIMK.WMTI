@@ -113,7 +113,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label for="ZoneName">
+                            <label for="ZoneId">
                                 Wilayah :</label>
                         </td>
                         <td> 
@@ -168,8 +168,9 @@
                                 Umur :</label>
                         </td>
                         <td>
-                            <%= Html.TextBox("PersonAge", Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonAge, new { @style = "width:300px" })%>
+                            <%= Html.TextBox("PersonAge", Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonAge, new { @style = "width:25px" })%>
                             <%= Html.ValidationMessage("PersonAge")%>
+                            Tahun
                         </td>
                     </tr>
                     <tr>
@@ -429,8 +430,6 @@
                         </td>
                         <td>
                             <%= Html.DropDownList("SalesmanId", Model.SalesmanList)%>
-                            <%--<input type="text" name="LoanSalesman" style="width:300px;" />--%>
-                             <%--<%= Html.TextBox("LoanSalesman", Model.LoanSurvey.LoanId.SalesmanId.PersonId.PersonFirstName, new { @style = "width:300px" })%>--%> 
                             <%= Html.ValidationMessage("SalesmanId")%>
                         </td>
                     </tr>
@@ -441,7 +440,6 @@
                         </td>
                         <td>
                             <%= Html.DropDownList("TLSId", Model.TLSList)%>
-                           <%-- <%= Html.TextBox("TLSId", Model.LoanSurvey.LoanId.TLSId, new { @style = "width:300px" })%>--%>
                             <%= Html.ValidationMessage("TLSId")%>
                         </td>
                     </tr>
@@ -452,7 +450,6 @@
                         </td>
                         <td>
                             <%= Html.DropDownList("CollectorId", Model.CollectorList)%>
-                           <%-- <%= Html.TextBox("CollectorId", Model.LoanSurvey.LoanId.CollectorId, new { @style = "width:300px" })%>--%>
                             <%= Html.ValidationMessage("CollectorId")%>
                         </td>
                     </tr>
@@ -463,7 +460,6 @@
                         </td>
                         <td>
                             <%= Html.DropDownList("SurveyorId", Model.SurveyorList)%>
-                           <%-- <%= Html.TextBox("SurveyorId", Model.LoanSurvey.LoanId.SurveyorId, new { @style = "width:300px" })%>--%>
                             <%= Html.ValidationMessage("SurveyorId")%>
                         </td>
                     </tr>
@@ -503,8 +499,9 @@
                                 Lama Angsuran :</label>
                         </td>
                         <td>
-                            <%= Html.TextBox("LoanTenor", Model.LoanSurvey.LoanId.LoanTenor, new { @style = "width:300px" })%>
+                            <%= Html.TextBox("LoanTenor", Model.LoanSurvey.LoanId.LoanTenor, new { @style = "width:25px" })%>
                             <%= Html.ValidationMessage("LoanTenor")%>
+                            Bulan
                         </td>
                     </tr>
                     <tr>
@@ -546,7 +543,7 @@
                                 Tanggal :</label>
                         </td>
                         <td>
-                         <%= Html.TextBox("SurveyDate", Model.LoanSurvey.SurveyDate.HasValue ? Model.LoanSurvey.SurveyDate.Value.ToString(CommonHelper.DateFormat) : null, new { @style = "width:300px" })%>
+                         <%= Html.TextBox("SurveyDate", Model.LoanSurvey.SurveyDate.HasValue ? Model.LoanSurvey.SurveyDate.Value.ToString(CommonHelper.DateFormat) : null, new { @style = "width:100px" })%>
                             <%= Html.ValidationMessage("SurveyDate")%>
                         </td>
                     </tr>
