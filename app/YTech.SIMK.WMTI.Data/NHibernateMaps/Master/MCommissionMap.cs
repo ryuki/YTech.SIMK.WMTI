@@ -4,25 +4,27 @@ using YTech.SIMK.WMTI.Core.Master;
 
 namespace YTech.SIMK.WMTI.Data.NHibernateMaps.Master
 {
-    public class MZoneEmployeeMap : IAutoMappingOverride<MZoneEmployee>
+    public class MCommissionMap : IAutoMappingOverride<MCommission>
     {
         #region Implementation of IAutoMappingOverride<MZoneEmployee>
 
-        public void Override(AutoMapping<MZoneEmployee> mapping)
+        public void Override(AutoMapping<MCommission> mapping)
         {
             mapping.DynamicUpdate();
             mapping.DynamicInsert();
             mapping.SelectBeforeUpdate();
 
-            mapping.Table("M_ZONE_EMPLOYEE");
-            mapping.Id(x => x.Id, "ZONE_EMPLOYEE_ID").GeneratedBy.Assigned();
-            mapping.References(x => x.ZoneId, "ZONE_ID").Fetch.Join();
-            mapping.References(x => x.EmployeeId, "EMPLOYEE_ID").Fetch.Join();
+            mapping.Table("M_COMMISSION");
+            mapping.Id(x => x.Id, "COMMISSION_ID").GeneratedBy.Assigned();
 
-            mapping.Map(x => x.StartDate, "START_DATE");
-            mapping.Map(x => x.EndDate, "END_DATE");
-            mapping.Map(x => x.ZoneEmployeeStatus, "ZONE_EMPLOYEE_STATUS");
-            mapping.Map(x => x.ZoneEmployeeDesc, "ZONE_EMPLOYEE_DESC");
+            mapping.Map(x => x.CommissionLevel, "COMMISSION_LEVEL");
+            mapping.Map(x => x.CommissionLowTarget, "COMMISSION_LOW_TARGET");
+            mapping.Map(x => x.CommissionHighTarget, "COMMISSION_HIGH_TARGET");
+            mapping.Map(x => x.CommissionStartDate, "COMMISSION_START_DATE");
+            mapping.Map(x => x.CommissionEndDate, "COMMISSION_END_DATE");
+            mapping.Map(x => x.CommissionValue, "COMMISSION_VALUE");
+            mapping.Map(x => x.CommissionStatus, "COMMISSION_STATUS");
+            mapping.Map(x => x.CommissionDesc, "COMMISSION_DESC");
 
             mapping.Map(x => x.DataStatus, "DATA_STATUS");
             mapping.Map(x => x.CreatedBy, "CREATED_BY");

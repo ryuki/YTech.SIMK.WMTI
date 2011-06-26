@@ -66,6 +66,8 @@
     <Compile Include="..\..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="NHibernateMaps\Master\MCommissionDetMap.cs" />
+    <Compile Include="NHibernateMaps\Master\MCommissionMap.cs" />
     <Compile Include="NHibernateMaps\Master\MCustomerMap.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -76,6 +78,7 @@
     <Compile Include="NHibernateMaps\Master\MPartnerMap.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="NHibernateMaps\Master\MZoneEmployeeMap.cs" />
     <Compile Include="NHibernateMaps\Master\MZoneMap.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -96,6 +99,8 @@
     </Compile>
     <Compile Include="NHibernateMaps\Transaction\TLoanUnitMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\MCommissionDetRepository.cs" />
+    <Compile Include="Repository\MCommissionRepository.cs" />
     <Compile Include="Repository\MCustomerRepository.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -106,6 +111,7 @@
     <Compile Include="Repository\MPartnerRepository.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Repository\MZoneEmployeeRepository.cs" />
     <Compile Include="Repository\MZoneRepository.cs">
       <SubType>Code</SubType>
     </Compile>
