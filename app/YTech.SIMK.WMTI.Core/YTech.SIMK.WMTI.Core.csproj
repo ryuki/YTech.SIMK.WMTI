@@ -116,6 +116,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="RepositoryInterfaces\ITLoanUnitRepository.cs" />
+    <Compile Include="RepositoryInterfaces\ITReferenceRepository.cs" />
+    <Compile Include="RepositoryInterfaces\ITSettleRepository.cs" />
     <Compile Include="Transaction\TInstallment.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -126,6 +128,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Transaction\TLoanUnit.cs" />
+    <Compile Include="Transaction\TReference.cs" />
+    <Compile Include="Transaction\TSettle.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\YTech.SIMK.WMTI.Enums\YTech.SIMK.WMTI.Enums.csproj">
