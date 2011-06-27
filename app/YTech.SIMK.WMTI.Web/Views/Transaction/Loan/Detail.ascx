@@ -47,6 +47,16 @@
                     </tr>
                     <tr>
                         <td>
+                            <label for="LoanSubmissionDate">
+                                Tanggal PK :</label>
+                        </td>
+                        <td>
+                         <%= Html.TextBox("LoanSubmissionDate", Model.LoanSurvey.LoanId.LoanSubmissionDate.HasValue ? Model.LoanSurvey.LoanId.LoanSubmissionDate.Value.ToString(CommonHelper.DateFormat) : null, new { @style = "width:100px" })%>
+                            <%= Html.ValidationMessage("LoanSubmissionDate")%>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
                             <label for="PersonFirstName">
                                 Nama Pemohon
                                 <br />
@@ -364,17 +374,16 @@
                                 Accessories :</label>
                         </td>
                         <td>
-                            <input type="checkbox" name="SurveyNeighborAsset" value="CTV" />TV
-                            <input type="checkbox" name="SurveyNeighborAsset" value="SF" />Sofa
-                            <input type="checkbox" name="SurveyNeighborAsset" value="KG" />Kompor Gas
-                            <input type="checkbox" name="SurveyNeighborAsset" value="MC" />Mesin Cuci
-                            <input type="checkbox" name="SurveyNeighborAsset" value="LH" />Lemari Hias
-                            <input type="checkbox" name="SurveyNeighborAsset" value="PC" />Komputer
-                            <input type="checkbox" name="SurveyNeighborAsset" value="MTR" />Motor
-                            <input type="checkbox" name="SurveyNeighborAsset" value="MBL" />Mobil
-                            <input type="checkbox" name="SurveyNeighborAsset" value="AC" />AC
-                            <%-- <%= Html.DropDownList("AddressStatusOwner")%> --%>
-                            <%= Html.ValidationMessage("SurveyNeighborAsset")%>
+                            <%= Html.CheckBox("SurveyNeighborAsset_CTV", Model.SurveyNeighborAsset_CTV)%>&nbsp;CTV
+                            <%= Html.CheckBox("SurveyNeighborAsset_SF", Model.SurveyNeighborAsset_SF)%>&nbsp;SF
+                            <%= Html.CheckBox("SurveyNeighborAsset_KG", Model.SurveyNeighborAsset_KG)%>&nbsp;KG
+                            <%= Html.CheckBox("SurveyNeighborAsset_MC", Model.SurveyNeighborAsset_MC)%>&nbsp;MC
+                            <%= Html.CheckBox("SurveyNeighborAsset_LH", Model.SurveyNeighborAsset_LH)%>&nbsp;LH
+                            <%= Html.CheckBox("SurveyNeighborAsset_PC", Model.SurveyNeighborAsset_PC)%>&nbsp;PC
+                            <%= Html.CheckBox("SurveyNeighborAsset_MTR", Model.SurveyNeighborAsset_MTR)%>&nbsp;MTR
+                            <%= Html.CheckBox("SurveyNeighborAsset_MBL", Model.SurveyNeighborAsset_MBL)%>&nbsp;MBL
+                            <%= Html.CheckBox("SurveyNeighborAsset_AC", Model.SurveyNeighborAsset_AC)%>&nbsp;AC
+                            <%= Html.ValidationMessage("SurveyNeighborAsset_CTV")%>
                         </td>
                     </tr>
                     <tr>
@@ -540,7 +549,7 @@
                     <tr>
                         <td>
                             <label for="SurveyDate">
-                                Tanggal :</label>
+                                Tanggal Survey :</label>
                         </td>
                         <td>
                          <%= Html.TextBox("SurveyDate", Model.LoanSurvey.SurveyDate.HasValue ? Model.LoanSurvey.SurveyDate.Value.ToString(CommonHelper.DateFormat) : null, new { @style = "width:100px" })%>
@@ -684,6 +693,7 @@
         $("#PersonGuarantorStaySince").datepicker({ dateFormat: "dd-M-yy" });
         $("#SurveyUnitDeliverDate").datepicker({ dateFormat: "dd-M-yy" });
         $("#SurveyDate").datepicker({ dateFormat: "dd-M-yy" });
+        $("#LoanSubmissionDate").datepicker({ dateFormat: "dd-M-yy" });
 
         $('#PersonIncome').autoNumeric();
         $('#PersonIncome').attr("style", "text-align:right;");

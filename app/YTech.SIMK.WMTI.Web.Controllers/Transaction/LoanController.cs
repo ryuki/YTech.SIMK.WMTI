@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 using System.Web.Mvc;
 using SharpArch.Core;
 using SharpArch.Web.NHibernate;
@@ -60,7 +61,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
 
             int pageSize = rows;
             int totalPages = (int)Math.Ceiling((float)totalRecords / (float)pageSize);
-            var jsonData = new 
+            var jsonData = new
                                 {
                                     total = totalPages,
                                     page = page,
@@ -77,7 +78,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                                                 loan.Id,
                                                 loan.LoanNo,
                                                 loan.LoanCode,
-                                                loan.LoanSurveyDate.HasValue ? loan.LoanSurveyDate.Value.ToString(Helper.CommonHelper.DateFormat) : null,
+                                                loan.LoanSubmissionDate.HasValue ? loan.LoanSubmissionDate.Value.ToString(Helper.CommonHelper.DateFormat) : null,
                                                 loan.PersonId.PersonName,
                                                 loan.SurveyorId != null ?  loan.SurveyorId.PersonId.PersonName : null,
                                                 loan.ZoneId != null ? loan.ZoneId.ZoneName : null,
@@ -95,7 +96,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         {
             ViewData["CurrentItem"] = "Lembaran Survey";
             SurveyFormViewModel viewModel =
-                SurveyFormViewModel.CreateSurveyFormViewModel(_tLoanSurveyRepository,_mEmployeeRepository,_mZoneRepository, loanSurveyId);
+                SurveyFormViewModel.CreateSurveyFormViewModel(_tLoanSurveyRepository, _mEmployeeRepository, _mZoneRepository, loanSurveyId);
 
             return View(viewModel);
         }
@@ -105,7 +106,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         {
             ViewData["CurrentItem"] = "Lembaran Survey";
             SurveyFormViewModel viewModel =
-                SurveyFormViewModel.CreateSurveyFormViewModel(_tLoanSurveyRepository,_mEmployeeRepository,_mZoneRepository, loanSurveyId);
+                SurveyFormViewModel.CreateSurveyFormViewModel(_tLoanSurveyRepository, _mEmployeeRepository, _mZoneRepository, loanSurveyId);
 
             return View(viewModel);
         }
@@ -113,7 +114,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         [ValidateAntiForgeryToken]      // Helps avoid CSRF attacks
         [Transaction]                   // Wraps a transaction around the action
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Survey(TLoanSurvey surveyVM, TLoan loanVM, TLoanUnit loanUnitVM, FormCollection formCollection, string loanSurveyId)
+        public ActionResult Survey(TLoanSurvey surveyVM, TLoan loanVM, TLoanUnit loanUnitVM,  FormCollection formCollection, string loanSurveyId)
         {
             try
             {
@@ -141,7 +142,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                         else
                             unit = new TLoanUnit();
                     }
-                } 
+                }
 
                 //save address
                 TransferFormValuesTo(address, formCollection);
@@ -160,7 +161,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                     address.DataStatus = EnumDataStatus.Updated.ToString();
                     _refAddressRepository.Update(address);
                 }
-                
+
                 //save person
                 TransferFormValuesTo(person, formCollection);
                 if (isSave)
@@ -212,6 +213,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 loan.LoanCreditPrice = loanVM.LoanCreditPrice;
                 loan.LoanDesc = loanVM.LoanDesc;
                 loan.ZoneId = loanVM.ZoneId;
+                loan.LoanSubmissionDate = loanVM.LoanSubmissionDate;
 
                 if (!string.IsNullOrEmpty(formCollection["LoanDownPayment"]))
                     loan.LoanDownPayment = Convert.ToDecimal(formCollection["LoanDownPayment"].Replace(",", ""));
@@ -261,7 +263,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 if (!string.IsNullOrEmpty(formCollection["UnitPrice"]))
                     unit.UnitPrice = Convert.ToDecimal(formCollection["UnitPrice"].Replace(",", ""));
                 else
-                    unit.UnitPrice = null; 
+                    unit.UnitPrice = null;
                 if (isSave)
                 {
                     unit.SetAssignedIdTo(Guid.NewGuid().ToString());
@@ -292,6 +294,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 survey.SurveyUnitDeliverDate = surveyVM.SurveyUnitDeliverDate;
                 survey.SurveyReceivedBy = surveyVM.SurveyReceivedBy;
                 survey.SurveyProcessBy = surveyVM.SurveyProcessBy;
+                survey.SurveyNeighborAsset = GetAsset(formCollection);
                 if (isSave)
                 {
                     survey.SetAssignedIdTo(Guid.NewGuid().ToString());
@@ -336,6 +339,43 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             return Json(resultx, JsonRequestBehavior.AllowGet);
         }
 
+        private string GetAsset(FormCollection formCollection)
+        {
+            StringBuilder result = new StringBuilder();
+
+            //checkbox return string "true,false" if checked and return "false" if not checked
+
+            //if (viewModel.SurveyNeighborAsset_CTV)
+            if (formCollection["SurveyNeighborAsset_CTV"].Contains("true"))
+                result.Append("CTV,");
+            //if (viewModel.SurveyNeighborAsset_SF)
+            if (formCollection["SurveyNeighborAsset_SF"].Contains("true"))
+                result.Append("SF,");
+            //if (viewModel.SurveyNeighborAsset_KG)
+            if (formCollection["SurveyNeighborAsset_KG"].Contains("true"))
+                result.Append("KG,");
+            //if (viewModel.SurveyNeighborAsset_MC)
+            if (formCollection["SurveyNeighborAsset_MC"].Contains("true"))
+                result.Append("MC,");
+            // if (viewModel.SurveyNeighborAsset_LH)
+            if (formCollection["SurveyNeighborAsset_LH"].Contains("true"))
+                result.Append("LH,");
+            // if (viewModel.SurveyNeighborAsset_PC)
+            if (formCollection["SurveyNeighborAsset_PC"].Contains("true"))
+                result.Append("PC,");
+            //if (viewModel.SurveyNeighborAsset_MTR)
+            if (formCollection["SurveyNeighborAsset_MTR"].Contains("true"))
+                result.Append("MTR,");
+            //if (viewModel.SurveyNeighborAsset_MBL)
+            if (formCollection["SurveyNeighborAsset_MBL"].Contains("true"))
+                result.Append("MBL,");
+            // if (viewModel.SurveyNeighborAsset_AC)
+            if (formCollection["SurveyNeighborAsset_AC"].Contains("true"))
+                result.Append("AC,");
+
+            return result.ToString();
+        }
+
         private void TransferFormValuesTo(RefPerson person, FormCollection formCollection)
         {
             person.PersonFirstName = formCollection["PersonFirstName"];
@@ -352,7 +392,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             person.PersonLastEducation = formCollection["PersonLastEducation"];
             if (!string.IsNullOrEmpty(formCollection["PersonAge"]))
                 person.PersonAge = Convert.ToDecimal(formCollection["PersonAge"]);
-            person.PersonReligion = formCollection["PersonReligion"]; 
+            person.PersonReligion = formCollection["PersonReligion"];
 
             if (!string.IsNullOrEmpty(formCollection["PersonIncome"]))
                 person.PersonIncome = Convert.ToDecimal(formCollection["PersonIncome"].Replace(",", ""));
@@ -388,7 +428,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             else
                 person.PersonGuarantorStaySince = null;
 
-            person.PersonGuarantorHouseOwnerStatus = formCollection["PersonGuarantorHouseOwnerStatus"]; 
+            person.PersonGuarantorHouseOwnerStatus = formCollection["PersonGuarantorHouseOwnerStatus"];
         }
 
         private void TransferFormValuesTo(RefAddress address, FormCollection formCollection)

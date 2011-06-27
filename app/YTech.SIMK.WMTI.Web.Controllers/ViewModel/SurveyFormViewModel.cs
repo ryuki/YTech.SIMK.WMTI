@@ -54,6 +54,9 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
             viewModel.LoanSurvey = loanSurvey;
             viewModel.LoanUnit = loanUnit;
 
+            //set asset
+            SetAssetCheck(loanSurvey.SurveyNeighborAsset, viewModel);
+
             //fill gender
             var values = from EnumGender e in Enum.GetValues(typeof(EnumGender))
                          select new { ID = e, Name = CommonHelper.GetStringValue(e) };
@@ -130,6 +133,33 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
             return viewModel;
         }
 
+        private static void SetAssetCheck(string asset, SurveyFormViewModel viewModel)
+        {
+            if (!string.IsNullOrEmpty(asset))
+            {
+                string[] assetArr = asset.Split((",").ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                if (assetArr.Contains("CTV"))
+                    viewModel.SurveyNeighborAsset_CTV = true;
+                if (assetArr.Contains("SF"))
+                    viewModel.SurveyNeighborAsset_SF = true;
+                if (assetArr.Contains("KG"))
+                    viewModel.SurveyNeighborAsset_KG = true;
+                if (assetArr.Contains("MC"))
+                    viewModel.SurveyNeighborAsset_MC = true;
+                if (assetArr.Contains("LH"))
+                    viewModel.SurveyNeighborAsset_LH = true;
+                if (assetArr.Contains("PC"))
+                    viewModel.SurveyNeighborAsset_PC = true;
+                if (assetArr.Contains("MTR"))
+                    viewModel.SurveyNeighborAsset_MTR = true;
+                if (assetArr.Contains("MBL"))
+                    viewModel.SurveyNeighborAsset_MBL = true;
+                if (assetArr.Contains("AC"))
+                    viewModel.SurveyNeighborAsset_AC = true; 
+            }
+            
+        }
+
         public TLoanSurvey LoanSurvey { get; internal set; }
         public TLoanUnit LoanUnit { get; internal set; }
         public SelectList GenderList { get; internal set; }
@@ -149,5 +179,14 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
         public SelectList CollectorList { get; internal set; }
         public bool CanEditId { get; internal set; }
 
+        public bool SurveyNeighborAsset_CTV { get; internal set; }
+        public bool SurveyNeighborAsset_SF { get; internal set; }
+        public bool SurveyNeighborAsset_KG { get; internal set; }
+        public bool SurveyNeighborAsset_MC { get; internal set; }
+        public bool SurveyNeighborAsset_LH { get; internal set; }
+        public bool SurveyNeighborAsset_PC { get; internal set; }
+        public bool SurveyNeighborAsset_MTR { get; internal set; }
+        public bool SurveyNeighborAsset_MBL { get; internal set; }
+        public bool SurveyNeighborAsset_AC { get; internal set; } 
     }
 }

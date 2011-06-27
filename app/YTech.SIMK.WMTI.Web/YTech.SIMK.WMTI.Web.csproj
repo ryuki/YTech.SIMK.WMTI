@@ -163,6 +163,7 @@
     </Compile>
     <Compile Include="Views\Transaction\Loan\Survey.aspx.cs">
       <DependentUpon>Survey.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Views\Transaction\Loan\Survey.aspx.designer.cs">
       <DependentUpon>Survey.aspx</DependentUpon>
@@ -333,7 +334,9 @@
     <Content Include="Views\Utility\UserAdministration\Password.aspx" />
     <Content Include="Views\Utility\UserAdministration\Role.aspx" />
     <Content Include="Views\Utility\UserAdministration\UsersRoles.aspx" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\MicrosoftAjax.js" />
     <Content Include="Scripts\MicrosoftAjax.debug.js" />

@@ -63,6 +63,7 @@
 <script language="javascript" type="text/javascript">
     function onSavedSuccess(e) {
         var json = e.get_response().get_object();
+//        alert(json);
         //set value reports
 //        alert(json.UrlReport);
 //        $("#rpt").val(json.UrlReport);

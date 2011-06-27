@@ -42,17 +42,17 @@
                 colNames: ['', 'Id', 'LoanId', 'No PK', 'No Account', 'Tgl Pengajuan Kredit', 'Pemohon', 'Surveyor', 'Wilayah', 'Status'],
                 colModel: [
                     {
-                        name: 'act', index: 'act', width: 175, sortable: false
+                        name: 'act', index: 'act', width: 200, sortable: false
                     },
                    { name: 'Id', index: 'Id', width: 75, align: 'left', key: true, editrules: { required: true, edithidden: false }, hidedlg: true, hidden: true, editable: false },
                    { name: 'LoanId', index: 'LoanId', width: 100, align: 'left', editrules: { required: true, edithidden: false }, hidedlg: true, hidden: true, editable: false },
-                    { name: 'LoanNo', index: 'LoanNo', width: 200, align: 'left', editable: false, edittype: 'text', editrules: { required: false} },
-                    { name: 'LoanCode', index: 'LoanCode', width: 200, align: 'left', editable: false, edittype: 'text', editrules: { required: false} },
-                    { name: 'LoanSurveyDate', index: 'LoanSurveyDate', width: 200, align: 'left', editable: false, edittype: 'text', editrules: { required: false} },
+                    { name: 'LoanNo', index: 'LoanNo', width: 100, align: 'left', editable: false, edittype: 'text', editrules: { required: false} },
+                    { name: 'LoanCode', index: 'LoanCode', width: 100, align: 'left', editable: false, edittype: 'text', editrules: { required: false} },
+                    { name: 'LoanSurveyDate', index: 'LoanSurveyDate', width: 100, align: 'left', editable: false, edittype: 'text', editrules: { required: false} },
                     { name: 'CustomerName', index: 'CustomerName', width: 200, align: 'left', editable: false, edittype: 'text', editrules: { required: false} },
                    { name: 'SurveyorName', index: 'SurveyorName', width: 200, align: 'left', editable: true, edittype: 'text', editrules: { required: false} },
-                   { name: 'ZoneName', index: 'ZoneName', width: 200, align: 'left', editable: true, edittype: 'text', editrules: { required: false, edithidden: true} },
-                     { name: 'LoanStatus', index: 'LoanStatus', width: 200, align: 'left', editable: true, edittype: 'text', editrules: { required: false, edithidden: true} }
+                   { name: 'ZoneName', index: 'ZoneName', width: 100, align: 'left', editable: true, edittype: 'text', editrules: { required: false, edithidden: true} },
+                     { name: 'LoanStatus', index: 'LoanStatus', width: 100, align: 'left', editable: true, edittype: 'text', editrules: { required: false, edithidden: true} }
                    ],
 
                 pager: $('#listPager'),
@@ -74,7 +74,7 @@
                         var disable = '';
                         if (status == 'Approve')
                             disable = 'disabled=disabled';
-                        var be = "<input type='button' value='Edit' tooltips='Edit Pengajuan Kredit'  onClick=\"OpenPopup('" + cl + "');\" " + disable  + " />";
+                        var be = "<input type='button' value='Edit Survey' tooltips='Edit Survey'  onClick=\"OpenPopup('" + cl + "');\" />";
                         be = be + "<input type='button' value='Approve' tooltips='Approve Kredit'  onClick=\"OpenPopupApprove('" + row.LoanId + "');\" " + disable + " />";
 
                         //                                                alert(be); 

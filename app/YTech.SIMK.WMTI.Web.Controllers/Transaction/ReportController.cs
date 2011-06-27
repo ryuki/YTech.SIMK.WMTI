@@ -67,7 +67,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                     repCol[0] = GetDueInstallment(viewModel.DateFrom, viewModel.DateTo);
                     break;
             }
-            Session["ReportData"] = repCol;
+            HttpContext.Session["ReportData"] = repCol;
 
             var e = new
             {

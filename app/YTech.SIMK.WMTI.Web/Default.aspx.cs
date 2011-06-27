@@ -11,6 +11,8 @@ namespace YTech.SIMK.WMTI.Web
             HttpContext.Current.RewritePath(Request.ApplicationPath, false);
             IHttpHandler httpHandler = new MvcHttpHandler();
             httpHandler.ProcessRequest(HttpContext.Current);
+            //Session["test"] = "ciasen";
+            //Response.Write(Session["test"]);
         }
     }
 }
