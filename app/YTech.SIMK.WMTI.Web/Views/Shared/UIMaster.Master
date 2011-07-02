@@ -200,10 +200,11 @@
 		, initClosed: false
 	    //	add 'bounce' option to default 'slide' effect
 		, fxSettings_open: { easing: "easeOutBounce" }
+        , onresize: function () { $("#accordion").accordion("resize"); }
 	}
 	, east: {
 	    size: 250
-		//, spacing_closed: 21			// wider space when closed
+	    //, spacing_closed: 21			// wider space when closed
 		, spacing_closed: 0			// HIDE resizer & toggler when 'closed'
 		, slidable: false
 		, togglerLength_closed: 21			// make toggler 'square' - 21x21
