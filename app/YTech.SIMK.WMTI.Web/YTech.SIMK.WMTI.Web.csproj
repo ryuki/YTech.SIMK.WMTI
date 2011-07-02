@@ -161,6 +161,13 @@
     <Compile Include="ReportViewer.aspx.designer.cs">
       <DependentUpon>ReportViewer.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Transaction\Loan\CustomerRequest.aspx.cs">
+      <DependentUpon>CustomerRequest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Transaction\Loan\CustomerRequest.aspx.designer.cs">
+      <DependentUpon>CustomerRequest.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Transaction\Loan\Survey.aspx.cs">
       <DependentUpon>Survey.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -319,6 +326,8 @@
     <Content Include="Views\Shared\Status.ascx" />
     <Content Include="Views\Transaction\Installment\Index.aspx" />
     <Content Include="Views\Transaction\Installment\Payment.aspx" />
+    <Content Include="Views\Transaction\Loan\CustomerRequest.aspx" />
+    <Content Include="Views\Transaction\Loan\CustomerRequestDetail.ascx" />
     <Content Include="Views\Transaction\Loan\Detail.ascx" />
     <Content Include="Views\Transaction\Loan\Index.aspx" />
     <Content Include="Views\Transaction\Loan\Survey.aspx" />

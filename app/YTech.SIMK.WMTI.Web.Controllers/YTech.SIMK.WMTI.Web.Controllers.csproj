@@ -117,6 +117,7 @@
     <Compile Include="Utility\UserAccountController.cs" />
     <Compile Include="Utility\UserAdministrationController.cs" />
     <Compile Include="Utility\UtilityAreaRegistration.cs" />
+    <Compile Include="ViewModel\CRFormViewModel.cs" />
     <Compile Include="ViewModel\InstallmentPaymentFormViewModel.cs" />
     <Compile Include="ViewModel\ReportParamViewModel.cs" />
     <Compile Include="ViewModel\Reports\InstallmentViewModel.cs" />

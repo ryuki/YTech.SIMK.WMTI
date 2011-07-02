@@ -91,6 +91,11 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult CustomerRequest()
+        {
+            return View();
+        }
+
         [Transaction]
         public ActionResult Survey(string loanSurveyId)
         {
