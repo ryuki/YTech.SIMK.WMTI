@@ -91,15 +91,20 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult CustomerRequest()
+        [Transaction]
+        public ActionResult CustomerRequest(string loanCustomerRequestId)
         {
-            return View();
+            ViewData["CurrentItem"] = "Lembar Permohonan Konsumen";
+
+            CRFormViewModel viewModel = CRFormViewModel.CreateCRFormViewModel(_mEmployeeRepository, loanCustomerRequestId);
+
+            return View(viewModel);
         }
 
         [Transaction]
         public ActionResult Survey(string loanSurveyId)
         {
-            ViewData["CurrentItem"] = "Lembaran Survey";
+            ViewData["CurrentItem"] = "Lembar Survey";
             SurveyFormViewModel viewModel =
                 SurveyFormViewModel.CreateSurveyFormViewModel(_tLoanSurveyRepository, _mEmployeeRepository, _mZoneRepository, loanSurveyId);
 
@@ -109,7 +114,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         [Transaction]
         public ActionResult EditSurvey(string loanSurveyId)
         {
-            ViewData["CurrentItem"] = "Lembaran Survey";
+            ViewData["CurrentItem"] = "Lembar Survey";
             SurveyFormViewModel viewModel =
                 SurveyFormViewModel.CreateSurveyFormViewModel(_tLoanSurveyRepository, _mEmployeeRepository, _mZoneRepository, loanSurveyId);
 

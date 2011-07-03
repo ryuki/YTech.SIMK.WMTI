@@ -29,7 +29,70 @@
                                         No PK:</label>
                                 </td>
                                 <td>
-                                    <input type="text" />
+                                    <%= Model.CanEditId ? Html.TextBox("LoanNo", Model.Loan.LoanNo ?? string.Empty, new { @style = "width:150px" }) :
+                                                                 Html.TextBox("LoanNo", Model.Loan.LoanNo ?? string.Empty, new { @readonly = Model.CanEditId ? "true" : "false", @style = "width:150px" })
+                                    %>
+                                    <%= Html.ValidationMessage("Id")%>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="TLSId">
+                                        Team Name :</label>
+                                </td>
+                                <td>
+                                    <%= Html.DropDownList("TLSId", Model.TLSList)%>
+                                    <%= Html.ValidationMessage("TLSId")%>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="SalesmanId">
+                                        SA CODE :</label>
+                                </td>
+                                <td>
+                                    <%= Html.DropDownList("SalesmanId", Model.SalesmanList)%>
+                                    <%= Html.ValidationMessage("SalesmanId")%>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="SurveyorId">
+                                        Survey Code :</label>
+                                </td>
+                                <td>
+                                    <%= Html.DropDownList("SurveyorId", Model.SurveyorList)%>
+                                    <%= Html.ValidationMessage("SurveyorId")%>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="LoanBasicPrice">
+                                        HD :</label>
+                                </td>
+                                <td>
+                                    <%= Html.TextBox("LoanBasicPrice", Model.Loan.LoanBasicPrice, new { @style = "width:150px" })%>
+                                    <%= Html.ValidationMessage("LoanBasicPrice")%>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="LoanCreditPrice">
+                                        HT :</label>
+                                </td>
+                                <td>
+                                    <%= Html.TextBox("LoanCreditPrice", Model.Loan.LoanCreditPrice, new { @style = "width:150px" })%>
+                                    <%= Html.ValidationMessage("LoanCreditPrice")%>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="LoanSubmissionDate">
+                                        Tanggal :</label>
+                                </td>
+                                <td>
+                                 <%= Html.TextBox("LoanSubmissionDate", Model.Loan.LoanSubmissionDate.HasValue ? Model.Loan.LoanSubmissionDate.Value.ToString(CommonHelper.DateFormat) : null, new { @style = "width:100px" })%>
+                                    <%= Html.ValidationMessage("LoanSubmissionDate")%>
                                 </td>
                             </tr>
                         </table>
