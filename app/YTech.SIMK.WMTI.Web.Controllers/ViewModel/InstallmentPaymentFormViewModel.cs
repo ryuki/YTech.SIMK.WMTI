@@ -19,6 +19,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
     {
         public static InstallmentPaymentFormViewModel Create(ITInstallmentRepository installmentRepository, string loanCode)
         {
+            installmentRepository.DbContext.BeginTransaction();
             InstallmentPaymentFormViewModel viewModel = new InstallmentPaymentFormViewModel();
             TInstallment ins = installmentRepository.GetLastInstallment(loanCode);
             if (ins == null)
@@ -27,6 +28,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
             }
             viewModel.installment = ins;
             viewModel.installment.InstallmentPaymentDate = DateTime.Today;
+            installmentRepository.DbContext.RollbackTransaction();
             return viewModel;
         }
 
