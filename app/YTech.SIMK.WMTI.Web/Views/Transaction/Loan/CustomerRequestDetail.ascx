@@ -95,9 +95,146 @@
                                     <%= Html.ValidationMessage("LoanSubmissionDate")%>
                                 </td>
                             </tr>
+                            <tr>
+                                <td>
+                                </td>
+                                <td>
+                                    <%= Html.CheckBox("LoanAdminFee", Model.LoanAdminFee)%>&nbsp;Biaya Administrasi sebesar Rp. 14.000,- (Empat Belas Ribu Rupiah)
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <%= Html.CheckBox("LoanMateraiFee", Model.LoanMateraiFee)%>&nbsp;Biaya Materai sebesar Rp. 6.000,- (Enam Ribu Rupiah)
+                                    <%= Html.ValidationMessage("LoanAdminFee")%>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="PersonFirstName">
+                                        Nama Pemohon :</label>
+                                </td>
+                                <td>
+                                    <%= Html.TextBox("PersonFirstName", Model.Loan.CustomerId.PersonId.PersonFirstName, new { @style = "width:300px" })%>
+                                    <%= Html.ValidationMessage("PersonFirstName")%>
+                                </td>
+                            </tr>  
+                            <tr>
+                                <td>
+                                    <label for="PersonIdCardNo">
+                                        No. KTP :</label>
+                                </td>
+                                <td>
+                                    <%= Html.TextBox("PersonIdCardNo", Model.Loan.CustomerId.PersonId.PersonIdCardNo, new { @style = "width:300px" })%>
+                                    <%= Html.ValidationMessage("PersonIdCardNo")%>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="AddressLine1">
+                                        Alamat :</label>
+                                </td>
+                                <td> 
+                                    <%= Html.TextBox("AddressLine1", Model.Loan.CustomerId.AddressId.AddressLine1, new { @style = "width:300px" })%>
+                                    <%= Html.ValidationMessage("AddressLine1")%> 
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                </td>
+                                <td> 
+                                    <%= Html.TextBox("AddressLine2", Model.Loan.CustomerId.AddressId.AddressLine2, new { @style = "width:100px" })%>
+                                    <%= Html.ValidationMessage("AddressLine2")%>
+                                    <label for="PersonPhone">
+                                        Telpon Rumah :</label>
+                                    <%= Html.TextBox("PersonPhone", Model.Loan.CustomerId.PersonId.PersonPhone, new { style = "width:75px" })%>
+                                    <%= Html.ValidationMessage("PersonPhone")%>
+                                    <label for="PersonMobile">
+                                        HP :</label>
+                                    <%= Html.TextBox("PersonMobile", Model.Loan.CustomerId.PersonId.PersonMobile, new { style = "width:75px" })%>
+                                    <%= Html.ValidationMessage("PersonMobile")%>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="PersonOccupation">
+                                        Pekerjaan/Usaha :</label>
+                                </td>
+                                <td> 
+                                    <%= Html.TextBox("PersonOccupation", Model.Loan.CustomerId.PersonId.PersonOccupation, new { @style = "width:300px" })%>
+                                    <%= Html.ValidationMessage("PersonOccupation")%>
+                                    <label for="PersonOccupationSector">
+                                        Dibidang :</label> 
+                                    <%= Html.TextBox("PersonOccupationSector", Model.Loan.CustomerId.PersonId.PersonOccupationSector, new { style = "width:75px" })%>
+                                    <%= Html.ValidationMessage("PersonOccupationSector")%>
+                                    <label for="PersonOccupationPosition">
+                                        Jabatan :</label>
+                                    <%= Html.TextBox("PersonOccupationPosition", Model.Loan.CustomerId.PersonId.PersonOccupationPosition, new { style = "width:75px" })%>
+                                    <%= Html.ValidationMessage("PersonOccupationPosition")%>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="AddressOffice">
+                                        Alamat Kantor :</label>
+                                </td>
+                                <td> 
+                                    <%= Html.TextBox("AddressOffice", Model.Loan.CustomerId.AddressId.AddressOffice, new { @style = "width:300px" })%>
+                                    <%= Html.ValidationMessage("AddressOffice")%> 
+                                    <label for="AddressOfficePhone">
+                                        Telpon Kantor :</label>
+                                    <%= Html.TextBox("AddressOfficePhone", Model.Loan.CustomerId.AddressId.AddressOfficePhone, new { style = "width:75px" })%>
+                                    <%= Html.ValidationMessage("AddressOfficePhone")%>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="UnitName">
+                                        Nama Barang/Merk :</label>
+                                </td>
+                                <td>
+                                    <%= Html.TextBox("UnitName", Model.LoanUnit != null ? Model.LoanUnit.UnitName : null, new { @style = "width:300px" })%>
+                                    <%= Html.ValidationMessage("UnitName")%>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="UnitType">
+                                        Type :</label>
+                                </td>
+                                <td>
+                                    <%= Html.TextBox("UnitType", Model.LoanUnit != null ? Model.LoanUnit.UnitType : null, new { @style = "width:300px" })%>
+                                    <%= Html.ValidationMessage("UnitType")%>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="LoanDownPayment">
+                                        Uang Muka/DP :</label>
+                                </td>
+                                <td>
+                                 <%= Html.TextBox("LoanDownPayment", Model.Loan.LoanDownPayment.HasValue ? Model.Loan.LoanDownPayment.Value.ToString(CommonHelper.NumberFormat) : null, new { @style = "width:300px" })%>
+                                    <%= Html.ValidationMessage("LoanDownPayment")%>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="LoanTenor">
+                                        Masa Kredit :</label>
+                                </td>
+                                <td>
+                                    <%= Html.TextBox("LoanTenor", Model.Loan.LoanTenor, new { @style = "width:25px" })%>
+                                    <%= Html.ValidationMessage("LoanTenor")%>
+                                    Bulan
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="LoanBasicInstallment">
+                                        Angsuran/Bulan :</label>
+                                </td>
+                                <td>
+                                 <%= Html.TextBox("LoanBasicInstallment", Model.Loan.LoanBasicInstallment.HasValue ? Model.Loan.LoanBasicInstallment.Value.ToString(CommonHelper.NumberFormat) : null, new { @style = "width:300px" })%>
+                                    <%= Html.ValidationMessage("LoanBasicInstallment")%>
+                                </td>
+                            </tr>
                         </table>
-                    </td>
-                    <td>
                     </td>
                 </tr>
                 <tr>
@@ -184,6 +321,15 @@
             }
         }).form();
     }
+
+    $(function () {
+        $("#LoanSubmissionDate").datepicker({ dateFormat: "dd-M-yy" });
+
+        $('#LoanBasicInstallment').autoNumeric();
+        $('#LoanBasicInstallment').attr("style", "text-align:right;");
+        $('#LoanDownPayment').autoNumeric();
+        $('#LoanDownPayment').attr("style", "text-align:right;");
+    });
 
     $(document).ready(function () {
         $("form").mouseover(function () {

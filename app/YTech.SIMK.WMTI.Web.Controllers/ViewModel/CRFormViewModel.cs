@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using YTech.SIMK.WMTI.Core.Master;
 using YTech.SIMK.WMTI.Core.RepositoryInterfaces;
@@ -16,8 +17,14 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
             TLoan loan = new TLoan();
             TLoanUnit loanUnit = new TLoanUnit();
             MEmployee emp = new MEmployee();
+            MCustomer cust = new MCustomer();
+            RefPerson person = new RefPerson();
+            RefAddress address = new RefAddress();
 
             loan.TLSId = emp;
+            loan.CustomerId = cust;
+            loan.CustomerId.PersonId = person;
+            loan.CustomerId.AddressId = address;
 
             viewModel.Loan = loan;
 
@@ -42,13 +49,29 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
 
             return viewModel;
         }
-
+/*
+        private static void SetFeeCheck(string fee, CRFormViewModel viewModel)
+        {
+            if(!string.IsNullOrEmpty(fee))
+            {
+                string[] feeArr = fee.Split((",").ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                if (feeArr.Contains("ADM"))
+                    viewModel.LoanAdminFee = true;
+                if (feeArr.Contains("MTA"))
+                    viewModel.LoanMateraiFee = true;
+            }
+        }
+*/
         public TLoan Loan { get; internal set; }
+        public TLoanUnit LoanUnit { get; internal set; }
 
         public SelectList TLSList { get; internal set; }
         public SelectList SalesmanList { get; internal set; }
         public SelectList SurveyorList { get; internal set; }
 
         public bool CanEditId { get; internal set; }
+
+        public bool LoanAdminFee { get; internal set; }
+        public bool LoanMateraiFee { get; internal set; }
     }
 }
