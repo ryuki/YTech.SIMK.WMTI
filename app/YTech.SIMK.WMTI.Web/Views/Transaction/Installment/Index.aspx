@@ -143,7 +143,7 @@
          function OpenPopupInstallmentPayment() {
              var src = '<%= Url.Action("Payment", "Installment") %>';
              src = src + '?loanCode=' + $("#txtLoanCode").val();
-             src = src + '&rand=' + Math.floor(Math.random() * 11111);
+             src = src + '&rand=' + (new Date()).getTime();
              $("#popup_frame").attr("src", src);
              $("#popup").dialog("open");
             

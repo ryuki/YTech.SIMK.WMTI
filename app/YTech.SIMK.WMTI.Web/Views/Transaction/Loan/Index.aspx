@@ -114,7 +114,7 @@
             var url = '<%= Url.Action("Survey", "Loan" ) %>?';
             if (id) {
                 url += 'loanSurveyId=' + id;
-                url += '&rand=' + Math.floor(Math.random() * 11111);
+                url += '&rand=' + (new Date()).getTime();
             }
             $("#popup_frame").attr("src", url);
             $("#popup").dialog("open");
