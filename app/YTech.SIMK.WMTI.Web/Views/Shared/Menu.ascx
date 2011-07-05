@@ -10,26 +10,11 @@
     </div>
     <% if (Request.IsAuthenticated)
        {
-<<<<<<< HEAD
-%>
-
-            <h3><a href="#">Pengajuan Kredit</a></h3>
-            <div>
-                <div><%= Html.ActionLinkForAreas<LoanController>(c => c.CustomerRequest(null), "Form Permohonan Konsumen") %></div>
-                <div><%= Html.ActionLinkForAreas<LoanController>(c => c.Survey(null), "Form Survey") %></div>
-                <div><%= Html.ActionLinkForAreas<LoanController>(c => c.Index(), "Daftar Kredit")%></div>
-            </div>
-
-            <h3><a href="#">Angsuran & Pelunasan</a></h3>
-            <div>
-                <div><%= Html.ActionLinkForAreas<InstallmentController>(c => c.Index(), "Input Angsuran Baru")%></div>
-            </div>
-            
-=======
     %>
     <h3>
         <a href="#">Pengajuan Kredit</a></h3>
     <div class="child-menu-container">
+        <%= Html.ActionLinkForAreas<LoanController>(c => c.CustomerRequest(null), "Form Permohonan Konsumen") %>
         <%= Html.ActionLinkForAreas<LoanController>(c => c.Survey(null), "Form Survey") %>
         <%= Html.ActionLinkForAreas<LoanController>(c => c.Index(), "Daftar Kredit")%>
     </div>
@@ -38,7 +23,6 @@
     <div class="child-menu-container">
         <%= Html.ActionLinkForAreas<InstallmentController>(c => c.Index(), "Input Angsuran Baru")%>
     </div>
->>>>>>> master
     <h3>
         <a href="#">Administrasi</a></h3>
     <div class="child-menu-container">
