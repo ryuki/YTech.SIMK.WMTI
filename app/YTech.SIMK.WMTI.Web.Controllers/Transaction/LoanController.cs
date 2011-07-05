@@ -101,6 +101,191 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             return View(viewModel);
         }
 
+        [ValidateAntiForgeryToken]      // Helps avoid CSRF attacks
+        [Transaction]                   // Wraps a transaction around the action
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult CustomerRequest(TLoan loanVM, TLoanUnit loanUnitVM, FormCollection formCollection, string loanCustomerRequestId)
+        {
+            try
+            {
+                _tLoanRepository.DbContext.BeginTransaction();
+
+                TLoan loan = new TLoan();
+                TLoanUnit unit = new TLoanUnit();
+                MCustomer customer = new MCustomer();
+                RefPerson person = new RefPerson();
+                RefAddress address = new RefAddress();
+
+                bool isSave = true;
+
+                if (!string.IsNullOrEmpty(loanCustomerRequestId))
+                {
+                    loan = _tLoanRepository.Get(loanCustomerRequestId);
+                    if (loan != null )
+                    {
+                        isSave = false;
+                        address = loan.AddressId;
+                        person = loan.PersonId;
+                        customer = loan.CustomerId;
+                        if (loan.LoanUnits.Count > 0)
+                            unit = loan.LoanUnits[0];
+                        else
+                            unit = new TLoanUnit();
+                    }
+                }
+
+                //save address
+                TransferFormValuesTo(address, formCollection);
+
+                if (isSave)
+                {
+                    address.SetAssignedIdTo(Guid.NewGuid().ToString());
+                    address.CreatedDate = DateTime.Now;
+                    address.CreatedBy = User.Identity.Name;
+                    address.DataStatus = EnumDataStatus.New.ToString();
+                    _refAddressRepository.Save(address);
+                }
+                else
+                {
+                    address.ModifiedDate = DateTime.Now;
+                    address.ModifiedBy = User.Identity.Name;
+                    address.DataStatus = EnumDataStatus.Updated.ToString();
+                    _refAddressRepository.Update(address);
+                }
+
+                //save person
+                TransferFormValuesTo(person, formCollection);
+                
+                if (isSave)
+                {
+                    person.SetAssignedIdTo(Guid.NewGuid().ToString());
+                    person.CreatedDate = DateTime.Now;
+                    person.CreatedBy = User.Identity.Name;
+                    person.DataStatus = EnumDataStatus.New.ToString();
+                    _refPersonRepository.Save(person);
+                }
+                else
+                {
+                    person.ModifiedDate = DateTime.Now;
+                    person.ModifiedBy = User.Identity.Name;
+                    person.DataStatus = EnumDataStatus.Updated.ToString();
+                    _refPersonRepository.Update(person);
+                }
+
+                //save customer
+                customer.AddressId = address;
+                customer.PersonId = person;
+
+                if (isSave)
+                {
+                    customer.SetAssignedIdTo(Guid.NewGuid().ToString());
+                    customer.CreatedDate = DateTime.Now;
+                    customer.CreatedBy = User.Identity.Name;
+                    customer.DataStatus = EnumDataStatus.New.ToString();
+
+                    _mCustomerRepository.Save(customer);
+                }
+                else
+                {
+                    customer.ModifiedDate = DateTime.Now;
+                    customer.ModifiedBy = User.Identity.Name;
+                    customer.DataStatus = EnumDataStatus.Updated.ToString();
+                    _mCustomerRepository.Update(customer);
+                }
+
+                //save loan
+                loan.AddressId = address;
+                loan.PersonId = person;
+                loan.CustomerId = customer;
+
+                loan.TLSId = loanVM.TLSId;
+                loan.SalesmanId = loanVM.SalesmanId;
+                loan.SurveyorId = loanVM.SurveyorId;
+
+                loan.LoanCode = loanVM.LoanCode;
+                loan.LoanBasicPrice = loanVM.LoanBasicPrice;
+                loan.LoanCreditPrice = loanVM.LoanCreditPrice;
+                loan.LoanSubmissionDate = loanVM.LoanSubmissionDate;
+                loan.LoanAdminFee = loanVM.LoanAdminFee;
+                loan.LoanMateraiFee = loanVM.LoanMateraiFee;
+                loan.LoanTenor = loanVM.LoanTenor;
+
+                if (!string.IsNullOrEmpty(formCollection["LoanDownPayment"]))
+                    loan.LoanDownPayment = Convert.ToDecimal(formCollection["LoanDownPayment"].Replace(",", ""));
+                else
+                    loan.LoanDownPayment = null;
+
+                if (!string.IsNullOrEmpty(formCollection["LoanBasicInstallment"]))
+                    loan.LoanBasicInstallment = Convert.ToDecimal(formCollection["LoanBasicInstallment"].Replace(",", ""));
+                else
+                    loan.LoanBasicInstallment = null;
+
+                if (isSave)
+                {
+                    loan.SetAssignedIdTo(Guid.NewGuid().ToString());
+                    loan.CreatedDate = DateTime.Now;
+                    loan.CreatedBy = User.Identity.Name;
+                    loan.DataStatus = EnumDataStatus.New.ToString();
+                    loan.LoanStatus = EnumLoanStatus.Survey.ToString();
+                    _tLoanRepository.Save(loan);
+                }
+                else
+                {
+                    loan.ModifiedDate = DateTime.Now;
+                    loan.ModifiedBy = User.Identity.Name;
+                    loan.DataStatus = EnumDataStatus.Updated.ToString();
+                    _tLoanRepository.Update(loan);
+                }
+
+                //save unit
+                unit.LoanId = loan;
+                unit.UnitType = loanUnitVM.UnitType;
+                unit.UnitName = loanUnitVM.UnitName;
+
+                if (isSave)
+                {
+                    unit.SetAssignedIdTo(Guid.NewGuid().ToString());
+                    unit.CreatedDate = DateTime.Now;
+                    unit.CreatedBy = User.Identity.Name;
+                    unit.DataStatus = EnumDataStatus.New.ToString();
+                    _tLoanUnitRepository.Save(unit);
+                }
+                else
+                {
+                    unit.ModifiedDate = DateTime.Now;
+                    unit.ModifiedBy = User.Identity.Name;
+                    unit.DataStatus = EnumDataStatus.Updated.ToString();
+                    _tLoanUnitRepository.Update(unit);
+                }
+
+                _tLoanRepository.DbContext.CommitChanges();
+            }
+            catch (Exception e)
+            {
+                _tLoanRepository.DbContext.RollbackTransaction();
+
+                var result = new
+                                 {
+                                     Success = false,
+                                     Message = e.GetBaseException().Message
+                                 };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+
+            var resultx = new
+            {
+                Success = true,
+                Message = @" <div class='ui-state-highlight ui-corner-all' style='padding: 5pt; margin-bottom: 5pt;'>
+                             <p>
+                                <span class='ui-icon ui-icon-info' style='float: left; margin-right: 0.3em;'></span>
+                                Data berhasil disimpan.</p>
+                             </div>"
+            };
+
+            return Json(resultx, JsonRequestBehavior.AllowGet);
+        }
+
         [Transaction]
         public ActionResult Survey(string loanSurveyId)
         {
