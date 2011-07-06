@@ -144,7 +144,7 @@
                 url += '&rand=' + (new Date()).getTime();
             }
             alert(url);
-            $("#pop_frame").attr("src", url);
+            $("#popup_frame").attr("src", url);
             $("#popup").dialog("open");
 
             return false;
