@@ -96,7 +96,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         {
             ViewData["CurrentItem"] = "Lembar Permohonan Konsumen";
 
-            CRFormViewModel viewModel = CRFormViewModel.CreateCRFormViewModel(_mEmployeeRepository, loanCustomerRequestId);
+            CRFormViewModel viewModel = CRFormViewModel.CreateCRFormViewModel(_tLoanRepository, _mEmployeeRepository, loanCustomerRequestId);
 
             return View(viewModel);
         }
@@ -111,6 +111,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 _tLoanRepository.DbContext.BeginTransaction();
 
                 TLoan loan = new TLoan();
+                TLoanSurvey loanSurvey = new TLoanSurvey();
                 TLoanUnit unit = new TLoanUnit();
                 MCustomer customer = new MCustomer();
                 RefPerson person = new RefPerson();
@@ -257,6 +258,25 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                     unit.ModifiedBy = User.Identity.Name;
                     unit.DataStatus = EnumDataStatus.Updated.ToString();
                     _tLoanUnitRepository.Update(unit);
+                }
+
+                //save loanSurvey
+                loanSurvey.LoanId = loan;
+
+                if (isSave)
+                {
+                    loanSurvey.SetAssignedIdTo(Guid.NewGuid().ToString());
+                    loanSurvey.CreatedDate = DateTime.Now;
+                    loanSurvey.CreatedBy = User.Identity.Name;
+                    loanSurvey.DataStatus = EnumDataStatus.New.ToString();
+                    _tLoanSurveyRepository.Save(loanSurvey);
+                }
+                else
+                {
+                    loanSurvey.ModifiedDate = DateTime.Now;
+                    loanSurvey.ModifiedBy = User.Identity.Name;
+                    loanSurvey.DataStatus = EnumDataStatus.Updated.ToString();
+                    _tLoanSurveyRepository.Update(loanSurvey);
                 }
 
                 _tLoanRepository.DbContext.CommitChanges();

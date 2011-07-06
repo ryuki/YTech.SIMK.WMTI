@@ -42,15 +42,15 @@
                 colNames: ['', 'Id', 'LoanId', 'No PK', 'No Account', 'Tgl Pengajuan Kredit', 'Pemohon', 'Surveyor', 'Wilayah', 'Status'],
                 colModel: [
                     {
-                        name: 'act', index: 'act', width: 200, sortable: false
+                        name: 'act', index: 'act', width: 250, sortable: false
                     },
                    { name: 'Id', index: 'Id', width: 75, align: 'left', key: true, editrules: { required: true, edithidden: false }, hidedlg: true, hidden: true, editable: false },
                    { name: 'LoanId', index: 'LoanId', width: 100, align: 'left', editrules: { required: true, edithidden: false }, hidedlg: true, hidden: true, editable: false },
                     { name: 'LoanNo', index: 'LoanNo', width: 100, align: 'left', editable: false, edittype: 'text', editrules: { required: false} },
                     { name: 'LoanCode', index: 'LoanCode', width: 100, align: 'left', editable: false, edittype: 'text', editrules: { required: false} },
-                    { name: 'LoanSurveyDate', index: 'LoanSurveyDate', width: 100, align: 'left', editable: false, edittype: 'text', editrules: { required: false} },
-                    { name: 'CustomerName', index: 'CustomerName', width: 200, align: 'left', editable: false, edittype: 'text', editrules: { required: false} },
-                   { name: 'SurveyorName', index: 'SurveyorName', width: 200, align: 'left', editable: true, edittype: 'text', editrules: { required: false} },
+                    { name: 'LoanSurveyDate', index: 'LoanSurveyDate', width: 90, align: 'left', editable: false, edittype: 'text', editrules: { required: false} },
+                    { name: 'CustomerName', index: 'CustomerName', width: 125, align: 'left', editable: false, edittype: 'text', editrules: { required: false} },
+                   { name: 'SurveyorName', index: 'SurveyorName', width: 125, align: 'left', editable: true, edittype: 'text', editrules: { required: false} },
                    { name: 'ZoneName', index: 'ZoneName', width: 100, align: 'left', editable: true, edittype: 'text', editrules: { required: false, edithidden: true} },
                      { name: 'LoanStatus', index: 'LoanStatus', width: 100, align: 'left', editable: true, edittype: 'text', editrules: { required: false, edithidden: true} }
                    ],
@@ -74,10 +74,10 @@
                         var disable = '';
                         if (status == 'Approve')
                             disable = 'disabled=disabled';
-                        var be = "<input type='button' value='Edit Survey' tooltips='Edit Survey'  onClick=\"OpenPopup('" + cl + "');\" />";
+                        var be = "<input type='button' value='Edit PK' tooltips='Edit PK' onClick=\"OpenPopupPK('" + cl + "');\" />";
+                        be = be + "<input type='button' value='Edit Survey' tooltips='Edit Survey'  onClick=\"OpenPopup('" + cl + "');\" />";
                         be = be + "<input type='button' value='Approve' tooltips='Approve Kredit'  onClick=\"OpenPopupApprove('" + row.LoanId + "');\" " + disable + " />";
 
-                        //                                                alert(be); 
                         $(this).setRowData(ids[i], { act: be });
                     }
                 },
@@ -110,6 +110,7 @@
                 {}
             );
         });
+
         function OpenPopup(id) {
             var url = '<%= Url.Action("Survey", "Loan" ) %>?';
             if (id) {
@@ -120,10 +121,9 @@
             $("#popup").dialog("open");
             return false;
         }
+
         function OpenPopupApprove(loanId) {
-            // alert(loanId);
             var conf = confirm('Anda yakin meng-approve kredit?');
-            //alert(conf);
             
             if (!conf)
                 return false;
@@ -134,7 +134,21 @@
 //            alert(result.Message);
             $("#list").trigger("reloadGrid");
             return false;
-        }    
+        }
+
+        function OpenPopupPK(id) {
+            var url = '<%= Url.Action( "CustomerRequest", "Loan") %>?';
+
+            if (id) {
+                url += 'loanCustomerRequestId=' + id;
+                url += '&rand=' + (new Date()).getTime();
+            }
+            alert(url);
+            $("#pop_frame").attr("src", url);
+            $("#popup").dialog("open");
+
+            return false;
+        }
     </script>
     <div id="dialog" title="Status">
         <p>
