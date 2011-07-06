@@ -6,7 +6,6 @@
 <% } %>
 <% using (Ajax.BeginForm(new AjaxOptions
                                        {
-                                           //UpdateTargetId = "status",
                                            InsertionMode = InsertionMode.Replace,
                                            OnSuccess = "onSavedSuccess"
                                        }
@@ -30,7 +29,7 @@
                                 </td>
                                 <td>
                                     <%= Model.CanEditId ? Html.TextBox("LoanNo", Model.Loan.LoanNo ?? string.Empty, new { @style = "width:150px" }) :
-                                                                 Html.TextBox("LoanNo", Model.Loan.LoanNo ?? string.Empty, new { @readonly = Model.CanEditId ? "true" : "false", @style = "width:150px" })
+                                                          Html.TextBox("LoanNo", Model.Loan.LoanNo ?? string.Empty, new { @readonly = Model.CanEditId ? "true" : "false", @style = "width:150px" })
                                     %>
                                     <%= Html.ValidationMessage("Id")%>
                                 </td>

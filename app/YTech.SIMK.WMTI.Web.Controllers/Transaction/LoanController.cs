@@ -202,6 +202,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 loan.SalesmanId = loanVM.SalesmanId;
                 loan.SurveyorId = loanVM.SurveyorId;
 
+                loan.LoanNo = loanVM.LoanNo;
                 loan.LoanCode = loanVM.LoanCode;
                 loan.LoanNo = loanVM.LoanNo;
                 loan.LoanBasicPrice = loanVM.LoanBasicPrice;
