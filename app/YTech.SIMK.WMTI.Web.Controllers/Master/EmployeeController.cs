@@ -65,7 +65,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Master
                     {
                         i = employee.Id.ToString(),
                         cell = new string[] {
-                            employee.Id, 
+                            string.Empty, 
                             employee.Id, 
                         employee.PersonId != null ?    employee.PersonId.PersonFirstName : null, 
                           employee.PersonId != null ?    employee.PersonId.PersonLastName : null, 
@@ -74,7 +74,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Master
                         employee.DepartmentId != null?  employee.DepartmentId.Id:null, 
                         employee.DepartmentId != null?  employee.DepartmentId.DepartmentName:null,
                           employee.PersonId != null ?    employee.PersonId.PersonPob : null,  
-                          employee.PersonId != null ?    employee.PersonId.PersonDob.Value.ToString(Helper.CommonHelper.DateFormat) : null, 
+                          employee.PersonId != null ?    employee.PersonId.PersonDob.HasValue? employee.PersonId.PersonDob.Value.ToString(Helper.CommonHelper.DateFormat) : null : null, 
                           employee.PersonId != null ?    employee.PersonId.PersonMobile : null,  
                           employee.PersonId != null ?    employee.PersonId.PersonReligion : null,  
                           employee.AddressId != null ?    employee.AddressId.AddressLine1 : null,
