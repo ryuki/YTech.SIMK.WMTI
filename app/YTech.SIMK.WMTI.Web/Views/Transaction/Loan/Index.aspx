@@ -74,10 +74,10 @@
                         var disable = '';
                         if (status == 'Approve')
                             disable = 'disabled=disabled';
-                        var be = "<input type='button' value='Edit PK' tooltips='Edit PK' onClick=\"OpenPopupPK('" + cl + "');\" />";
+                        var be = "<input type='button' value='Edit PK' tooltips='Edit PK' onClick=\"OpenPopupPK('" + row.LoanId + "');\" />";
                         be = be + "<input type='button' value='Edit Survey' tooltips='Edit Survey'  onClick=\"OpenPopup('" + cl + "');\" />";
                         be = be + "<input type='button' value='Approve' tooltips='Approve Kredit'  onClick=\"OpenPopupApprove('" + row.LoanId + "');\" " + disable + " />";
-
+                        
                         $(this).setRowData(ids[i], { act: be });
                     }
                 },
@@ -143,7 +143,7 @@
                 url += 'loanCustomerRequestId=' + id;
                 url += '&rand=' + (new Date()).getTime();
             }
-            alert(url);
+            
             $("#popup_frame").attr("src", url);
             $("#popup").dialog("open");
 
