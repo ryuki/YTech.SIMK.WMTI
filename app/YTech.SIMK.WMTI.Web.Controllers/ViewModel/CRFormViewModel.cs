@@ -9,24 +9,44 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
 {
     public class CRFormViewModel
     {
-        public static CRFormViewModel CreateCRFormViewModel(IMEmployeeRepository mEmployeeRepository, string loanCustomerRequestId)
+        public static CRFormViewModel CreateCRFormViewModel(ITLoanRepository tLoanRepository, IMEmployeeRepository mEmployeeRepository, string loanCustomerRequestId)
         {
             CRFormViewModel viewModel = new CRFormViewModel();
             viewModel.CanEditId = true;
 
-            TLoan loan = new TLoan();
-            TLoanUnit loanUnit = new TLoanUnit();
-            MEmployee emp = new MEmployee();
-            MCustomer cust = new MCustomer();
+            TLoan loan = null;
+            TLoanUnit loanUnit = null;
             RefPerson person = new RefPerson();
             RefAddress address = new RefAddress();
 
-            loan.TLSId = emp;
-            loan.CustomerId = cust;
-            loan.CustomerId.PersonId = person;
-            loan.CustomerId.AddressId = address;
+            if (!string.IsNullOrEmpty(loanCustomerRequestId))
+            {
+                loan = tLoanRepository.Get(loanCustomerRequestId);
+                person = loan.PersonId;
+                address = loan.AddressId;
+                if (loan.LoanUnits.Count > 0)
+                    loanUnit = loan.LoanUnits[0];
+                else
+                    loanUnit = new TLoanUnit();
 
-            viewModel.Loan = loan;
+                viewModel.CanEditId = false;
+            }
+
+            if (loan == null)
+            {
+                MEmployee emp = new MEmployee();
+                MCustomer cust = new MCustomer();
+
+                loan = new TLoan();
+                loanUnit = new TLoanUnit();
+
+                loan.TLSId = emp;
+                loan.CustomerId = cust;
+                loan.CustomerId.PersonId = person;
+                loan.CustomerId.AddressId = address;
+            }
+
+        viewModel.Loan = loan;
 
             var listEmployee = mEmployeeRepository.GetAll();
             MEmployee employee = new MEmployee();
