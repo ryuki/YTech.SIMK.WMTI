@@ -104,7 +104,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         [ValidateAntiForgeryToken]      // Helps avoid CSRF attacks
         [Transaction]                   // Wraps a transaction around the action
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult CustomerRequest(TLoan loanVM, TLoanUnit loanUnitVM, FormCollection formCollection, string loanCustomerRequestId)
+        public ActionResult CustomerRequest(TLoan loanVM, TLoanUnit loanUnitVM, RefPerson personVM, RefAddress addressVM, FormCollection formCollection, string loanCustomerRequestId)
         {
             try
             {
@@ -125,9 +125,11 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                     if (loan != null )
                     {
                         isSave = false;
-                        address = loan.AddressId;
-                        person = loan.PersonId;
+                        
                         customer = loan.CustomerId;
+                        address = loan.CustomerId.AddressId;
+                        person = loan.CustomerId.PersonId;
+
                         if (loan.LoanUnits.Count > 0)
                             unit = loan.LoanUnits[0];
                         else
@@ -137,6 +139,8 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
 
                 //save address
                 TransferFormValuesTo(address, formCollection);
+                address.AddressOffice = addressVM.AddressOffice;
+                address.AddressOfficePhone = addressVM.AddressOfficePhone;
 
                 if (isSave)
                 {
@@ -156,6 +160,8 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
 
                 //save person
                 TransferFormValuesTo(person, formCollection);
+                person.PersonOccupationSector = personVM.PersonOccupationSector;
+                person.PersonOccupationPosition = personVM.PersonOccupationPosition;
                 
                 if (isSave)
                 {
@@ -203,13 +209,17 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 loan.SalesmanId = loanVM.SalesmanId;
                 loan.SurveyorId = loanVM.SurveyorId;
 
-                //loan.LoanCode = loanVM.LoanCode;
                 loan.LoanNo = loanVM.LoanNo;
                 loan.LoanBasicPrice = loanVM.LoanBasicPrice;
                 loan.LoanCreditPrice = loanVM.LoanCreditPrice;
                 loan.LoanSubmissionDate = loanVM.LoanSubmissionDate;
-                loan.LoanAdminFee = loanVM.LoanAdminFee;
-                loan.LoanMateraiFee = loanVM.LoanMateraiFee;
+
+                if (formCollection["LoanAdminFee"].Contains("true"))
+                    loan.LoanAdminFee = 14000;
+                
+                if (formCollection["LoanMateraiFee"].Contains("true"))
+                    loan.LoanMateraiFee = 6000;
+                
                 loan.LoanTenor = loanVM.LoanTenor;
 
                 if (!string.IsNullOrEmpty(formCollection["LoanDownPayment"]))
@@ -261,22 +271,14 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 }
 
                 //save loanSurvey
-                loanSurvey.LoanId = loan;
-
                 if (isSave)
                 {
+                    loanSurvey.LoanId = loan;
                     loanSurvey.SetAssignedIdTo(Guid.NewGuid().ToString());
                     loanSurvey.CreatedDate = DateTime.Now;
                     loanSurvey.CreatedBy = User.Identity.Name;
                     loanSurvey.DataStatus = EnumDataStatus.New.ToString();
                     _tLoanSurveyRepository.Save(loanSurvey);
-                }
-                else
-                {
-                    loanSurvey.ModifiedDate = DateTime.Now;
-                    loanSurvey.ModifiedBy = User.Identity.Name;
-                    loanSurvey.DataStatus = EnumDataStatus.Updated.ToString();
-                    _tLoanSurveyRepository.Update(loanSurvey);
                 }
 
                 _tLoanRepository.DbContext.CommitChanges();

@@ -46,7 +46,14 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
                 loan.CustomerId.AddressId = address;
             }
 
-        viewModel.Loan = loan;
+            viewModel.Loan = loan;
+            viewModel.LoanUnit = loanUnit;
+
+            if (loan.LoanAdminFee != null)
+                viewModel.LoanAdminFee = true;
+
+            if (loan.LoanMateraiFee != null)
+                viewModel.LoanMateraiFee = true;
 
             var listEmployee = mEmployeeRepository.GetAll();
             MEmployee employee = new MEmployee();
@@ -69,19 +76,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
 
             return viewModel;
         }
-/*
-        private static void SetFeeCheck(string fee, CRFormViewModel viewModel)
-        {
-            if(!string.IsNullOrEmpty(fee))
-            {
-                string[] feeArr = fee.Split((",").ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-                if (feeArr.Contains("ADM"))
-                    viewModel.LoanAdminFee = true;
-                if (feeArr.Contains("MTA"))
-                    viewModel.LoanMateraiFee = true;
-            }
-        }
-*/
+
         public TLoan Loan { get; internal set; }
         public TLoanUnit LoanUnit { get; internal set; }
 
