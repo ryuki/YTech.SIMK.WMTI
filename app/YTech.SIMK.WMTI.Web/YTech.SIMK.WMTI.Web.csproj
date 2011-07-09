@@ -287,9 +287,8 @@
     <Content Include="Scripts\date.format.js" />
     <Content Include="Scripts\default.js" />
     <Content Include="Scripts\grid.locale-en.js" />
-    <Content Include="Scripts\jquery-1.5.2-vsdoc.js" />
-    <Content Include="Scripts\jquery-1.5.2.min.js" />
-    <Content Include="Scripts\jquery-1.6.1.min.js" />
+    <Content Include="Scripts\jquery-1.6.2-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.6.2.min.js" />
     <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\jquery.jqGrid.min.js" />
     <Content Include="Scripts\jquery.layout.min.js" />
@@ -297,6 +296,8 @@
     <Content Include="Scripts\jquery.maskedinput-1.2.2.min.js" />
     <Content Include="Scripts\jquery.mousewheel-3.0.4.js" />
     <Content Include="Scripts\jquery.tooltip.js" />
+    <Content Include="Scripts\jquery.validate-1.8.1.min.js" />
+    <Content Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\MicrosoftMvcValidation.debug.js" />
     <Content Include="Scripts\MicrosoftMvcValidation.js" />
@@ -309,7 +310,6 @@
     <Content Include="Scripts\plugins\jquery.tablednd.js" />
     <Content Include="Scripts\plugins\ui.multiselect.css" />
     <Content Include="Scripts\plugins\ui.multiselect.js" />
-    <Content Include="Scripts\samplebrowser.js" />
     <Content Include="Scripts\Templates\MicrosoftAjax.js" />
     <Content Include="Scripts\Templates\MicrosoftAjaxAdoNet.js" />
     <Content Include="Scripts\Templates\MicrosoftAjaxTemplates.js" />
