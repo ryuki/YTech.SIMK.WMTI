@@ -304,7 +304,8 @@
                 "LoanCreditPrice": { required: true },
                 "LoanSubmissionDate": { required: true },
                 "PersonFirstName": { required: true },
-                "AddressLine1": { required: true }
+                "AddressLine1": { required: true },
+                "UnitName": { required: true }
             },
             messages: {
                 "LoanNo": { required: "<img id='LoanNoerror' src='" + errorimg + "' hovertext='No PK harus diisi' />"

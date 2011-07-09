@@ -24,8 +24,9 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         private readonly IMEmployeeRepository _mEmployeeRepository;
         private readonly ITLoanUnitRepository _tLoanUnitRepository;
         private readonly IMZoneRepository _mZoneRepository;
+        private readonly IMPartnerRepository _mPartnerRepository;
 
-        public LoanController(ITLoanRepository tLoanRepository, ITLoanSurveyRepository tLoanSurveyRepository, IMCustomerRepository mCustomerRepository, IRefAddressRepository refAddressRepository, IRefPersonRepository refPersonRepository, ITInstallmentRepository tInstallmentRepository, IMEmployeeRepository mEmployeeRepository, ITLoanUnitRepository tLoanUnitRepository, IMZoneRepository mZoneRepository)
+        public LoanController(ITLoanRepository tLoanRepository, ITLoanSurveyRepository tLoanSurveyRepository, IMCustomerRepository mCustomerRepository, IRefAddressRepository refAddressRepository, IRefPersonRepository refPersonRepository, ITInstallmentRepository tInstallmentRepository, IMEmployeeRepository mEmployeeRepository, ITLoanUnitRepository tLoanUnitRepository, IMZoneRepository mZoneRepository, IMPartnerRepository mPartnerRepository)
         {
             Check.Require(tLoanRepository != null, "tLoanRepository may not be null");
             Check.Require(tLoanSurveyRepository != null, "tLoanSurveyRepository may not be null");
@@ -36,6 +37,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             Check.Require(mEmployeeRepository != null, "mEmployeeRepository may not be null");
             Check.Require(tLoanUnitRepository != null, "tLoanUnitRepository may not be null");
             Check.Require(mZoneRepository != null, "mZoneRepository may not be null");
+            Check.Require(mPartnerRepository != null, "mPartnerRepository may not be null");
 
             _tLoanRepository = tLoanRepository;
             _tLoanSurveyRepository = tLoanSurveyRepository;
@@ -46,6 +48,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             _mEmployeeRepository = mEmployeeRepository;
             _tLoanUnitRepository = tLoanUnitRepository;
             _mZoneRepository = mZoneRepository;
+            _mPartnerRepository = mPartnerRepository;
         }
 
         public ActionResult Index()
@@ -113,6 +116,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 TLoan loan = new TLoan();
                 TLoanSurvey loanSurvey = new TLoanSurvey();
                 TLoanUnit unit = new TLoanUnit();
+                MPartner partner = new MPartner();
                 MCustomer customer = new MCustomer();
                 RefPerson person = new RefPerson();
                 RefAddress address = new RefAddress();
@@ -134,6 +138,8 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                             unit = loan.LoanUnits[0];
                         else
                             unit = new TLoanUnit();
+
+                        partner = loan.PartnerId;
                     }
                 }
 
@@ -200,10 +206,21 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                     _mCustomerRepository.Update(customer);
                 }
 
+                //save partner
+                if (isSave)
+                {
+                    partner.SetAssignedIdTo(Guid.NewGuid().ToString());
+                    partner.CreatedDate = DateTime.Now;
+                    partner.CreatedBy = User.Identity.Name;
+                    partner.DataStatus = EnumDataStatus.New.ToString();
+                    _mPartnerRepository.Save(partner);
+                }
+
                 //save loan
                 loan.AddressId = address;
                 loan.PersonId = person;
                 loan.CustomerId = customer;
+                loan.PartnerId = partner;
 
                 loan.TLSId = loanVM.TLSId;
                 loan.SalesmanId = loanVM.SalesmanId;
@@ -332,7 +349,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         [ValidateAntiForgeryToken]      // Helps avoid CSRF attacks
         [Transaction]                   // Wraps a transaction around the action
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Survey(TLoanSurvey surveyVM, TLoan loanVM, TLoanUnit loanUnitVM,  FormCollection formCollection, string loanSurveyId)
+        public ActionResult Survey(TLoanSurvey surveyVM, TLoan loanVM, TLoanUnit loanUnitVM, MPartner partnerVM,  FormCollection formCollection, string loanSurveyId)
         {
             try
             {
@@ -341,6 +358,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 TLoan loan = new TLoan();
                 TLoanSurvey survey = new TLoanSurvey();
                 TLoanUnit unit = new TLoanUnit();
+                MPartner partner = new MPartner();
                 MCustomer customer = new MCustomer();
                 RefPerson person = new RefPerson();
                 RefAddress address = new RefAddress();
@@ -355,10 +373,13 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                         address = loan.AddressId;
                         person = loan.PersonId;
                         customer = loan.CustomerId;
+                        
                         if (loan.LoanUnits.Count > 0)
                             unit = loan.LoanUnits[0];
                         else
                             unit = new TLoanUnit();
+
+                        partner = loan.PartnerId;
                     }
                 }
 
@@ -422,6 +443,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 loan.AddressId = address;
                 loan.PersonId = person;
                 loan.CustomerId = customer;
+                loan.PartnerId = partner;
 
                 loan.CollectorId = loanVM.CollectorId;
                 loan.SalesmanId = loanVM.SalesmanId;
@@ -496,6 +518,25 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                     unit.ModifiedBy = User.Identity.Name;
                     unit.DataStatus = EnumDataStatus.Updated.ToString();
                     _tLoanUnitRepository.Update(unit);
+                }
+
+                //save partner
+                partner.PartnerName = partnerVM.PartnerName;
+
+                if (isSave)
+                {
+                    partner.SetAssignedIdTo(Guid.NewGuid().ToString());
+                    partner.CreatedDate = DateTime.Now;
+                    partner.CreatedBy = User.Identity.Name;
+                    partner.DataStatus = EnumDataStatus.New.ToString();
+                    _mPartnerRepository.Save(partner);
+                }
+                else
+                {
+                    partner.ModifiedDate = DateTime.Now;
+                    partner.ModifiedBy = User.Identity.Name;
+                    partner.DataStatus = EnumDataStatus.Updated.ToString();
+                    _mPartnerRepository.Update(partner);
                 }
 
                 //save survey
