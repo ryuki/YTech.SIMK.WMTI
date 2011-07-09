@@ -25,14 +25,14 @@
                         <table>
                             <tr>
                                 <td>
-                                    <label for="Id">
+                                    <label for="LoanNo">
                                         No PK:</label>
                                 </td>
                                 <td>
                                     <%= Model.CanEditId ? Html.TextBox("LoanNo", Model.Loan.LoanNo ?? string.Empty, new { @style = "width:150px" }) :
                                                           Html.TextBox("LoanNo", Model.Loan.LoanNo ?? string.Empty, new { @readonly = Model.CanEditId ? "true" : "false", @style = "width:150px" })
                                     %>
-                                    <%= Html.ValidationMessage("Id")%>
+                                    <%= Html.ValidationMessage("LoanNo")%>
                                 </td>
                             </tr>
                             <tr>
