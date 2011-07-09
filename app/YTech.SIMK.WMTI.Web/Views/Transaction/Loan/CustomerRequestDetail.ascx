@@ -2,7 +2,8 @@
 
 <% if (false)
    { %>
-<script src="../../../Scripts/jquery-1.5.2-vsdoc.js" type="text/javascript"></script>
+<script src="../../../Scripts/jquery-1.6.2-vsdoc.js" type="text/javascript"></script>
+<script src="../../../Scripts/jquery.validate-vsdoc.js" type="text/javascript"></script>
 <% } %>
 <% using (Ajax.BeginForm(new AjaxOptions
                                        {
@@ -25,14 +26,14 @@
                         <table>
                             <tr>
                                 <td>
-                                    <label for="Id">
+                                    <label for="LoanNo">
                                         No PK:</label>
                                 </td>
                                 <td>
                                     <%= Model.CanEditId ? Html.TextBox("LoanNo", Model.Loan.LoanNo ?? string.Empty, new { @style = "width:150px" }) :
                                                           Html.TextBox("LoanNo", Model.Loan.LoanNo ?? string.Empty, new { @readonly = Model.CanEditId ? "true" : "false", @style = "width:150px" })
                                     %>
-                                    <%= Html.ValidationMessage("Id")%>
+                                    <%= Html.ValidationMessage("LoanNo")%>
                                 </td>
                             </tr>
                             <tr>
@@ -293,14 +294,13 @@
 
     function ajaxValidate() {
         var errorimg = '<%= Url.Content("~/Content/Images/cross.gif") %>';
-        return $('form').validate({
+        var result = $('form').validate({
             rules: {
-                "Id": { required: true
-                },
+                "LoanNo": { required: true },
                 "PersonFirstName": { required: true }
             },
             messages: {
-                "Id": { required: "<img id='Iderror' src='" + errorimg + "' hovertext='No PK harus diisi' />"
+                "LoanNo": { required: "<img id='Iderror' src='" + errorimg + "' hovertext='No PK harus diisi' />"
                 },
                 "PersonFirstName": "<img id='PersonFirstNameerror' src='" + errorimg + "' hovertext='Nama harus diisi' />"
             },
@@ -320,6 +320,7 @@
                 //	generateTooltips();
             }
         }).form();
+        return result;
     }
 
     $(function () {
