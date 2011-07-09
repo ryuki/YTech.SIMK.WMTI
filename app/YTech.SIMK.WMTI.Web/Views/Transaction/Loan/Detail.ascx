@@ -1,12 +1,13 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewUserControl<SurveyFormViewModel>" %>
 <% if (false)
    { %>
-<script src="../../../Scripts/jquery-1.5.2-vsdoc.js" type="text/javascript"></script>
+<script src="../../../Scripts/jquery-1.6.2-vsdoc.js" type="text/javascript"></script>
 <% } %>
 <% using (Ajax.BeginForm(new AjaxOptions
                                        {
                                            //UpdateTargetId = "status",
                                            InsertionMode = InsertionMode.Replace,
+                                           OnBegin = "ajaxValidate",
                                            OnSuccess = "onSavedSuccess"
                                        }
 
@@ -24,7 +25,7 @@
                 <table>
                     <tr>
                         <td>
-                            <label for="Id">
+                            <label for="LoanNo">
                                 No PK:</label>
                         </td>
                         <td>
@@ -32,7 +33,7 @@
                             <%= Model.CanEditId ? Html.TextBox("LoanNo", Model.LoanSurvey.LoanId.LoanNo ?? string.Empty, new { @style = "width:150px" }) :
                                                          Html.TextBox("LoanNo", Model.LoanSurvey.LoanId.LoanNo ?? string.Empty, new { @readonly = Model.CanEditId ? "true" : "false", @style = "width:150px" })
                             %>
-                            <%= Html.ValidationMessage("Id")%>
+                            <%= Html.ValidationMessage("LoanNo")%>
                         </td>
                     </tr>
                     <tr>
@@ -434,7 +435,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label for="LoanSalesman">
+                            <label for="SalesmanId">
                                 Nama SA yg mengajukan :</label>
                         </td>
                         <td>
@@ -474,6 +475,16 @@
                     </tr>
                     <tr>
                         <td>
+                            <label for="PartnerName">
+                                Nama Toko :</label>
+                        </td>
+                        <td>
+                            <%= Html.TextBox("PartnerName", Model.LoanSurvey.LoanId.PartnerId != null ? Model.LoanSurvey.LoanId.PartnerId.PartnerName : null, new { @style = "width:300px" })%>
+                            <%= Html.ValidationMessage("PartnerName")%>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
                             <label for="UnitName">
                                 Nama Barang yg akan diambil :</label>
                         </td>
@@ -499,7 +510,7 @@
                         </td>
                         <td>
                             <%= Html.TextBox("UnitPrice", Model.LoanUnit.UnitPrice.HasValue ? Model.LoanUnit.UnitPrice.Value.ToString(CommonHelper.NumberFormat) : null, new { @style = "width:300px" })%>
-                            <%= Html.ValidationMessage("UnitType")%>
+                            <%= Html.ValidationMessage("UnitPrice")%>
                         </td>
                     </tr>
                     <tr>
@@ -644,7 +655,7 @@
         //var checkIdUrl = '<%= Url.Action("CheckCustomer","Customer") %>';
         return $('form').validate({
             rules: {
-                "Id": { required: true
+                "LoanNo": { required: true
                     //                    <% if (string.IsNullOrEmpty(Request.QueryString["customerId"])) {	%>
                     // ,remote: {
                     //                            url: checkIdUrl,
@@ -657,14 +668,44 @@
                     //                        }
                     //  <% } %>                       
                 },
-                "PersonFirstName": { required: true }
+                "LoanCode": { required: true },
+                "LoanSubmissionDate": { required: true },
+                "PersonFirstName": { required: true },
+                "AddressLine1": { required: true },
+                "ZoneId": { required: true },
+                "SurveyUnitDeliverDate": { required: true },
+                "LoanMaturityDate": { required: true },
+                "SalesmanId": { required: true },
+                "TLSId": { required: true },
+                "CollectorId": { required: true },
+                "SurveyorId": { required: true },
+                "UnitName": { required: true },
+                "UnitPrice": { required: true },
+                "LoanTenor": { required: true },
+                "LoanBasicInstallment": { required: true },
+                "SurveyDate": { required: true }
             },
             messages: {
-                "Id": { required: "<img id='Iderror' src='" + errorimg + "' hovertext='No PK harus diisi' />"
+                "LoanNo": { required: "<img id='Iderror' src='" + errorimg + "' hovertext='No PK harus diisi' />"
                     //                     <% if (string.IsNullOrEmpty(Request.QueryString["customerId"])) {	%>
                     //                    , remote: "<img id='remoteIderror' src='" + errorimg + "' hovertext='No Pasien sudah pernah diinput.' />" <% } %>
                 },
-                "PersonFirstName": "<img id='PersonFirstNameerror' src='" + errorimg + "' hovertext='Nama harus diisi' />"
+                "LoanCode": "<img id='LoanCodeerror' src='" + errorimg + "' hovertext='No Account harus diisi' />",
+                "LoanSubmissionDate": "<img id='LoanSubmissionDateerror' src='" + errorimg + "' hovertext='Tanggal PK harus diisi' />",
+                "PersonFirstName": "<img id='PersonFirstNameerror' src='" + errorimg + "' hovertext='Nama Pemohon harus diisi' />",
+                "AddressLine1": "<img id='AddressLine1error' src='" + errorimg + "' hovertext='Alamat harus diisi' />",
+                "ZoneId": "<img id='ZoneIderror' src='" + errorimg + "' hovertext='Wilayah harus diisi' />",
+                "SurveyUnitDeliverDate": "<img id='SurveyUnitDeliverDateerror' src='" + errorimg + "' hovertext='Tanggal Rencana Pengiriman Barang harus diisi' />",
+                "LoanMaturityDate": "<img id='LoanMaturityDateerror' src='" + errorimg + "' hovertext='Jatuh Tempo Pembayaran harus diisi' />",
+                "SalesmanId": "<img id='SalesmanIderror' src='" + errorimg + "' hovertext='Nama SA harus diisi' />",
+                "TLSId": "<img id='TLSIderror' src='" + errorimg + "' hovertext='TL harus diisi' />",
+                "CollectorId": "<img id='CollectorIderror' src='" + errorimg + "' hovertext='Col harus diisi' />",
+                "SurveyorId": "<img id='SurveyorIderror' src='" + errorimg + "' hovertext='Surv harus diisi' />",
+                "UnitName": "<img id='UnitNameerror' src='" + errorimg + "' hovertext='Nama Barang harus diisi' />",
+                "UnitPrice": "<img id='UnitPriceerror' src='" + errorimg + "' hovertext='Harga Barang harus diisi' />",
+                "LoanTenor": "<img id='LoanTenorerror' src='" + errorimg + "' hovertext='Lama Angsuran harus diisi' />",
+                "LoanBasicInstallment": "<img id='LoanBasicInstallmenterror' src='" + errorimg + "' hovertext='Angsuran per bulan harus diisi' />",
+                "SurveyDate": "<img id='SurveyDateerror' src='" + errorimg + "' hovertext='Tanggal Survey harus diisi' />"
             },
             invalidHandler: function (form, validator) {
                 var errors = validator.numberOfInvalids();
