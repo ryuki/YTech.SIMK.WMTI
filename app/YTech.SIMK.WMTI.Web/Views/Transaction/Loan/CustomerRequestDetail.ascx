@@ -297,12 +297,35 @@
         var result = $('form').validate({
             rules: {
                 "LoanNo": { required: true },
-                "PersonFirstName": { required: true }
+                "TLSId": { required: true },
+                "SalesmanId": { required: true },
+                "SurveyorId": { required: true },
+                "LoanBasicPrice": { required: true },
+                "LoanCreditPrice": { required: true },
+                "LoanSubmissionDate": { required: true },
+                "PersonFirstName": { required: true },
+                "AddressLine1": { required: true }
             },
             messages: {
-                "LoanNo": { required: "<img id='Iderror' src='" + errorimg + "' hovertext='No PK harus diisi' />"
+                "LoanNo": { required: "<img id='LoanNoerror' src='" + errorimg + "' hovertext='No PK harus diisi' />"
                 },
+                "TLSId": "<img id='TLSIderror' src='" + errorimg + "' hovertext='Team Name harus diisi' />"
+                ,
+                "SalesmanId": "<img id='SalesmanIderror' src='" + errorimg + "' hovertext='SA CODE harus diisi' />"
+                ,
+                "SurveyorId": "<img id='SurveyorIderror' src='" + errorimg + "' hovertext='Survey Code harus diisi' />"
+                ,
+                "LoanBasicPrice": "<img id='LoanBasicPriceerror' src='" + errorimg + "' hovertext='HD harus diisi' />"
+                ,
+                "LoanCreditPrice": "<img id='LoanCreditPriceerror' src='" + errorimg + "' hovertext='HT harus diisi' />"
+                ,
+                "LoanSubmissionDate": "<img id='LoanSubmissionDateerror' src='" + errorimg + "' hovertext='Tanggal harus diisi' />"
+                ,
                 "PersonFirstName": "<img id='PersonFirstNameerror' src='" + errorimg + "' hovertext='Nama harus diisi' />"
+                ,
+                "AddressLine1": "<img id='AddressLine1error' src='" + errorimg + "' hovertext='Alamat harus diisi' />"
+                ,
+                "UnitName": "<img id='UnitNameerror' src='" + errorimg + "' hovertext='Nama Barang harus diisi' />"
             },
             invalidHandler: function (form, validator) {
                 var errors = validator.numberOfInvalids();
