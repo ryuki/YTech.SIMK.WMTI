@@ -7,6 +7,7 @@
 <% using (Ajax.BeginForm(new AjaxOptions
                                        {
                                            InsertionMode = InsertionMode.Replace,
+                                           OnBegin = "ajaxValidate",
                                            OnSuccess = "onSavedSuccess"
                                        }
 
