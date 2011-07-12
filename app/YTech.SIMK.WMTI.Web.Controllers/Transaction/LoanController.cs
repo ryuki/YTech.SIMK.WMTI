@@ -331,7 +331,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         {
             ViewData["CurrentItem"] = "Lembar Survey";
             SurveyFormViewModel viewModel =
-                SurveyFormViewModel.CreateSurveyFormViewModel(_tLoanSurveyRepository, _mEmployeeRepository, _mZoneRepository, loanSurveyId);
+                SurveyFormViewModel.CreateSurveyFormViewModel(_tLoanSurveyRepository, _mEmployeeRepository, _mZoneRepository, _mPartnerRepository, loanSurveyId);
 
             return View(viewModel);
         }
@@ -341,7 +341,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         {
             ViewData["CurrentItem"] = "Lembar Survey";
             SurveyFormViewModel viewModel =
-                SurveyFormViewModel.CreateSurveyFormViewModel(_tLoanSurveyRepository, _mEmployeeRepository, _mZoneRepository, loanSurveyId);
+                SurveyFormViewModel.CreateSurveyFormViewModel(_tLoanSurveyRepository, _mEmployeeRepository, _mZoneRepository, _mPartnerRepository, loanSurveyId);
 
             return View(viewModel);
         }

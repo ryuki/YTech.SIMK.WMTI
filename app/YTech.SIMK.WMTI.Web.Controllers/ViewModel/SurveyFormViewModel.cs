@@ -11,7 +11,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
 {
     public class SurveyFormViewModel
     {
-        public static SurveyFormViewModel CreateSurveyFormViewModel(ITLoanSurveyRepository tLoanSurveyRepository, IMEmployeeRepository mEmployeeRepository,IMZoneRepository mZoneRepository, string loanSurveyId)
+        public static SurveyFormViewModel CreateSurveyFormViewModel(ITLoanSurveyRepository tLoanSurveyRepository, IMEmployeeRepository mEmployeeRepository,IMZoneRepository mZoneRepository, IMPartnerRepository mPartnerRepository, string loanSurveyId)
         {
             SurveyFormViewModel viewModel = new SurveyFormViewModel();
             viewModel.CanEditId = true;
@@ -134,6 +134,14 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
                         select new { Id = zo.Id, Name = zo.ZoneName };
             viewModel.ZoneList = new SelectList(zones, "Id", "Name", loanSurvey.LoanId.ZoneId != null ? loanSurvey.LoanId.ZoneId.Id : string.Empty);
 
+            var listPartner = mPartnerRepository.GetAll();
+            MPartner p = new MPartner();
+            p.PartnerName = "-Pilih Toko-";
+            listPartner.Insert(0, p);
+            var partners = from prtner in listPartner
+                           select new {Id = prtner.Id, Name = prtner.PartnerName};
+            viewModel.PartnerList = new SelectList(partners, "Id", "Name", loanSurvey.LoanId.PartnerId != null ? loanSurvey.LoanId.PartnerId.Id : string.Empty);
+
             return viewModel;
         }
 
@@ -181,6 +189,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
         public SelectList TLSList { get; internal set; }
         public SelectList SurveyorList { get; internal set; }
         public SelectList CollectorList { get; internal set; }
+        public SelectList PartnerList { get; internal set; }
         public bool CanEditId { get; internal set; }
 
         public bool SurveyNeighborAsset_CTV { get; internal set; }

@@ -479,7 +479,7 @@
                                 Nama Toko :</label>
                         </td>
                         <td>
-                            <%= Html.TextBox("PartnerName", Model.LoanSurvey.LoanId.PartnerId != null ? Model.LoanSurvey.LoanId.PartnerId.PartnerName : null, new { @style = "width:300px" })%>
+                            <%= Html.DropDownList("PartnerName", Model.PartnerList)%>
                             <%= Html.ValidationMessage("PartnerName")%>
                         </td>
                     </tr>
