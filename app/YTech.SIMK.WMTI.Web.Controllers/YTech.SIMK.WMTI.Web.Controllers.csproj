@@ -101,6 +101,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Master\MasterAreaRegistration.cs" />
+    <Compile Include="Master\PartnerController.cs" />
     <Compile Include="Master\ZoneController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RouteRegistrar.cs" />

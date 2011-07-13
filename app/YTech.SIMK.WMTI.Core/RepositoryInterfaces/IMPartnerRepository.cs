@@ -6,5 +6,6 @@ namespace YTech.SIMK.WMTI.Core.RepositoryInterfaces
 {
     public interface IMPartnerRepository : INHibernateRepositoryWithTypedId<MPartner, string>
     {
+        IEnumerable<MPartner> GetPagedPartnerList(string orderCol, string orderBy, int pageIndex, int maxRows, ref int totalRows);
     }
 }
