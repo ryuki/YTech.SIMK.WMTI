@@ -116,7 +116,11 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Master
                 _mPartnerRepository.DbContext.BeginTransaction();
 
                 MPartner partner = _mPartnerRepository.Get(viewModel.Id);
-                
+
+                partner.PartnerName = viewModel.PartnerName;
+                partner.PartnerDesc = viewModel.PartnerDesc;
+                partner.PartnerStatus = viewModel.PartnerStatus;
+
                 partner.ModifiedDate = DateTime.Now;
                 partner.ModifiedBy = User.Identity.Name;
                 partner.DataStatus = EnumDataStatus.Updated.ToString();
