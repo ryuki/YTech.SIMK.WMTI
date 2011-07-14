@@ -18,7 +18,6 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
 
             TLoanSurvey loanSurvey = null;
             TLoanUnit loanUnit = null;
-            MPartner partner = new MPartner();
             RefPerson person = new RefPerson();
             RefAddress address = new RefAddress();
             if (!string.IsNullOrEmpty(loanSurveyId))
@@ -31,8 +30,6 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
                 else
                     loanUnit = new TLoanUnit();
 
-                partner = loanSurvey.LoanId.PartnerId;
-
                 viewModel.CanEditId = false;
             }
             if (loanSurvey == null)
@@ -42,12 +39,14 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
                 MCustomer customer = new MCustomer();
                 loanSurvey = new TLoanSurvey();
                 MZone zone = new MZone();
+                MPartner partner = new MPartner();
 
                 loanSurvey.LoanId = loan;
                 loanSurvey.LoanId.CustomerId = customer;
                 loanSurvey.LoanId.CustomerId.PersonId = person;
                 loanSurvey.LoanId.CustomerId.AddressId = address;
                 loanSurvey.LoanId.ZoneId = zone;
+                loanSurvey.LoanId.PartnerId = partner;
 
                 MEmployee emp = new MEmployee();
                 loan.SalesmanId = emp;

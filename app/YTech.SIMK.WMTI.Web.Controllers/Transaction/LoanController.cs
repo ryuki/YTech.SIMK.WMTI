@@ -116,7 +116,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 TLoan loan = new TLoan();
                 TLoanSurvey loanSurvey = new TLoanSurvey();
                 TLoanUnit unit = new TLoanUnit();
-                MPartner partner = new MPartner();
+                //MPartner partner = new MPartner();
                 MCustomer customer = new MCustomer();
                 RefPerson person = new RefPerson();
                 RefAddress address = new RefAddress();
@@ -139,7 +139,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                         else
                             unit = new TLoanUnit();
 
-                        partner = loan.PartnerId;
+                        //partner = loan.PartnerId;
                     }
                 }
 
@@ -207,20 +207,20 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 }
 
                 //save partner
-                if (isSave)
-                {
-                    partner.SetAssignedIdTo(Guid.NewGuid().ToString());
-                    partner.CreatedDate = DateTime.Now;
-                    partner.CreatedBy = User.Identity.Name;
-                    partner.DataStatus = EnumDataStatus.New.ToString();
-                    _mPartnerRepository.Save(partner);
-                }
+                //if (isSave)
+                //{
+                //    partner.SetAssignedIdTo(Guid.NewGuid().ToString());
+                //    partner.CreatedDate = DateTime.Now;
+                //    partner.CreatedBy = User.Identity.Name;
+                //    partner.DataStatus = EnumDataStatus.New.ToString();
+                //    _mPartnerRepository.Save(partner);
+                //}
 
                 //save loan
                 loan.AddressId = address;
                 loan.PersonId = person;
                 loan.CustomerId = customer;
-                loan.PartnerId = partner;
+                //loan.PartnerId = partner;
 
                 loan.TLSId = loanVM.TLSId;
                 loan.SalesmanId = loanVM.SalesmanId;
@@ -349,7 +349,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         [ValidateAntiForgeryToken]      // Helps avoid CSRF attacks
         [Transaction]                   // Wraps a transaction around the action
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Survey(TLoanSurvey surveyVM, TLoan loanVM, TLoanUnit loanUnitVM, MPartner partnerVM,  FormCollection formCollection, string loanSurveyId)
+        public ActionResult Survey(TLoanSurvey surveyVM, TLoan loanVM, TLoanUnit loanUnitVM, FormCollection formCollection, string loanSurveyId)
         {
             try
             {
@@ -358,7 +358,6 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 TLoan loan = new TLoan();
                 TLoanSurvey survey = new TLoanSurvey();
                 TLoanUnit unit = new TLoanUnit();
-                MPartner partner = new MPartner();
                 MCustomer customer = new MCustomer();
                 RefPerson person = new RefPerson();
                 RefAddress address = new RefAddress();
@@ -379,7 +378,6 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                         else
                             unit = new TLoanUnit();
 
-                        partner = loan.PartnerId;
                     }
                 }
 
@@ -443,7 +441,6 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 loan.AddressId = address;
                 loan.PersonId = person;
                 loan.CustomerId = customer;
-                loan.PartnerId = partner;
 
                 loan.CollectorId = loanVM.CollectorId;
                 loan.SalesmanId = loanVM.SalesmanId;
@@ -454,6 +451,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 loan.LoanDesc = loanVM.LoanDesc;
                 loan.ZoneId = loanVM.ZoneId;
                 loan.LoanSubmissionDate = loanVM.LoanSubmissionDate;
+                loan.PartnerId = loanVM.PartnerId;
 
                 if (!string.IsNullOrEmpty(formCollection["LoanDownPayment"]))
                     loan.LoanDownPayment = Convert.ToDecimal(formCollection["LoanDownPayment"].Replace(",", ""));
@@ -518,25 +516,6 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                     unit.ModifiedBy = User.Identity.Name;
                     unit.DataStatus = EnumDataStatus.Updated.ToString();
                     _tLoanUnitRepository.Update(unit);
-                }
-
-                //save partner
-                partner.PartnerName = partnerVM.PartnerName;
-
-                if (isSave)
-                {
-                    partner.SetAssignedIdTo(Guid.NewGuid().ToString());
-                    partner.CreatedDate = DateTime.Now;
-                    partner.CreatedBy = User.Identity.Name;
-                    partner.DataStatus = EnumDataStatus.New.ToString();
-                    _mPartnerRepository.Save(partner);
-                }
-                else
-                {
-                    partner.ModifiedDate = DateTime.Now;
-                    partner.ModifiedBy = User.Identity.Name;
-                    partner.DataStatus = EnumDataStatus.Updated.ToString();
-                    _mPartnerRepository.Update(partner);
                 }
 
                 //save survey
