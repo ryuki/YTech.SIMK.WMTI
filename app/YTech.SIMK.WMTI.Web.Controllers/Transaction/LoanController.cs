@@ -220,11 +220,11 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 loan.AddressId = address;
                 loan.PersonId = person;
                 loan.CustomerId = customer;
-                //loan.PartnerId = partner;
 
                 loan.TLSId = loanVM.TLSId;
                 loan.SalesmanId = loanVM.SalesmanId;
                 loan.SurveyorId = loanVM.SurveyorId;
+                loan.PartnerId = loanVM.PartnerId;
 
                 loan.LoanNo = loanVM.LoanNo;
                 loan.LoanBasicPrice = loanVM.LoanBasicPrice;

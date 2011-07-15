@@ -475,12 +475,12 @@
                     </tr>
                     <tr>
                         <td>
-                            <label for="PartnerName">
+                            <label for="PartnerId">
                                 Nama Toko :</label>
                         </td>
                         <td>
-                            <%= Html.DropDownList("PartnerName", Model.PartnerList)%>
-                            <%= Html.ValidationMessage("PartnerName")%>
+                            <%= Html.DropDownList("PartnerId", Model.PartnerList)%>
+                            <%= Html.ValidationMessage("PartnerId")%>
                         </td>
                     </tr>
                     <tr>
