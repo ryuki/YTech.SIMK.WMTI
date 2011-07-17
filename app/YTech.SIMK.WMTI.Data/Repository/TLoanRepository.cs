@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 using NHibernate;
 using NHibernate.Criterion;
 using SharpArch.Data.NHibernate;
@@ -29,7 +30,6 @@ namespace YTech.SIMK.WMTI.Data.Repository
             IEnumerable<TLoan> list = criteria.List<TLoan>();
             return list;
         }
-
         #endregion
     }
 }

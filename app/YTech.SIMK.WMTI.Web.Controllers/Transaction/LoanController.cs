@@ -59,8 +59,24 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         [Transaction]
         public virtual ActionResult List(string sidx, string sord, int page, int rows)
         {
+
             int totalRecords = 0;
             var loans = _tLoanRepository.GetPagedLoanList(sidx, sord, page, rows, ref totalRecords);
+
+            foreach (var loan in loans)
+            {
+                if (!(loan.Surveys.Count > 0))
+                {
+                    TLoanSurvey loanSurvey = new TLoanSurvey();
+                    
+                    loanSurvey.LoanId = loan;
+                    loanSurvey.SetAssignedIdTo(Guid.NewGuid().ToString());
+                    loanSurvey.CreatedDate = DateTime.Now;
+                    loanSurvey.CreatedBy = User.Identity.Name;
+                    loanSurvey.DataStatus = EnumDataStatus.New.ToString();
+                    _tLoanSurveyRepository.Save(loanSurvey);
+                }
+            }
 
             int pageSize = rows;
             int totalPages = (int)Math.Ceiling((float)totalRecords / (float)pageSize);
@@ -116,7 +132,6 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 TLoan loan = new TLoan();
                 TLoanSurvey loanSurvey = new TLoanSurvey();
                 TLoanUnit unit = new TLoanUnit();
-                //MPartner partner = new MPartner();
                 MCustomer customer = new MCustomer();
                 RefPerson person = new RefPerson();
                 RefAddress address = new RefAddress();
@@ -139,7 +154,6 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                         else
                             unit = new TLoanUnit();
 
-                        //partner = loan.PartnerId;
                     }
                 }
 
@@ -205,16 +219,6 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                     customer.DataStatus = EnumDataStatus.Updated.ToString();
                     _mCustomerRepository.Update(customer);
                 }
-
-                //save partner
-                //if (isSave)
-                //{
-                //    partner.SetAssignedIdTo(Guid.NewGuid().ToString());
-                //    partner.CreatedDate = DateTime.Now;
-                //    partner.CreatedBy = User.Identity.Name;
-                //    partner.DataStatus = EnumDataStatus.New.ToString();
-                //    _mPartnerRepository.Save(partner);
-                //}
 
                 //save loan
                 loan.AddressId = address;
