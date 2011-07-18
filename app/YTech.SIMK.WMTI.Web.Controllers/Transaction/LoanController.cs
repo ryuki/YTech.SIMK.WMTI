@@ -373,10 +373,48 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                     {
                         isSave = false;
                         loan = survey.LoanId;
-                        address = loan.AddressId;
-                        person = loan.PersonId;
-                        customer = loan.CustomerId;
-                        
+
+                        if (loan.AddressId == null)
+                        {
+                            address.SetAssignedIdTo(Guid.NewGuid().ToString());
+                            address.CreatedDate = DateTime.Now;
+                            address.CreatedBy = User.Identity.Name;
+                            address.DataStatus = EnumDataStatus.New.ToString();
+                            
+                            _refAddressRepository.Save(address);
+                        }
+                        else
+                        {
+                            address = loan.AddressId;
+                        }
+
+                        if (loan.PersonId == null)
+                        {
+                            person.SetAssignedIdTo(Guid.NewGuid().ToString());
+                            person.CreatedDate = DateTime.Now;
+                            person.CreatedBy = User.Identity.Name;
+                            person.DataStatus = EnumDataStatus.New.ToString();
+
+                            _refPersonRepository.Save(person);
+                        }
+                        else
+                        {
+                            person = loan.PersonId;
+                        }
+
+                        if (loan.CustomerId == null)
+                        {
+                            customer.SetAssignedIdTo(Guid.NewGuid().ToString());
+                            customer.CreatedDate = DateTime.Now;
+                            customer.CreatedBy = User.Identity.Name;
+                            customer.DataStatus = EnumDataStatus.New.ToString();
+
+                            _mCustomerRepository.Save(customer);
+                        }
+                        else
+                        {
+                            customer = loan.CustomerId;
+                        }
                         if (loan.LoanUnits.Count > 0)
                             unit = loan.LoanUnits[0];
                         else
