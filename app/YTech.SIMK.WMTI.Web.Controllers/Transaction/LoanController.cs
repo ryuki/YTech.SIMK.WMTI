@@ -259,7 +259,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                     loan.CreatedDate = DateTime.Now;
                     loan.CreatedBy = User.Identity.Name;
                     loan.DataStatus = EnumDataStatus.New.ToString();
-                    loan.LoanStatus = EnumLoanStatus.Survey.ToString();
+                    loan.LoanStatus = EnumLoanStatus.Request.ToString();
                     _tLoanRepository.Save(loan);
                 }
                 else
@@ -800,6 +800,120 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                     _tInstallmentRepository.Save(ins);
                 }
             }
+        }
+
+        [Transaction]
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Cancel(string loanId)
+        {
+            _tLoanSurveyRepository.DbContext.BeginTransaction();
+            TLoan loan = _tLoanRepository.Get(loanId);
+
+            if (loan != null)
+            {
+                loan.LoanStatus = EnumLoanStatus.Cancel.ToString();
+
+                loan.ModifiedBy = User.Identity.Name;
+                loan.ModifiedDate = DateTime.Now;
+                loan.DataStatus = EnumDataStatus.Updated.ToString();
+                _tLoanRepository.Update(loan);
+            }
+
+            string Message = string.Empty;
+            bool Success = true;
+
+            try
+            {
+                _tLoanSurveyRepository.DbContext.CommitTransaction();
+                Success = true;
+                Message = "Cancel Kredit Berhasil.";
+            }
+            catch (Exception ex)
+            {
+                Success = false;
+                Message = ex.GetBaseException().Message;
+                _tLoanSurveyRepository.DbContext.RollbackTransaction();
+            }
+
+            var e = new {Success, Message};
+
+            return Json(e, JsonRequestBehavior.AllowGet);
+        }
+
+        [Transaction]
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Postpone(string loanId)
+        {
+            _tLoanSurveyRepository.DbContext.BeginTransaction();
+            TLoan loan = _tLoanRepository.Get(loanId);
+
+            if (loan != null)
+            {
+                loan.LoanStatus = EnumLoanStatus.Postpone.ToString();
+
+                loan.ModifiedBy = User.Identity.Name;
+                loan.ModifiedDate = DateTime.Now;
+                loan.DataStatus = EnumDataStatus.Updated.ToString();
+                _tLoanRepository.Update(loan);
+            }
+
+            string Message = string.Empty;
+            bool Success = true;
+
+            try
+            {
+                _tLoanSurveyRepository.DbContext.CommitTransaction();
+                Success = true;
+                Message = "Postpone Kredit Berhasil.";
+            }
+            catch (Exception ex)
+            {
+                Success = false;
+                Message = ex.GetBaseException().Message;
+                _tLoanSurveyRepository.DbContext.RollbackTransaction();
+            }
+
+            var e = new { Success, Message };
+
+            return Json(e, JsonRequestBehavior.AllowGet);
+        }
+
+        [Transaction]
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Reject(string loanId)
+        {
+            _tLoanSurveyRepository.DbContext.BeginTransaction();
+            TLoan loan = _tLoanRepository.Get(loanId);
+
+            if (loan != null)
+            {
+                loan.LoanStatus = EnumLoanStatus.Reject.ToString();
+
+                loan.ModifiedBy = User.Identity.Name;
+                loan.ModifiedDate = DateTime.Now;
+                loan.DataStatus = EnumDataStatus.Updated.ToString();
+                _tLoanRepository.Update(loan);
+            }
+
+            string Message = string.Empty;
+            bool Success = true;
+
+            try
+            {
+                _tLoanSurveyRepository.DbContext.CommitTransaction();
+                Success = true;
+                Message = "Reject Kredit Berhasil.";
+            }
+            catch (Exception ex)
+            {
+                Success = false;
+                Message = ex.GetBaseException().Message;
+                _tLoanSurveyRepository.DbContext.RollbackTransaction();
+            }
+
+            var e = new { Success, Message };
+
+            return Json(e, JsonRequestBehavior.AllowGet);
         }
     }
 }

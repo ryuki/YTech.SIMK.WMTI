@@ -71,13 +71,24 @@
                         var cl = ids[i];
                         var row = $("#list").getRowData(cl);
                         var status = row.LoanStatus;
-                        var disable = '';
+                        var disableApprove = '';
+                        var disableCancel = '';
+                        var disablePostpone = '';
+                        var disableReject = '';
                         if (status == 'Approve')
-                            disable = 'disabled=disabled';
-                        var be = "<input type='button' value='Edit PK' tooltips='Edit PK' onClick=\"OpenPopupPK('" + row.LoanId + "');\" />";
-                        be = be + "<input type='button' value='Edit Survey' tooltips='Edit Survey'  onClick=\"OpenPopup('" + cl + "');\" />";
-                        be = be + "<input type='button' value='Approve' tooltips='Approve Kredit'  onClick=\"OpenPopupApprove('" + row.LoanId + "');\" " + disable + " />";
-                        
+                            disableApprove = 'disabled=disabled';
+                        if (status == 'Cancel')
+                            disableCancel = 'disabled=disabled';
+                        if (status == 'Postpone')
+                            disablePostpone = 'disabled=disabled';
+                        if (status == 'Reject')
+                            disableReject = 'disabled=disabled';
+                        var be = "<img src='../Content/Images/window16.gif' title='Edit PK' style='cursor: hand;' onClick=\"OpenPopupPK('" + row.LoanId + "');\" />";
+                        be = be + "<img src='../Content/Images/window16.gif' title='Edit Survey' style='cursor: hand;' onClick=\"OpenPopup('" + cl + "');\" />";
+                        be = be + "<img src='../Content/Images/window16.gif' title='Approve Kredit' style='cursor: hand;' onClick=\"OpenPopupApprove('" + row.LoanId + "');\" " + disableApprove + " />";
+                        be = be + "<img src='../Content/Images/window16.gif' title='Cancel Kredit' style='cursor: hand;' onClick=\"OpenPopupCancel('" + row.LoanId + "');\" " + disableCancel + " />";
+                        be = be + "<img src='../Content/Images/window16.gif' title='Postpone Kredit' style='cursor: hand;' onClick=\"OpenPopupPostpone('" + row.LoanId + "');\" " + disablePostpone + " />";
+                        be = be + "<img src='../Content/Images/window16.gif' title='Reject Kredit' style='cursor: hand;' onClick=\"OpenPopupReject('" + row.LoanId + "');\" " + disableReject + " />";
                         $(this).setRowData(ids[i], { act: be });
                     }
                 },
@@ -132,6 +143,42 @@
             //alert(t);
 //            var result = $.parseJSON(t);
 //            alert(result.Message);
+            $("#list").trigger("reloadGrid");
+            return false;
+        }
+
+        function OpenPopupCancel(loanId) {
+            var conf = confirm('Anda yakin meng-cancel kredit?');
+
+            if (!conf)
+                return false;
+
+            var t = $.ajax({ url: '<%= Url.Action("Cancel","Loan") %>?loanId=' + loanId, async: false, type: 'POST', cache: false, success: function (data, result) { if (!result) alert('Failure to retrieve the Cancel.'); } }).responseText;
+
+            $("#list").trigger("reloadGrid");
+            return false;
+        }
+
+        function OpenPopupPostpone(loanId) {
+            var conf = confirm('Anda yakin mem-postpone kredit?');
+
+            if (!conf)
+                return false;
+
+            var t = $.ajax({ url: '<%= Url.Action("Postpone","Loan") %>?loanId=' + loanId, async: false, type: 'POST', cache: false, success: function (data, result) { if (!result) alert('Failure to retrieve the Postpone.'); } }).responseText;
+
+            $("#list").trigger("reloadGrid");
+            return false;
+        }
+
+        function OpenPopupReject(loanId) {
+            var conf = confirm('Anda yakin me-reject kredit?');
+
+            if (!conf)
+                return false;
+
+            var t = $.ajax({ url: '<%= Url.Action("Reject","Loan") %>?loanId=' + loanId, async: false, type: 'POST', cache: false, success: function (data, result) { if (!result) alert('Failure to retrieve the Reject.'); } }).responseText;
+
             $("#list").trigger("reloadGrid");
             return false;
         }
