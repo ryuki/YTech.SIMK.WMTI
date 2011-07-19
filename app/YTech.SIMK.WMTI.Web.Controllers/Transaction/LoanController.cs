@@ -63,21 +63,6 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             int totalRecords = 0;
             var loans = _tLoanRepository.GetPagedLoanList(sidx, sord, page, rows, ref totalRecords);
 
-            foreach (var loan in loans)
-            {
-                if (!(loan.Surveys.Count > 0))
-                {
-                    TLoanSurvey loanSurvey = new TLoanSurvey();
-                    
-                    loanSurvey.LoanId = loan;
-                    loanSurvey.SetAssignedIdTo(Guid.NewGuid().ToString());
-                    loanSurvey.CreatedDate = DateTime.Now;
-                    loanSurvey.CreatedBy = User.Identity.Name;
-                    loanSurvey.DataStatus = EnumDataStatus.New.ToString();
-                    _tLoanSurveyRepository.Save(loanSurvey);
-                }
-            }
-
             int pageSize = rows;
             int totalPages = (int)Math.Ceiling((float)totalRecords / (float)pageSize);
             var jsonData = new
