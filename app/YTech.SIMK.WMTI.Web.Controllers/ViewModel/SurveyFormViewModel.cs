@@ -30,7 +30,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
                 else
                     loanUnit = new TLoanUnit();
 
-                viewModel.CanEditId = false;
+                viewModel.CanEditId = true;
             }
             if (loanSurvey == null)
             {
