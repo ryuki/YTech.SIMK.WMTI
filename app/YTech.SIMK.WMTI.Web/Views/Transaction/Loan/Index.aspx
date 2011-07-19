@@ -71,6 +71,7 @@
                         var cl = ids[i];
                         var row = $("#list").getRowData(cl);
                         var status = row.LoanStatus;
+						
                         var disableApprove = "disabled='disabled'";
                         var disableReject = "disabled='disabled'";
                         var disableCancel = "disabled='disabled'";
