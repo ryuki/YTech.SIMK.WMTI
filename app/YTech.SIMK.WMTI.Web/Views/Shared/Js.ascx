@@ -41,3 +41,7 @@
     <script src="<%= Url.Content("~/Scripts/date.format.js") %>" type="text/javascript"></script>
     <script src="<%= Url.Content("~/Scripts/NumberFormat.js") %>" type="text/javascript"></script>
     <script src="<%= Url.Content("~/Scripts/complex.js") %>" type="text/javascript"></script>
+    <script src="<%= Url.Content("~/Scripts/pixastic.core.js") %>" type="text/javascript"></script>
+    <script src="<%= Url.Content("~/Scripts/pixastic.jquery.js") %>" type="text/javascript"></script>
+    <script src="<%= Url.Content("~/Scripts/desaturate.js") %>" type="text/javascript"></script>
+    <script src="<%= Url.Content("~/Scripts/grayscale.js") %>" type="text/javascript"></script>

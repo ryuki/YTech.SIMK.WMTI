@@ -286,6 +286,8 @@
     <Content Include="Scripts\complex.js" />
     <Content Include="Scripts\date.format.js" />
     <Content Include="Scripts\default.js" />
+    <Content Include="Scripts\desaturate.js" />
+    <Content Include="Scripts\grayscale.js" />
     <Content Include="Scripts\grid.locale-en.js" />
     <Content Include="Scripts\jquery-1.6.2-vsdoc.js" />
     <Content Include="Scripts\jquery-1.6.2.min.js" />
@@ -302,6 +304,8 @@
     <Content Include="Scripts\MicrosoftMvcValidation.debug.js" />
     <Content Include="Scripts\MicrosoftMvcValidation.js" />
     <Content Include="Scripts\NumberFormat.js" />
+    <Content Include="Scripts\pixastic.core.js" />
+    <Content Include="Scripts\pixastic.jquery.js" />
     <Content Include="Scripts\plugins\grid.addons.js" />
     <Content Include="Scripts\plugins\grid.postext.js" />
     <Content Include="Scripts\plugins\grid.setcolumns.js" />
