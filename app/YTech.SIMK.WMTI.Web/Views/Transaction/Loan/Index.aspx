@@ -71,26 +71,42 @@
                         var cl = ids[i];
                         var row = $("#list").getRowData(cl);
                         var status = row.LoanStatus;
-                        var disableApprove = '';
-                        var disableCancel = '';
-                        var disablePostpone = '';
-                        var disableReject = '';
-                        if (status == 'Approve')
-                            disableApprove = 'disabled=disabled';
-                        if (status == 'Cancel')
-                            disableCancel = 'disabled=disabled';
-                        if (status == 'Postpone')
-                            disablePostpone = 'disabled=disabled';
-                        if (status == 'Reject')
-                            disableReject = 'disabled=disabled';
-                        var be = "<img src='../Content/Images/window16.gif' title='Edit PK' style='cursor: hand;' onClick=\"OpenPopupPK('" + row.LoanId + "');\" />";
-                        be = be + "<img src='../Content/Images/window16.gif' title='Edit Survey' style='cursor: hand;' onClick=\"OpenPopup('" + cl + "');\" />";
-                        be = be + "<img src='../Content/Images/window16.gif' title='Approve Kredit' style='cursor: hand;' onClick=\"OpenPopupApprove('" + row.LoanId + "');\" " + disableApprove + " />";
-                        be = be + "<img src='../Content/Images/window16.gif' title='Cancel Kredit' style='cursor: hand;' onClick=\"OpenPopupCancel('" + row.LoanId + "');\" " + disableCancel + " />";
-                        be = be + "<img src='../Content/Images/window16.gif' title='Postpone Kredit' style='cursor: hand;' onClick=\"OpenPopupPostpone('" + row.LoanId + "');\" " + disablePostpone + " />";
-                        be = be + "<img src='../Content/Images/window16.gif' title='Reject Kredit' style='cursor: hand;' onClick=\"OpenPopupReject('" + row.LoanId + "');\" " + disableReject + " />";
+                        var disableApprove = "disabled='disabled'";
+                        var disableReject = "disabled='disabled'";
+                        var disableCancel = "disabled='disabled'";
+                        var disablePostpone = "disabled='disabled'";
+
+                        //enable approve if status is survey or postpone
+                        if (status == 'Survey' || status == 'Postpone')
+                            disableApprove = "";
+                        //enable button if status is survey
+                        if (status == 'Survey') {
+                            disableReject = "";
+                            disableCancel = "";
+                            disablePostpone = "";
+                        }
+
+                        var be = "<img src='../Content/Images/window16.gif' title='Edit PK' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupPK('" + row.LoanId + "');\" />&nbsp;";
+                        be = be + "<img src='../Content/Images/window16.gif' title='Edit Survey' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopup('" + cl + "');\" />&nbsp; | &nbsp;";
+
+                        be = be + "<img src='../Content/Images/approve24_on.png' title='Approve Kredit' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupApprove('" + row.LoanId + "');\" " + disableApprove + " />&nbsp;";
+                        be = be + "<img src='../Content/Images/reject32_on.png' title='Reject Kredit' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupReject('" + row.LoanId + "');\" " + disableReject + " />&nbsp; | &nbsp;";
+
+                        be = be + "<img src='../Content/Images/cancel32_on.png' title='Cancel Kredit' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupCancel('" + row.LoanId + "');\" " + disableCancel + " />&nbsp;";
+                        be = be + "<img src='../Content/Images/window16.gif' title='Tunda Kredit' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupPostpone('" + row.LoanId + "');\" " + disablePostpone + " />";
                         $(this).setRowData(ids[i], { act: be });
                     }
+                    $("img[disabled='disabled']").pixastic("desaturate");
+                    //grayscale($("img[disabled='disabled']"));
+                    $("img[disabled='disabled']").css("filter",'progid:DXImageTransform.Microsoft.BasicImage(grayscale=1)');
+//                    var images = $("img[disabled='disabled']");
+//                    images.hide();
+//                    alert('test');
+//                    //alert(images[0].attr('src'));
+//                    //images.show();
+//                    images.complete = function () {
+//                        Pixastic.process(images, "desaturate", { average: false });
+//                    };
                 },
                 ondblClickRow: function (rowid, iRow, iCol, e) {
 
@@ -135,14 +151,14 @@
 
         function OpenPopupApprove(loanId) {
             var conf = confirm('Anda yakin meng-approve kredit?');
-            
+
             if (!conf)
                 return false;
 
             var t = $.ajax({ url: '<%= Url.Action("Approve","Loan") %>?loanId=' + loanId, async: false, type: 'POST', cache: false, success: function (data, result) { if (!result) alert('Failure to retrieve the Approve.'); } }).responseText;
             //alert(t);
-//            var result = $.parseJSON(t);
-//            alert(result.Message);
+            //            var result = $.parseJSON(t);
+            //            alert(result.Message);
             $("#list").trigger("reloadGrid");
             return false;
         }
@@ -190,7 +206,7 @@
                 url += 'loanCustomerRequestId=' + id;
                 url += '&rand=' + (new Date()).getTime();
             }
-            
+
             $("#popup_frame").attr("src", url);
             $("#popup").dialog("open");
 
