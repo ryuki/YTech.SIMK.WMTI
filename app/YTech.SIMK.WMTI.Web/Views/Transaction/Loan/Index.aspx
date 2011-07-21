@@ -37,12 +37,13 @@
             $.jgrid.del.msg = "Anda yakin menghapus Kredit yang dipilih?";
             $("#list").jqGrid({
                 url: '<%= Url.Action("List", "Loan") %>',
+                postData: { loanStatus: function () { return '<%= Request.QueryString["loanStatus"]%>'; } },
                 datatype: 'json',
                 mtype: 'GET',
                 colNames: ['', 'Id', 'LoanId', 'No PK', 'No Account', 'Tgl Pengajuan Kredit', 'Pemohon', 'Surveyor', 'Wilayah', 'Status'],
                 colModel: [
                     {
-                        name: 'act', index: 'act', width: 250, sortable: false
+                        name: 'act', index: 'act', width: 200, sortable: false
                     },
                    { name: 'Id', index: 'Id', width: 75, align: 'left', key: true, editrules: { required: true, edithidden: false }, hidedlg: true, hidden: true, editable: false },
                    { name: 'LoanId', index: 'LoanId', width: 100, align: 'left', editrules: { required: true, edithidden: false }, hidedlg: true, hidden: true, editable: false },
@@ -71,7 +72,7 @@
                         var cl = ids[i];
                         var row = $("#list").getRowData(cl);
                         var status = row.LoanStatus;
-						
+
                         var disableApprove = "disabled='disabled'";
                         var disableReject = "disabled='disabled'";
                         var disableCancel = "disabled='disabled'";
@@ -87,27 +88,51 @@
                             disablePostpone = "";
                         }
 
-                        var be = "<img src='../Content/Images/window16.gif' title='Edit PK' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupPK('" + row.LoanId + "');\" />&nbsp;";
-                        be = be + "<img src='../Content/Images/window16.gif' title='Edit Survey' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopup('" + cl + "');\" />&nbsp; | &nbsp;";
+                        switch (status) {
+                            case 'Approve':
+                                var be = "";
+                                alert(status);
+                                break;
 
-                        be = be + "<img src='../Content/Images/approve24_on.png' title='Approve Kredit' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupApprove('" + row.LoanId + "');\" " + disableApprove + " />&nbsp;";
-                        be = be + "<img src='../Content/Images/reject32_on.png' title='Reject Kredit' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupReject('" + row.LoanId + "');\" " + disableReject + " />&nbsp; | &nbsp;";
+                            case "Cancel":
+                                var be = "";
+                                break;
 
-                        be = be + "<img src='../Content/Images/cancel32_on.png' title='Cancel Kredit' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupCancel('" + row.LoanId + "');\" " + disableCancel + " />&nbsp;";
-                        be = be + "<img src='../Content/Images/window16.gif' title='Tunda Kredit' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupPostpone('" + row.LoanId + "');\" " + disablePostpone + " />";
+                            case "Reject":
+                                var be = "";
+                                break;
+
+                            case "Postpone":
+                                var be = "<img src='../Content/Images/window16.gif' title='Edit PK' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupPK('" + row.LoanId + "');\" />&nbsp;";
+                                be = be + "<img src='../Content/Images/window16.gif' title='Edit Survey' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopup('" + cl + "');\" />&nbsp; | &nbsp;";
+
+                                be = be + "<img src='../Content/Images/approve24_on.png' title='Approve Kredit' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupApprove('" + row.LoanId + "');\" " + disableApprove + " />&nbsp;";
+                                break;
+
+                            default:
+                                var be = "<img src='../Content/Images/window16.gif' title='Edit PK' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupPK('" + row.LoanId + "');\" />&nbsp;";
+                                be = be + "<img src='../Content/Images/window16.gif' title='Edit Survey' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopup('" + cl + "');\" />&nbsp; | &nbsp;";
+
+                                be = be + "<img src='../Content/Images/approve24_on.png' title='Approve Kredit' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupApprove('" + row.LoanId + "');\" " + disableApprove + " />&nbsp;";
+                                be = be + "<img src='../Content/Images/reject32_on.png' title='Reject Kredit' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupReject('" + row.LoanId + "');\" " + disableReject + " />&nbsp; | &nbsp;";
+
+                                be = be + "<img src='../Content/Images/cancel32_on.png' title='Cancel Kredit' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupCancel('" + row.LoanId + "');\" " + disableCancel + " />&nbsp;";
+                                be = be + "<img src='../Content/Images/window16.gif' title='Tunda Kredit' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupPostpone('" + row.LoanId + "');\" " + disablePostpone + " />";
+                        }
+
                         $(this).setRowData(ids[i], { act: be });
                     }
                     $("img[disabled='disabled']").pixastic("desaturate");
                     //grayscale($("img[disabled='disabled']"));
-                    $("img[disabled='disabled']").css("filter",'progid:DXImageTransform.Microsoft.BasicImage(grayscale=1)');
-//                    var images = $("img[disabled='disabled']");
-//                    images.hide();
-//                    alert('test');
-//                    //alert(images[0].attr('src'));
-//                    //images.show();
-//                    images.complete = function () {
-//                        Pixastic.process(images, "desaturate", { average: false });
-//                    };
+                    $("img[disabled='disabled']").css("filter", 'progid:DXImageTransform.Microsoft.BasicImage(grayscale=1)');
+                    //                    var images = $("img[disabled='disabled']");
+                    //                    images.hide();
+                    //                    alert('test');
+                    //                    //alert(images[0].attr('src'));
+                    //                    //images.show();
+                    //                    images.complete = function () {
+                    //                        Pixastic.process(images, "desaturate", { average: false });
+                    //                    };
                 },
                 ondblClickRow: function (rowid, iRow, iCol, e) {
 

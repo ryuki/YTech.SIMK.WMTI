@@ -12,7 +12,7 @@ namespace YTech.SIMK.WMTI.Data.Repository
     {
         #region Implementation of ITLoanRepository
 
-        public IEnumerable<TLoan> GetPagedLoanList(string orderCol, string orderBy, int pageIndex, int maxRows, ref int totalRows)
+        public IEnumerable<TLoan> GetPagedLoanList(string orderCol, string orderBy, int pageIndex, int maxRows, ref int totalRows, string loanStatus)
         {
             ICriteria criteria = Session.CreateCriteria(typeof(TLoan));
 
@@ -23,13 +23,15 @@ namespace YTech.SIMK.WMTI.Data.Repository
 
             //get list results
             criteria.SetMaxResults(maxRows)
-              .SetFirstResult((pageIndex - 1) * maxRows)
-              .AddOrder(new Order(orderCol, orderBy.Equals("asc") ? true : false))
-              ;
+                .SetFirstResult((pageIndex - 1) * maxRows)
+                .Add(Expression.Eq("LoanStatus", loanStatus))
+                .AddOrder(new Order(orderCol, orderBy.Equals("asc") ? true : false))
+                ;
 
             IEnumerable<TLoan> list = criteria.List<TLoan>();
             return list;
         }
+
         #endregion
     }
 }

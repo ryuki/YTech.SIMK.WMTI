@@ -51,17 +51,17 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             _mPartnerRepository = mPartnerRepository;
         }
 
-        public ActionResult Index()
+        public ActionResult Index(string loanStatus)
         {
             return View();
         }
 
         [Transaction]
-        public virtual ActionResult List(string sidx, string sord, int page, int rows)
+        public virtual ActionResult List(string sidx, string sord, int page, int rows, string loanStatus)
         {
 
             int totalRecords = 0;
-            var loans = _tLoanRepository.GetPagedLoanList(sidx, sord, page, rows, ref totalRecords);
+            var loans = _tLoanRepository.GetPagedLoanList(sidx, sord, page, rows, ref totalRecords, loanStatus);
 
             int pageSize = rows;
             int totalPages = (int)Math.Ceiling((float)totalRecords / (float)pageSize);

@@ -16,7 +16,11 @@
     <div class="child-menu-container">
         <%= Html.ActionLinkForAreas<LoanController>(c => c.CustomerRequest(null), "Form Permohonan Konsumen") %>
         <%= Html.ActionLinkForAreas<LoanController>(c => c.Survey(null), "Form Survey") %>
-        <%= Html.ActionLinkForAreas<LoanController>(c => c.Index(), "Daftar Kredit")%>
+        <%= Html.ActionLinkForAreas<LoanController>(c => c.Index("Request"), "Daftar Kredit Baru")%>
+        <%= Html.ActionLinkForAreas<LoanController>(c => c.Index("Survey"), "Daftar Kredit Survey")%>
+        <%= Html.ActionLinkForAreas<LoanController>(c => c.Index("Approve"), "Daftar Kredit Berjalan")%>
+        <%= Html.ActionLinkForAreas<LoanController>(c => c.Index("Postpone"), "Daftar Kredit Tunda")%>
+        <%= Html.ActionLinkForAreas<LoanController>(c => c.Index("Reject"), "Daftar Kredit Tolak")%>
     </div>
     <h3>
         <a href="#">Angsuran & Pelunasan</a></h3>
