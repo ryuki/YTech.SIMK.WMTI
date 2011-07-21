@@ -2,6 +2,15 @@
     Inherits="System.Web.Mvc.ViewPage" %>
 
 <asp:Content ID="indexContent" ContentPlaceHolderID="MainContent" runat="server">
+    <div>  
+    <label for="ddlSearchBy">Cari berdasar :</label>  
+        <select id="ddlSearchBy">
+            <option value="loan.LoanCode">No Account</option>
+            <option value="person.PersonFirstName">Nama</option> 
+        </select>    
+    <input id="txtSearch" type="text" />
+    <input id="btnSearch" type="button" value="Cari" />
+    </div>
     <table id="list" class="scroll" cellpadding="0" cellspacing="0">
     </table>
     <div id="listPager" class="scroll" style="text-align: center;">
@@ -14,6 +23,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
+            $("#txtSearch").focus();
 
             $("#popup").dialog({
                 autoOpen: false,
@@ -37,19 +47,23 @@
             $.jgrid.del.msg = "Anda yakin menghapus Kredit yang dipilih?";
             $("#list").jqGrid({
                 url: '<%= Url.Action("List", "Loan") %>',
-                postData: { loanStatus: function () { return '<%= Request.QueryString["loanStatus"]%>'; } },
+                postData: { 
+                            loanStatus: function () { return '<%= Request.QueryString["loanStatus"]%>'; },
+                            searchBy: function () { return $('#ddlSearchBy option:selected').val(); },
+                            searchText: function () { return $('#txtSearch').val(); } 
+                          },
                 datatype: 'json',
                 mtype: 'GET',
                 colNames: ['', 'Id', 'LoanId', 'No PK', 'No Account', 'Tgl Pengajuan Kredit', 'Pemohon', 'Surveyor', 'Wilayah', 'Status'],
                 colModel: [
                     {
-                        name: 'act', index: 'act', width: 200, sortable: false
+                        name: 'act', index: 'act', width: 155, sortable: false
                     },
                    { name: 'Id', index: 'Id', width: 75, align: 'left', key: true, editrules: { required: true, edithidden: false }, hidedlg: true, hidden: true, editable: false },
                    { name: 'LoanId', index: 'LoanId', width: 100, align: 'left', editrules: { required: true, edithidden: false }, hidedlg: true, hidden: true, editable: false },
                     { name: 'LoanNo', index: 'LoanNo', width: 100, align: 'left', editable: false, edittype: 'text', editrules: { required: false} },
                     { name: 'LoanCode', index: 'LoanCode', width: 100, align: 'left', editable: false, edittype: 'text', editrules: { required: false} },
-                    { name: 'LoanSurveyDate', index: 'LoanSurveyDate', width: 90, align: 'left', editable: false, edittype: 'text', editrules: { required: false} },
+                    { name: 'LoanSurveyDate', index: 'LoanSurveyDate', width: 125, align: 'left', editable: false, edittype: 'text', editrules: { required: false} },
                     { name: 'CustomerName', index: 'CustomerName', width: 125, align: 'left', editable: false, edittype: 'text', editrules: { required: false} },
                    { name: 'SurveyorName', index: 'SurveyorName', width: 125, align: 'left', editable: true, edittype: 'text', editrules: { required: false} },
                    { name: 'ZoneName', index: 'ZoneName', width: 100, align: 'left', editable: true, edittype: 'text', editrules: { required: false, edithidden: true} },
@@ -161,6 +175,18 @@
                 {},
                 {}
             );
+
+            $('#btnSearch').click(function () {
+                $("#list").jqGrid().setGridParam().trigger("reloadGrid");
+            });
+
+            $("#txtSearch").keydown(function (event) {
+                //if enter pressed
+                if (event.keyCode == '13') {
+                    $("#list").jqGrid().setGridParam().trigger("reloadGrid");
+                }
+            });
+
         });
 
         function OpenPopup(id) {

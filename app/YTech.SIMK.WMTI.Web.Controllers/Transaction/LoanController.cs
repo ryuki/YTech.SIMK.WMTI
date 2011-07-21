@@ -57,11 +57,11 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         }
 
         [Transaction]
-        public virtual ActionResult List(string sidx, string sord, int page, int rows, string loanStatus)
+        public virtual ActionResult List(string sidx, string sord, int page, int rows, string loanStatus, string searchBy, string searchText)
         {
 
             int totalRecords = 0;
-            var loans = _tLoanRepository.GetPagedLoanList(sidx, sord, page, rows, ref totalRecords, loanStatus);
+            var loans = _tLoanRepository.GetPagedLoanList(sidx, sord, page, rows, ref totalRecords, loanStatus, searchBy, searchText);
 
             int pageSize = rows;
             int totalPages = (int)Math.Ceiling((float)totalRecords / (float)pageSize);
