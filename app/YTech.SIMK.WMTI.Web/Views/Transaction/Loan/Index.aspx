@@ -91,7 +91,6 @@
                         switch (status) {
                             case 'Approve':
                                 var be = "";
-                                alert(status);
                                 break;
 
                             case "Cancel":
