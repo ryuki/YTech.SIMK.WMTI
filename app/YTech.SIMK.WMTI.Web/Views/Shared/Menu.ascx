@@ -16,12 +16,12 @@
     <div class="child-menu-container">
         <%= Html.ActionLinkForAreas<LoanController>(c => c.CustomerRequest(null), "Form Permohonan Konsumen") %>
        <%-- <%= Html.ActionLinkForAreas<LoanController>(c => c.Survey(null), "Form Survey") %>--%>
-        <%= Html.ActionLinkForAreas<LoanController>(c => c.Index("Request"), "Daftar Kredit Baru")%>
-        <%= Html.ActionLinkForAreas<LoanController>(c => c.Index("Survey"), "Daftar Kredit Survey")%>
-        <%= Html.ActionLinkForAreas<LoanController>(c => c.Index("Cancel"), "Daftar Kredit Cancel")%>
-        <%= Html.ActionLinkForAreas<LoanController>(c => c.Index("Approve"), "Daftar Kredit Berjalan")%>
-        <%= Html.ActionLinkForAreas<LoanController>(c => c.Index("Postpone"), "Daftar Kredit Tunda")%>
-        <%= Html.ActionLinkForAreas<LoanController>(c => c.Index("Reject"), "Daftar Kredit Tolak")%>
+        <%= Html.ActionLinkForAreas<LoanController>(c => c.Index(EnumLoanStatus.Request.ToString()), "Daftar Kredit Baru")%>
+        <%= Html.ActionLinkForAreas<LoanController>(c => c.Index(EnumLoanStatus.Survey.ToString()), "Daftar Kredit Survey")%>
+        <%= Html.ActionLinkForAreas<LoanController>(c => c.Index(EnumLoanStatus.Approve.ToString()), "Daftar Kredit Disetujui")%>
+        <%= Html.ActionLinkForAreas<LoanController>(c => c.Index(EnumLoanStatus.Reject.ToString()), "Daftar Kredit Ditolak")%>
+        <%= Html.ActionLinkForAreas<LoanController>(c => c.Index(EnumLoanStatus.Cancel.ToString()), "Daftar Kredit Dibatalkan")%>
+        <%= Html.ActionLinkForAreas<LoanController>(c => c.Index(EnumLoanStatus.Postpone.ToString()), "Daftar Kredit Ditunda")%>
     </div>
     <h3>
         <a href="#">Angsuran & Pelunasan</a></h3>

@@ -2,14 +2,15 @@
     Inherits="System.Web.Mvc.ViewPage" %>
 
 <asp:Content ID="indexContent" ContentPlaceHolderID="MainContent" runat="server">
-    <div>  
-    <label for="ddlSearchBy">Cari berdasar :</label>  
+    <div>
+        <label for="ddlSearchBy">
+            Cari berdasar :</label>
         <select id="ddlSearchBy">
             <option value="loan.LoanCode">No Account</option>
-            <option value="person.PersonFirstName">Nama</option> 
-        </select>    
-    <input id="txtSearch" type="text" />
-    <input id="btnSearch" type="button" value="Cari" />
+            <option value="person.PersonFirstName">Nama</option>
+        </select>
+        <input id="txtSearch" type="text" />
+        <input id="btnSearch" type="button" value="Cari" />
     </div>
     <table id="list" class="scroll" cellpadding="0" cellspacing="0">
     </table>
@@ -19,6 +20,35 @@
     </div>
     <div id='popup'>
         <iframe width='100%' height='340px' id="popup_frame" frameborder="0"></iframe>
+    </div>
+    <div id="dialog" title="Status">
+        <p>
+        </p>
+    </div>
+    <div style="width:600px;">
+        <div style="float: left;">
+        <strong>Keterangan :</strong><br />
+            <img src='<%= Url.Content("~/Content/Images/window16.gif") %>' title='Edit PK' style='cursor: hand;
+                width: 16px; height: 16px;' alt='Edit PK' />
+            = Edit Permohonan Kredit<br />
+            <img src='<%= Url.Content("~/Content/Images/edit24_on.gif") %>' title='Edit PK' style='cursor: hand;
+                width: 16px; height: 16px;' alt='Edit PK' />
+            = Input / Edit Hasil Survey
+        </div>
+        <div style="float: right;">
+            <img src='<%= Url.Content("~/Content/Images/approve24_on.png") %>' title='Edit PK'
+                style='cursor: hand; width: 16px; height: 16px;' alt='Edit PK' />
+            = Setuju Permohonan Kredit<br />
+            <img src='<%= Url.Content("~/Content/Images/reject32_on.png") %>' title='Edit PK'
+                style='cursor: hand; width: 16px; height: 16px;' alt='Edit PK' />
+            = Tolak Permohonan Kredit<br />
+            <img src='<%= Url.Content("~/Content/Images/cancel32_on.png") %>' title='Edit PK'
+                style='cursor: hand; width: 16px; height: 16px;' alt='Edit PK' />
+            = Pembatalan Permohonan Kredit<br />
+            <img src='<%= Url.Content("~/Content/Images/exit32_on.gif") %>' title='Edit PK' style='cursor: hand;
+                width: 16px; height: 16px;' alt='Edit PK' />
+            = Tunda Proses Permohonan Kredit
+        </div>
     </div>
     <script type="text/javascript">
         $(document).ready(function () {
@@ -47,11 +77,11 @@
             $.jgrid.del.msg = "Anda yakin menghapus Kredit yang dipilih?";
             $("#list").jqGrid({
                 url: '<%= Url.Action("List", "Loan") %>',
-                postData: { 
-                            loanStatus: function () { return '<%= Request.QueryString["loanStatus"]%>'; },
-                            searchBy: function () { return $('#ddlSearchBy option:selected').val(); },
-                            searchText: function () { return $('#txtSearch').val(); } 
-                          },
+                postData: {
+                    loanStatus: function () { return '<%= Request.QueryString["loanStatus"]%>'; },
+                    searchBy: function () { return $('#ddlSearchBy option:selected').val(); },
+                    searchText: function () { return $('#txtSearch').val(); }
+                },
                 datatype: 'json',
                 mtype: 'GET',
                 colNames: ['', 'Id', 'LoanId', 'No PK', 'No Account', 'Tgl Pengajuan Kredit', 'Pemohon', 'Surveyor', 'Wilayah', 'Status'],
@@ -201,50 +231,32 @@
         }
 
         function OpenPopupApprove(loanId) {
-            var conf = confirm('Anda yakin meng-approve kredit?');
-
-            if (!conf)
-                return false;
-
-            var t = $.ajax({ url: '<%= Url.Action("Approve","Loan") %>?loanId=' + loanId, async: false, type: 'POST', cache: false, success: function (data, result) { if (!result) alert('Failure to retrieve the Approve.'); } }).responseText;
-            //alert(t);
-            //            var result = $.parseJSON(t);
-            //            alert(result.Message);
-            $("#list").trigger("reloadGrid");
-            return false;
+            return PostChangeStatus('Anda yakin menyetujui kredit?','<%= Url.Action("Approve","Loan") %>?loanId=' + loanId);
         }
 
         function OpenPopupCancel(loanId) {
-            var conf = confirm('Anda yakin meng-cancel kredit?');
-
-            if (!conf)
-                return false;
-
-            var t = $.ajax({ url: '<%= Url.Action("Cancel","Loan") %>?loanId=' + loanId, async: false, type: 'POST', cache: false, success: function (data, result) { if (!result) alert('Failure to retrieve the Cancel.'); } }).responseText;
-
-            $("#list").trigger("reloadGrid");
-            return false;
+            return PostChangeStatus('Anda yakin membatalkan kredit?', '<%= Url.Action("Cancel","Loan") %>?loanId=' + loanId);
         }
 
         function OpenPopupPostpone(loanId) {
-            var conf = confirm('Anda yakin mem-postpone kredit?');
-
-            if (!conf)
-                return false;
-
-            var t = $.ajax({ url: '<%= Url.Action("Postpone","Loan") %>?loanId=' + loanId, async: false, type: 'POST', cache: false, success: function (data, result) { if (!result) alert('Failure to retrieve the Postpone.'); } }).responseText;
-
-            $("#list").trigger("reloadGrid");
-            return false;
+            return PostChangeStatus('Anda yakin menunda kredit?', '<%= Url.Action("Postpone","Loan") %>?loanId=' + loanId);
         }
 
         function OpenPopupReject(loanId) {
-            var conf = confirm('Anda yakin me-reject kredit?');
+            return PostChangeStatus('Anda yakin menolak kredit?', '<%= Url.Action("Reject","Loan") %>?loanId=' + loanId);
+        }
+
+        function PostChangeStatus(confirm_msg,posturl) {
+            var conf = confirm(confirm_msg);
 
             if (!conf)
                 return false;
 
-            var t = $.ajax({ url: '<%= Url.Action("Reject","Loan") %>?loanId=' + loanId, async: false, type: 'POST', cache: false, success: function (data, result) { if (!result) alert('Failure to retrieve the Reject.'); } }).responseText;
+            var t = $.ajax({ url: posturl, async: false, type: 'POST', cache: false, success: function (data, result) { if (!result) alert('Failure to retrieve the Approve.'); } }).responseText;
+
+            var result = $.parseJSON(t);
+            $('#dialog p:first').text(result.Message);
+            $("#dialog").dialog("open");
 
             $("#list").trigger("reloadGrid");
             return false;
@@ -264,8 +276,4 @@
             return false;
         }
     </script>
-    <div id="dialog" title="Status">
-        <p>
-        </p>
-    </div>
 </asp:Content>
