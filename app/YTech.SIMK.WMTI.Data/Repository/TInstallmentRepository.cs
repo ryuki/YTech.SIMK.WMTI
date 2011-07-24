@@ -71,6 +71,20 @@ namespace YTech.SIMK.WMTI.Data.Repository
             q.SetString("status", EnumInstallmentStatus.Not_Paid.ToString());
 
             return q.List<TInstallment>(); 
-        } 
+        }
+
+        public IEnumerable<TInstallment> GetInstallments(string loanCode)
+        {
+            var sql = new StringBuilder();
+            sql.AppendLine(@"from TInstallment as ins inner join ins.LoanId as loan");
+            sql.AppendLine(@" where loan.LoanCode = :loanCode");
+
+            string query = string.Format("select ins {0} order by ins.InstallmentNo", sql);
+            IQuery q = Session.CreateQuery(query);
+            q.SetString("loanCode", loanCode);
+            IEnumerable<TInstallment> list = q.List<TInstallment>();
+
+            return list;
+        }
     }
 }

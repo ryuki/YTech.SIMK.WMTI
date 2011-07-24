@@ -104,7 +104,7 @@
 
                         switch (status) {
                             case 'Approve':
-                                var be = "";
+                                var be = "<img src='../Content/Images/window16.gif' title='Edit Survey' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopup('" + cl + "');\" />";
                                 break;
 
                             case "Cancel":

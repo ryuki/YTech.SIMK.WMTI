@@ -576,6 +576,10 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                     _tLoanSurveyRepository.Update(survey);
                 }
 
+                //save installment
+                if (loan.LoanStatus == "Approve")
+                    SaveInstallment(loan);
+
                 _tLoanSurveyRepository.DbContext.CommitChanges();
             }
             catch (Exception e)
@@ -768,21 +772,41 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             {
                 TInstallment ins = null;
                 DateTime startDate = Convert.ToDateTime(string.Format("{1:yyyy-MM}-{0}", loan.LoanMaturityDate.Value, loan.LoanAccDate.Value));
-                for (int i = 0; i < loan.LoanTenor.Value; i++)
+
+                //get list installment
+                var installments = _tInstallmentRepository.GetInstallments(loan.LoanCode);
+                if (installments != null)
                 {
-                    ins = new TInstallment();
-                    ins.SetAssignedIdTo(Guid.NewGuid().ToString());
-                    ins.LoanId = loan;
-                    ins.InstallmentBasic = loan.LoanBasicInstallment;
-                    ins.InstallmentInterest = loan.LoanInterest;
-                    ins.InstallmentOthers = loan.LoanOtherInstallment;
-                    ins.InstallmentNo = i + 1;
-                    ins.InstallmentStatus = EnumInstallmentStatus.Not_Paid.ToString();
-                    ins.InstallmentMaturityDate = startDate.AddMonths(i + 1);
-                    ins.DataStatus = EnumDataStatus.New.ToString();
-                    ins.CreatedBy = User.Identity.Name;
-                    ins.CreatedDate = DateTime.Now;
-                    _tInstallmentRepository.Save(ins);
+                    foreach (var installment in installments)
+                    {
+                        installment.InstallmentBasic = loan.LoanBasicInstallment;
+                        installment.InstallmentInterest = loan.LoanInterest;
+                        installment.InstallmentOthers = loan.LoanOtherInstallment;
+
+                        installment.DataStatus = EnumDataStatus.Updated.ToString();
+                        installment.ModifiedBy = User.Identity.Name;
+                        installment.ModifiedDate = DateTime.Now;
+                        _tInstallmentRepository.Update(installment);
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < loan.LoanTenor.Value; i++)
+                    {
+                        ins = new TInstallment();
+                        ins.SetAssignedIdTo(Guid.NewGuid().ToString());
+                        ins.LoanId = loan;
+                        ins.InstallmentBasic = loan.LoanBasicInstallment;
+                        ins.InstallmentInterest = loan.LoanInterest;
+                        ins.InstallmentOthers = loan.LoanOtherInstallment;
+                        ins.InstallmentNo = i + 1;
+                        ins.InstallmentStatus = EnumInstallmentStatus.Not_Paid.ToString();
+                        ins.InstallmentMaturityDate = startDate.AddMonths(i + 1);
+                        ins.DataStatus = EnumDataStatus.New.ToString();
+                        ins.CreatedBy = User.Identity.Name;
+                        ins.CreatedDate = DateTime.Now;
+                        _tInstallmentRepository.Save(ins);
+                    }
                 }
             }
         }
