@@ -843,24 +843,8 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 }
                 else
                 {
-<<<<<<< HEAD
                     for (int i = 0; i < loan.LoanTenor.Value; i++)
                     {
-                        ins = new TInstallment();
-                        ins.SetAssignedIdTo(Guid.NewGuid().ToString());
-                        ins.LoanId = loan;
-                        ins.InstallmentBasic = loan.LoanBasicInstallment;
-                        ins.InstallmentInterest = loan.LoanInterest;
-                        ins.InstallmentOthers = loan.LoanOtherInstallment;
-                        ins.InstallmentNo = i + 1;
-                        ins.InstallmentStatus = EnumInstallmentStatus.Not_Paid.ToString();
-                        ins.InstallmentMaturityDate = startDate.AddMonths(i + 1);
-                        ins.DataStatus = EnumDataStatus.New.ToString();
-                        ins.CreatedBy = User.Identity.Name;
-                        ins.CreatedDate = DateTime.Now;
-                        _tInstallmentRepository.Save(ins);
-                    }
-=======
                     ins = new TInstallment();
                     ins.SetAssignedIdTo(Guid.NewGuid().ToString());
                     ins.LoanId = loan;
@@ -876,11 +860,12 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                     }
                     else
                         ins.InstallmentMaturityDate = startDate.AddMonths(i + 1);
+
                     ins.DataStatus = EnumDataStatus.New.ToString();
                     ins.CreatedBy = User.Identity.Name;
                     ins.CreatedDate = DateTime.Now;
                     _tInstallmentRepository.Save(ins);
->>>>>>> master
+                    }
                 }
             }
         }
