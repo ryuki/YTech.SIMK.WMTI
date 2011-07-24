@@ -126,10 +126,10 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 if (!string.IsNullOrEmpty(loanCustomerRequestId))
                 {
                     loan = _tLoanRepository.Get(loanCustomerRequestId);
-                    if (loan != null )
+                    if (loan != null)
                     {
                         isSave = false;
-                        
+
                         customer = loan.CustomerId;
                         address = loan.CustomerId.AddressId;
                         person = loan.CustomerId.PersonId;
@@ -167,7 +167,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 TransferFormValuesTo(person, formCollection);
                 person.PersonOccupationSector = personVM.PersonOccupationSector;
                 person.PersonOccupationPosition = personVM.PersonOccupationPosition;
-                
+
                 if (isSave)
                 {
                     person.SetAssignedIdTo(Guid.NewGuid().ToString());
@@ -216,16 +216,24 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 loan.PartnerId = loanVM.PartnerId;
 
                 loan.LoanNo = loanVM.LoanNo;
-                loan.LoanBasicPrice = loanVM.LoanBasicPrice;
-                loan.LoanCreditPrice = loanVM.LoanCreditPrice;
+                if (!string.IsNullOrEmpty(formCollection["LoanBasicPrice"]))
+                    loan.LoanBasicPrice = Convert.ToDecimal(formCollection["LoanBasicPrice"].Replace(",", ""));
+                else
+                    loan.LoanBasicPrice = null;
+
+                if (!string.IsNullOrEmpty(formCollection["LoanCreditPrice"]))
+                    loan.LoanCreditPrice = Convert.ToDecimal(formCollection["LoanCreditPrice"].Replace(",", ""));
+                else
+                    loan.LoanCreditPrice = null;
+
                 loan.LoanSubmissionDate = loanVM.LoanSubmissionDate;
 
                 if (formCollection["LoanAdminFee"].Contains("true"))
                     loan.LoanAdminFee = 14000;
-                
+
                 if (formCollection["LoanMateraiFee"].Contains("true"))
                     loan.LoanMateraiFee = 6000;
-                
+
                 loan.LoanTenor = loanVM.LoanTenor;
 
                 if (!string.IsNullOrEmpty(formCollection["LoanDownPayment"]))
@@ -365,7 +373,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                             address.CreatedDate = DateTime.Now;
                             address.CreatedBy = User.Identity.Name;
                             address.DataStatus = EnumDataStatus.New.ToString();
-                            
+
                             _refAddressRepository.Save(address);
                         }
                         else
@@ -515,6 +523,11 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 }
                 else
                 {
+                    //update status to survey if edit did in loan status is new, 
+                    //because survey has been save when insert new PK
+                    if (loan.LoanStatus.Equals(EnumLoanStatus.Request.ToString()))
+                        loan.LoanStatus = EnumLoanStatus.Survey.ToString();
+
                     loan.ModifiedDate = DateTime.Now;
                     loan.ModifiedBy = User.Identity.Name;
                     loan.DataStatus = EnumDataStatus.Updated.ToString();
@@ -820,7 +833,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 _tLoanSurveyRepository.DbContext.RollbackTransaction();
             }
 
-            var e = new {Success, Message};
+            var e = new { Success, Message };
 
             return Json(e, JsonRequestBehavior.AllowGet);
         }

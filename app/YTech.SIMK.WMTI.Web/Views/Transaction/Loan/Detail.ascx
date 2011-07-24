@@ -683,7 +683,8 @@
                 "UnitPrice": { required: true },
                 "LoanTenor": { required: true },
                 "LoanBasicInstallment": { required: true },
-                "SurveyDate": { required: true }
+                "SurveyDate": { required: true },
+                "PartnerId": { required: true }
             },
             messages: {
                 "LoanNo": { required: "<img id='Iderror' src='" + errorimg + "' hovertext='No PK harus diisi' />"
@@ -705,7 +706,8 @@
                 "UnitPrice": "<img id='UnitPriceerror' src='" + errorimg + "' hovertext='Harga Barang harus diisi' />",
                 "LoanTenor": "<img id='LoanTenorerror' src='" + errorimg + "' hovertext='Lama Angsuran harus diisi' />",
                 "LoanBasicInstallment": "<img id='LoanBasicInstallmenterror' src='" + errorimg + "' hovertext='Angsuran per bulan harus diisi' />",
-                "SurveyDate": "<img id='SurveyDateerror' src='" + errorimg + "' hovertext='Tanggal Survey harus diisi' />"
+                "SurveyDate": "<img id='SurveyDateerror' src='" + errorimg + "' hovertext='Tanggal Survey harus diisi' />",
+                "PartnerId": "<img id='PartnerIderror' src='" + errorimg + "' hovertext='Pilih toko' />"
             },
             invalidHandler: function (form, validator) {
                 var errors = validator.numberOfInvalids();
@@ -782,5 +784,6 @@
                 return "OK";
             }
         });
-    }
+    }
+
 </script>

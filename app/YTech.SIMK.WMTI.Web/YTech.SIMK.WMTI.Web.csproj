@@ -201,7 +201,11 @@
     <Content Include="Content\css\start\images\ui-icons_fcd113_256x240.png" />
     <Content Include="Content\css\start\jquery-ui.css" />
     <Content Include="Content\ellipsis-xbl.xml" />
+    <Content Include="Content\Images\approve24_on.png" />
+    <Content Include="Content\Images\cancel32_on.png" />
     <Content Include="Content\Images\cross.gif" />
+    <Content Include="Content\Images\edit24_on.gif" />
+    <Content Include="Content\Images\exit32_on.gif" />
     <Content Include="Content\Images\icons\activity.png" />
     <Content Include="Content\Images\icons\activityadd.png" />
     <Content Include="Content\Images\icons\activitydelete.png" />
@@ -247,6 +251,7 @@
     <Content Include="Content\Images\icons\usersearch.png" />
     <Content Include="Content\Images\icons\warning.png" />
     <Content Include="Content\Images\logo.jpg" />
+    <Content Include="Content\Images\reject32_on.png" />
     <Content Include="Content\Images\white.jpg" />
     <Content Include="Content\Images\window16.gif" />
     <Content Include="Content\img\80ade5_40x100_textures_04_highlight_hard_100.png" />

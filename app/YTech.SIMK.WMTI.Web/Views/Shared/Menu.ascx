@@ -15,7 +15,7 @@
         <a href="#">Pengajuan Kredit</a></h3>
     <div class="child-menu-container">
         <%= Html.ActionLinkForAreas<LoanController>(c => c.CustomerRequest(null), "Form Permohonan Konsumen") %>
-        <%= Html.ActionLinkForAreas<LoanController>(c => c.Survey(null), "Form Survey") %>
+       <%-- <%= Html.ActionLinkForAreas<LoanController>(c => c.Survey(null), "Form Survey") %>--%>
         <%= Html.ActionLinkForAreas<LoanController>(c => c.Index("Request"), "Daftar Kredit Baru")%>
         <%= Html.ActionLinkForAreas<LoanController>(c => c.Index("Survey"), "Daftar Kredit Survey")%>
         <%= Html.ActionLinkForAreas<LoanController>(c => c.Index("Cancel"), "Daftar Kredit Cancel")%>
