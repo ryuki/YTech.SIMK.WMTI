@@ -86,5 +86,22 @@ namespace YTech.SIMK.WMTI.Data.Repository
 
             return list;
         }
+
+        public void UpdateInstallmentByLoan(string loanId, decimal loanBasicInstallment, decimal loanInterest, decimal loanOtherInstallment)
+        {
+            var sql = new StringBuilder();
+            sql.AppendLine(@"update TInstallment ins set ");
+            sql.AppendLine(@"  ins.InstallmentBasic = :loanBasicInstallment");
+            sql.AppendLine(@"  , ins.InstallmentInterest = :loanInterest");
+            sql.AppendLine(@"  , ins.InstallmentOthers = :loanOtherInstallment");
+            sql.AppendLine(@" where ins.LoanId.Id = :loanId");
+
+            IQuery q = Session.CreateQuery(sql.ToString());
+            q.SetString("loanId", loanId);
+            q.SetDecimal("loanBasicInstallment", loanBasicInstallment);
+            q.SetDecimal("loanInterest", loanInterest);
+            q.SetDecimal("loanOtherInstallment", loanOtherInstallment);
+            q.ExecuteUpdate();
+        }
     }
 }

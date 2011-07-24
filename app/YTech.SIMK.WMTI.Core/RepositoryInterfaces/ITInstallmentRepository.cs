@@ -15,5 +15,7 @@ namespace YTech.SIMK.WMTI.Core.RepositoryInterfaces
         IEnumerable<TInstallment> GetListDueByDate(System.DateTime? dateFrom);
 
         IEnumerable<TInstallment> GetInstallments(string loanCode);
+
+        void UpdateInstallmentByLoan(string loanId, decimal loanBasicInstallment, decimal loanInterest, decimal loanOtherInstallment);
     }
 }

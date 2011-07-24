@@ -534,6 +534,9 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                     _tLoanRepository.Update(loan);
                 }
 
+                //update installment list 
+                _tInstallmentRepository.UpdateInstallmentByLoan(loan.Id, loan.LoanBasicInstallment.HasValue ? loan.LoanBasicInstallment.Value : 0, loan.LoanInterest.HasValue ? loan.LoanInterest.Value : 0, loan.LoanOtherInstallment.HasValue ? loan.LoanOtherInstallment.Value : 0);
+
                 //save unit
                 unit.LoanId = loan;
                 unit.UnitType = loanUnitVM.UnitType;
@@ -743,7 +746,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             return ChangeLoanStatus(EnumLoanStatus.Approve, loanId, "Kredit Berhasil Disetujui");
         }
 
-        private ActionResult ChangeLoanStatus(EnumLoanStatus enumLoanStatus, string loanId,string successMsg)
+        private ActionResult ChangeLoanStatus(EnumLoanStatus enumLoanStatus, string loanId, string successMsg)
         {
             string Message = string.Empty;
             bool Success = true;
@@ -845,26 +848,26 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 {
                     for (int i = 0; i < loan.LoanTenor.Value; i++)
                     {
-                    ins = new TInstallment();
-                    ins.SetAssignedIdTo(Guid.NewGuid().ToString());
-                    ins.LoanId = loan;
-                    ins.InstallmentBasic = loan.LoanBasicInstallment;
-                    ins.InstallmentInterest = loan.LoanInterest;
-                    ins.InstallmentOthers = loan.LoanOtherInstallment;
-                    ins.InstallmentNo = i + 1;
-                    ins.InstallmentStatus = EnumInstallmentStatus.Not_Paid.ToString();
-                    //if use DP, first installment's maturity date is when item is received
-                    if (i == 0 && firstDate.HasValue)
-                    {
-                        ins.InstallmentMaturityDate = firstDate;
-                    }
-                    else
-                        ins.InstallmentMaturityDate = startDate.AddMonths(i + 1);
+                        ins = new TInstallment();
+                        ins.SetAssignedIdTo(Guid.NewGuid().ToString());
+                        ins.LoanId = loan;
+                        ins.InstallmentBasic = loan.LoanBasicInstallment;
+                        ins.InstallmentInterest = loan.LoanInterest;
+                        ins.InstallmentOthers = loan.LoanOtherInstallment;
+                        ins.InstallmentNo = i + 1;
+                        ins.InstallmentStatus = EnumInstallmentStatus.Not_Paid.ToString();
+                        //if use DP, first installment's maturity date is when item is received
+                        if (i == 0 && firstDate.HasValue)
+                        {
+                            ins.InstallmentMaturityDate = firstDate;
+                        }
+                        else
+                            ins.InstallmentMaturityDate = startDate.AddMonths(i + 1);
 
-                    ins.DataStatus = EnumDataStatus.New.ToString();
-                    ins.CreatedBy = User.Identity.Name;
-                    ins.CreatedDate = DateTime.Now;
-                    _tInstallmentRepository.Save(ins);
+                        ins.DataStatus = EnumDataStatus.New.ToString();
+                        ins.CreatedBy = User.Identity.Name;
+                        ins.CreatedDate = DateTime.Now;
+                        _tInstallmentRepository.Save(ins);
                     }
                 }
             }
