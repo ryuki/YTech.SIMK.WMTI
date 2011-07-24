@@ -6,7 +6,7 @@
 <asp:Content ID="indexContent" ContentPlaceHolderID="MainContent" runat="server">
     <% if (false)
        {%>
-    <script src="../../../Scripts/jquery-1.5.2-vsdoc.js" type="text/javascript"></script>
+    <script src="../../../Scripts/jquery-1.6.2-vsdoc.js" type="text/javascript"></script>
     <% } %>
     <% using (Ajax.BeginForm(new AjaxOptions
                                        {
@@ -22,6 +22,16 @@
     <table>
         <tr>
             <td>
+                <label for="EmployeeId">
+                    Kolektor :</label>
+            </td>
+            <td>
+                <%= Html.DropDownList("EmployeeId", Model.CollectorList)%>
+                            <%= Html.ValidationMessage("EmployeeId")%>
+            </td>
+        </tr>
+        <tr>
+            <td>
                 <label for="InstallmentNo">
                     Angsuran Ke :</label>
             </td>
@@ -31,7 +41,7 @@
         </tr>
         <tr>
             <td>
-                <label for="InstallmentNo">
+                <label for="InstallmentMaturityDate">
                     Tgl Jatuh Tempo :</label>
             </td>
             <td>
@@ -40,20 +50,11 @@
         </tr>
         <tr>
             <td>
-                <label for="InstallmentNo">
+                <label for="InstallmentTotal">
                     Total Angsuran :</label>
             </td>
             <td>
                 <%= ViewData.Model.installment.InstallmentTotal.ToString(CommonHelper.NumberFormat) %>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label for="InstallmentFine">
-                    Denda :</label>
-            </td>
-            <td>
-                <%= ViewData.Model.installment.InstallmentFine.HasValue ? ViewData.Model.installment.InstallmentFine.Value.ToString(CommonHelper.NumberFormat) : null%>
             </td>
         </tr>
         <tr>
@@ -84,6 +85,15 @@
             </td>
         </tr>
         <tr>
+            <td>
+                <label for="InstallmentFine">
+                    Denda :</label>
+            </td>
+            <td>
+               <%= Html.TextBox("InstallmentFine", ViewData.Model.installment.InstallmentFine.HasValue ? ViewData.Model.installment.InstallmentFine.Value.ToString(CommonHelper.NumberFormat) : null)%>
+            </td>
+        </tr>
+        <tr>
             <td colspan="2" align="center">
                 <input id="btnSave" type="submit" value="Simpan"  <% if (string.IsNullOrEmpty(ViewData.Model.installment.Id)) { %>disabled='disabled' <% } %> />
             </td>
@@ -95,6 +105,8 @@
         $(document).ready(function () {
             $('#InstallmentPaid').autoNumeric();
             $('#InstallmentPaid').attr("style", "text-align:right;");
+            $('#InstallmentFine').autoNumeric();
+            $('#InstallmentFine').attr("style", "text-align:right;");
 //            $('#btnSave').click(function () {
 //                alert('submit;');
 //                //$('form').submit();

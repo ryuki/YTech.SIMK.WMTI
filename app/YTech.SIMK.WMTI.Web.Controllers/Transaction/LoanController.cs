@@ -126,10 +126,10 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 if (!string.IsNullOrEmpty(loanCustomerRequestId))
                 {
                     loan = _tLoanRepository.Get(loanCustomerRequestId);
-                    if (loan != null )
+                    if (loan != null)
                     {
                         isSave = false;
-                        
+
                         customer = loan.CustomerId;
                         address = loan.CustomerId.AddressId;
                         person = loan.CustomerId.PersonId;
@@ -167,7 +167,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 TransferFormValuesTo(person, formCollection);
                 person.PersonOccupationSector = personVM.PersonOccupationSector;
                 person.PersonOccupationPosition = personVM.PersonOccupationPosition;
-                
+
                 if (isSave)
                 {
                     person.SetAssignedIdTo(Guid.NewGuid().ToString());
@@ -216,16 +216,24 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 loan.PartnerId = loanVM.PartnerId;
 
                 loan.LoanNo = loanVM.LoanNo;
-                loan.LoanBasicPrice = loanVM.LoanBasicPrice;
-                loan.LoanCreditPrice = loanVM.LoanCreditPrice;
+                if (!string.IsNullOrEmpty(formCollection["LoanBasicPrice"]))
+                    loan.LoanBasicPrice = Convert.ToDecimal(formCollection["LoanBasicPrice"].Replace(",", ""));
+                else
+                    loan.LoanBasicPrice = null;
+
+                if (!string.IsNullOrEmpty(formCollection["LoanCreditPrice"]))
+                    loan.LoanCreditPrice = Convert.ToDecimal(formCollection["LoanCreditPrice"].Replace(",", ""));
+                else
+                    loan.LoanCreditPrice = null;
+
                 loan.LoanSubmissionDate = loanVM.LoanSubmissionDate;
 
                 if (formCollection["LoanAdminFee"].Contains("true"))
                     loan.LoanAdminFee = 14000;
-                
+
                 if (formCollection["LoanMateraiFee"].Contains("true"))
                     loan.LoanMateraiFee = 6000;
-                
+
                 loan.LoanTenor = loanVM.LoanTenor;
 
                 if (!string.IsNullOrEmpty(formCollection["LoanDownPayment"]))
@@ -365,7 +373,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                             address.CreatedDate = DateTime.Now;
                             address.CreatedBy = User.Identity.Name;
                             address.DataStatus = EnumDataStatus.New.ToString();
-                            
+
                             _refAddressRepository.Save(address);
                         }
                         else
@@ -515,6 +523,11 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 }
                 else
                 {
+                    //update status to survey if edit did in loan status is new, 
+                    //because survey has been save when insert new PK
+                    if (loan.LoanStatus.Equals(EnumLoanStatus.Request.ToString()))
+                        loan.LoanStatus = EnumLoanStatus.Survey.ToString();
+
                     loan.ModifiedDate = DateTime.Now;
                     loan.ModifiedBy = User.Identity.Name;
                     loan.DataStatus = EnumDataStatus.Updated.ToString();
@@ -727,35 +740,43 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Approve(string loanId)
         {
-            _tLoanSurveyRepository.DbContext.BeginTransaction();
-            TLoan loan = _tLoanRepository.Get(loanId);
-            if (loan != null)
-            {
-                //loan.LoanAccBy = User.Identity.Name;
-                loan.LoanAccDate = DateTime.Now;
-                loan.LoanStatus = EnumLoanStatus.Approve.ToString();
+            return ChangeLoanStatus(EnumLoanStatus.Approve, loanId, "Kredit Berhasil Disetujui");
+        }
 
-                loan.ModifiedBy = User.Identity.Name;
-                loan.ModifiedDate = DateTime.Now;
-                loan.DataStatus = EnumDataStatus.Updated.ToString();
-                _tLoanRepository.Update(loan);
-
-                //save installment
-                SaveInstallment(loan);
-            }
-
+        private ActionResult ChangeLoanStatus(EnumLoanStatus enumLoanStatus, string loanId,string successMsg)
+        {
             string Message = string.Empty;
             bool Success = true;
             try
             {
+                _tLoanSurveyRepository.DbContext.BeginTransaction();
+                TLoan loan = _tLoanRepository.Get(loanId);
+                if (loan != null)
+                {
+                    //loan.LoanAccBy = User.Identity.Name;
+                    loan.LoanAccDate = DateTime.Now;
+                    loan.LoanStatus = enumLoanStatus.ToString();
+
+                    loan.ModifiedBy = User.Identity.Name;
+                    loan.ModifiedDate = DateTime.Now;
+                    loan.DataStatus = EnumDataStatus.Updated.ToString();
+                    _tLoanRepository.Update(loan);
+
+                    if (enumLoanStatus == EnumLoanStatus.Approve)
+                    {
+                        //save installment
+                        SaveInstallment(loan);
+                    }
+                }
+
                 _tLoanSurveyRepository.DbContext.CommitTransaction();
                 Success = true;
-                Message = "Approve Kredit Berhasil.";
+                Message = successMsg;
             }
             catch (Exception ex)
             {
                 Success = false;
-                Message = ex.GetBaseException().Message;
+                Message = "Error :\n" + ex.GetBaseException().Message;
                 _tLoanSurveyRepository.DbContext.RollbackTransaction();
             }
             var e = new
@@ -770,6 +791,37 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         {
             if (loan.LoanTenor.HasValue)
             {
+                DateTime? firstDate = null;
+                //if use DP, first installment's maturity date is when item is received
+                if (loan.LoanDownPayment.HasValue)
+                {
+                    if (loan.LoanDownPayment.Value > 0)
+                    {
+                        if (loan.Surveys.Count > 0)
+                        {
+                            if (loan.Surveys[0].SurveyUnitDeliverDate.HasValue)
+                            {
+                                firstDate = loan.Surveys[0].SurveyUnitDeliverDate.Value;
+                            }
+                            else
+                            {
+                                throw new Exception("Tanggal Pengiriman Barang kosong, \nuntuk Kredit dengan DP, jatuh tempo angsuran pertama adalah tanggal pengiriman barang.");
+                            }
+
+                        }
+                    }
+                }
+
+                if (!loan.LoanMaturityDate.HasValue)
+                {
+                    throw new Exception("Tanggal Jatuh tempo kredit kosong.\nTanggal jatuh tempo angsuran tidak bisa diinput.");
+                }
+                if (!loan.LoanAccDate.HasValue)
+                {
+                    throw new Exception("Tanggal kredit disetujui kosong.\nTanggal jatuh tempo angsuran tidak bisa diinput.");
+                }
+
+                //looping for each month
                 TInstallment ins = null;
                 DateTime startDate = Convert.ToDateTime(string.Format("{1:yyyy-MM}-{0}", loan.LoanMaturityDate.Value, loan.LoanAccDate.Value));
 
@@ -791,6 +843,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 }
                 else
                 {
+<<<<<<< HEAD
                     for (int i = 0; i < loan.LoanTenor.Value; i++)
                     {
                         ins = new TInstallment();
@@ -807,6 +860,27 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                         ins.CreatedDate = DateTime.Now;
                         _tInstallmentRepository.Save(ins);
                     }
+=======
+                    ins = new TInstallment();
+                    ins.SetAssignedIdTo(Guid.NewGuid().ToString());
+                    ins.LoanId = loan;
+                    ins.InstallmentBasic = loan.LoanBasicInstallment;
+                    ins.InstallmentInterest = loan.LoanInterest;
+                    ins.InstallmentOthers = loan.LoanOtherInstallment;
+                    ins.InstallmentNo = i + 1;
+                    ins.InstallmentStatus = EnumInstallmentStatus.Not_Paid.ToString();
+                    //if use DP, first installment's maturity date is when item is received
+                    if (i == 0 && firstDate.HasValue)
+                    {
+                        ins.InstallmentMaturityDate = firstDate;
+                    }
+                    else
+                        ins.InstallmentMaturityDate = startDate.AddMonths(i + 1);
+                    ins.DataStatus = EnumDataStatus.New.ToString();
+                    ins.CreatedBy = User.Identity.Name;
+                    ins.CreatedDate = DateTime.Now;
+                    _tInstallmentRepository.Save(ins);
+>>>>>>> master
                 }
             }
         }
@@ -815,114 +889,21 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Cancel(string loanId)
         {
-            _tLoanSurveyRepository.DbContext.BeginTransaction();
-            TLoan loan = _tLoanRepository.Get(loanId);
-
-            if (loan != null)
-            {
-                loan.LoanStatus = EnumLoanStatus.Cancel.ToString();
-
-                loan.ModifiedBy = User.Identity.Name;
-                loan.ModifiedDate = DateTime.Now;
-                loan.DataStatus = EnumDataStatus.Updated.ToString();
-                _tLoanRepository.Update(loan);
-            }
-
-            string Message = string.Empty;
-            bool Success = true;
-
-            try
-            {
-                _tLoanSurveyRepository.DbContext.CommitTransaction();
-                Success = true;
-                Message = "Cancel Kredit Berhasil.";
-            }
-            catch (Exception ex)
-            {
-                Success = false;
-                Message = ex.GetBaseException().Message;
-                _tLoanSurveyRepository.DbContext.RollbackTransaction();
-            }
-
-            var e = new {Success, Message};
-
-            return Json(e, JsonRequestBehavior.AllowGet);
+            return ChangeLoanStatus(EnumLoanStatus.Cancel, loanId, "Kredit Berhasil Dibatalkan");
         }
 
         [Transaction]
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Postpone(string loanId)
         {
-            _tLoanSurveyRepository.DbContext.BeginTransaction();
-            TLoan loan = _tLoanRepository.Get(loanId);
-
-            if (loan != null)
-            {
-                loan.LoanStatus = EnumLoanStatus.Postpone.ToString();
-
-                loan.ModifiedBy = User.Identity.Name;
-                loan.ModifiedDate = DateTime.Now;
-                loan.DataStatus = EnumDataStatus.Updated.ToString();
-                _tLoanRepository.Update(loan);
-            }
-
-            string Message = string.Empty;
-            bool Success = true;
-
-            try
-            {
-                _tLoanSurveyRepository.DbContext.CommitTransaction();
-                Success = true;
-                Message = "Postpone Kredit Berhasil.";
-            }
-            catch (Exception ex)
-            {
-                Success = false;
-                Message = ex.GetBaseException().Message;
-                _tLoanSurveyRepository.DbContext.RollbackTransaction();
-            }
-
-            var e = new { Success, Message };
-
-            return Json(e, JsonRequestBehavior.AllowGet);
+            return ChangeLoanStatus(EnumLoanStatus.Postpone, loanId, "Kredit Berhasil Ditunda");
         }
 
         [Transaction]
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Reject(string loanId)
         {
-            _tLoanSurveyRepository.DbContext.BeginTransaction();
-            TLoan loan = _tLoanRepository.Get(loanId);
-
-            if (loan != null)
-            {
-                loan.LoanStatus = EnumLoanStatus.Reject.ToString();
-
-                loan.ModifiedBy = User.Identity.Name;
-                loan.ModifiedDate = DateTime.Now;
-                loan.DataStatus = EnumDataStatus.Updated.ToString();
-                _tLoanRepository.Update(loan);
-            }
-
-            string Message = string.Empty;
-            bool Success = true;
-
-            try
-            {
-                _tLoanSurveyRepository.DbContext.CommitTransaction();
-                Success = true;
-                Message = "Reject Kredit Berhasil.";
-            }
-            catch (Exception ex)
-            {
-                Success = false;
-                Message = ex.GetBaseException().Message;
-                _tLoanSurveyRepository.DbContext.RollbackTransaction();
-            }
-
-            var e = new { Success, Message };
-
-            return Json(e, JsonRequestBehavior.AllowGet);
+            return ChangeLoanStatus(EnumLoanStatus.Reject, loanId, "Kredit Berhasil Ditolak");
         }
     }
 }

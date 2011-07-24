@@ -72,7 +72,7 @@
                                         HD :</label>
                                 </td>
                                 <td>
-                                    <%= Html.TextBox("LoanBasicPrice", Model.Loan.LoanBasicPrice, new { @style = "width:150px" })%>
+                                 <%= Html.TextBox("LoanBasicPrice", Model.Loan.LoanBasicPrice.HasValue ? Model.Loan.LoanBasicPrice.Value.ToString(CommonHelper.NumberFormat) : null, new { @style = "width:300px" })%>
                                     <%= Html.ValidationMessage("LoanBasicPrice")%>
                                 </td>
                             </tr>
@@ -82,7 +82,7 @@
                                         HT :</label>
                                 </td>
                                 <td>
-                                    <%= Html.TextBox("LoanCreditPrice", Model.Loan.LoanCreditPrice, new { @style = "width:150px" })%>
+                                 <%= Html.TextBox("LoanCreditPrice", Model.Loan.LoanCreditPrice.HasValue ? Model.Loan.LoanCreditPrice.Value.ToString(CommonHelper.NumberFormat) : null, new { @style = "width:300px" })%>
                                     <%= Html.ValidationMessage("LoanCreditPrice")%>
                                 </td>
                             </tr>
@@ -354,6 +354,10 @@
         $('#LoanBasicInstallment').attr("style", "text-align:right;");
         $('#LoanDownPayment').autoNumeric();
         $('#LoanDownPayment').attr("style", "text-align:right;");
+        $('#LoanBasicPrice').autoNumeric();
+        $('#LoanBasicPrice').attr("style", "text-align:right;");
+        $('#LoanCreditPrice').autoNumeric();
+        $('#LoanCreditPrice').attr("style", "text-align:right;");
     });
 
     $(document).ready(function () {

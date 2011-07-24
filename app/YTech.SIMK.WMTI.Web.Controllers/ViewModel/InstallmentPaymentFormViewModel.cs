@@ -17,7 +17,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
 {
     public class InstallmentPaymentFormViewModel
     {
-        public static InstallmentPaymentFormViewModel Create(ITInstallmentRepository installmentRepository, string loanCode)
+        public static InstallmentPaymentFormViewModel Create(ITInstallmentRepository installmentRepository, IMEmployeeRepository mEmployeeRepository, string loanCode)
         {
             installmentRepository.DbContext.BeginTransaction();
             InstallmentPaymentFormViewModel viewModel = new InstallmentPaymentFormViewModel();
@@ -29,9 +29,21 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
             viewModel.installment = ins;
             viewModel.installment.InstallmentPaymentDate = DateTime.Today;
             installmentRepository.DbContext.RollbackTransaction();
+
+            var listEmployee = mEmployeeRepository.GetAll();
+            MEmployee employee = new MEmployee();
+            //mCustomer.SupplierName = "-Pilih Supplier-";
+            listEmployee.Insert(0, employee);
+
+            var collector = from emp in listEmployee
+                            //where emp.DepartmentId.DepartmentName == "COLLECTOR"
+                            select new { Id = emp.Id, Name = emp.PersonId != null ? emp.PersonId.PersonName : "-Pilih Kolektor-" };
+            viewModel.CollectorList = new SelectList(collector, "Id", "Name", string.Empty);
+
             return viewModel;
         }
 
         public TInstallment installment { get; internal set; }
+        public SelectList CollectorList { get; internal set; }
     }
 }

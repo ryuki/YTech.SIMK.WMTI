@@ -4,6 +4,7 @@ using SharpArch.Core.DomainModel;
 using System;
 using SharpArch.Core;
 using YTech.SIMK.WMTI.Core.Master;
+using YTech.SIMK.WMTI.Enums;
 
 namespace YTech.SIMK.WMTI.Core.Transaction
 {
@@ -46,13 +47,20 @@ namespace YTech.SIMK.WMTI.Core.Transaction
             }
         }
 
-        public virtual decimal InstallmentSisa
+        public virtual decimal? InstallmentSisa
         {
             get
             {
-                decimal mustpaid = InstallmentMustPaid;
-                decimal paid = InstallmentPaid.HasValue ? InstallmentPaid.Value : 0;
-                return paid - mustpaid;
+                if (InstallmentStatus.Equals(EnumInstallmentStatus.Paid.ToString()))
+                {
+                    decimal mustpaid = InstallmentMustPaid;
+                    decimal paid = InstallmentPaid.HasValue ? InstallmentPaid.Value : 0;
+                    return paid - mustpaid;
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
 

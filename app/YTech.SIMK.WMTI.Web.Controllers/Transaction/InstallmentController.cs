@@ -21,13 +21,16 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
     {
         private readonly ITLoanRepository _loanRepository;
         private readonly ITInstallmentRepository _installmentRepository;
-        public InstallmentController(ITLoanRepository loanRepository, ITInstallmentRepository installmentRepository)
+        private readonly IMEmployeeRepository _mEmployeeRepository;
+        public InstallmentController(ITLoanRepository loanRepository, ITInstallmentRepository installmentRepository, IMEmployeeRepository mEmployeeRepository)
         {
             Check.Require(loanRepository != null, "loanRepository may not be null");
             Check.Require(installmentRepository != null, "installmentRepository may not be null");
+            Check.Require(mEmployeeRepository != null, "mEmployeeRepository may not be null");
 
             this._loanRepository = loanRepository;
             this._installmentRepository = installmentRepository;
+            this._mEmployeeRepository = mEmployeeRepository;
         }
 
         public ActionResult Index()
@@ -44,7 +47,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         public ActionResult Payment(string loanCode)
         {
             ViewData["CurrentItem"] = "Pembayaran Angsuran";
-            InstallmentPaymentFormViewModel viewModel = InstallmentPaymentFormViewModel.Create(_installmentRepository, loanCode);
+            InstallmentPaymentFormViewModel viewModel = InstallmentPaymentFormViewModel.Create(_installmentRepository, _mEmployeeRepository, loanCode);
             return View(viewModel);
         }
 
@@ -53,23 +56,27 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Payment(TInstallment viewModel, FormCollection formCollection)
         {
-            _installmentRepository.DbContext.BeginTransaction();
-            TInstallment installment = _installmentRepository.Get(viewModel.Id);
-            installment.InstallmentPaymentDate = viewModel.InstallmentPaymentDate;
-            if (!string.IsNullOrEmpty(formCollection["InstallmentPaid"]))
-                installment.InstallmentPaid = Convert.ToDecimal(formCollection["InstallmentPaid"].Replace(",", ""));
-            else
-                installment.InstallmentPaid = null;
-            installment.InstallmentStatus = EnumInstallmentStatus.Paid.ToString();
-            installment.ModifiedBy = User.Identity.Name;
-            installment.ModifiedDate = DateTime.Now;
-            installment.DataStatus = EnumDataStatus.Updated.ToString();
-            _installmentRepository.Update(installment);
-
             string Message = string.Empty;
             bool Success = true;
             try
             {
+                _installmentRepository.DbContext.BeginTransaction();
+                TInstallment installment = _installmentRepository.Get(viewModel.Id);
+                installment.InstallmentPaymentDate = viewModel.InstallmentPaymentDate;
+                if (!string.IsNullOrEmpty(formCollection["InstallmentPaid"]))
+                    installment.InstallmentPaid = Convert.ToDecimal(formCollection["InstallmentPaid"].Replace(",", ""));
+                else
+                    installment.InstallmentPaid = null;
+                if (!string.IsNullOrEmpty(formCollection["InstallmentFine"]))
+                    installment.InstallmentFine = Convert.ToDecimal(formCollection["InstallmentFine"].Replace(",", ""));
+                else
+                    installment.InstallmentFine = null;
+                installment.InstallmentStatus = EnumInstallmentStatus.Paid.ToString();
+                installment.ModifiedBy = User.Identity.Name;
+                installment.ModifiedDate = DateTime.Now;
+                installment.DataStatus = EnumDataStatus.Updated.ToString();
+                _installmentRepository.Update(installment);
+
                 _installmentRepository.DbContext.CommitTransaction();
                 Success = true;
                 Message = "Pembayaran Angsuran Berhasil Disimpan.";
@@ -77,7 +84,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             catch (Exception ex)
             {
                 Success = false;
-                Message = ex.Message;
+                Message = "Error :\n" + ex.GetBaseException().Message;
                 _installmentRepository.DbContext.RollbackTransaction();
             }
             var e = new
@@ -114,7 +121,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                          ins.InstallmentMustPaid.ToString(Helper.CommonHelper.NumberFormat),  
                          ins.InstallmentPaid.HasValue ? ins.InstallmentPaid.Value.ToString(Helper.CommonHelper.NumberFormat) : null,  
                           ins.InstallmentPaymentDate.HasValue ? ins.InstallmentPaymentDate.Value.ToString(Helper.CommonHelper.DateFormat) : null,
-                         ins.InstallmentSisa.ToString(Helper.CommonHelper.NumberFormat),
+                          ins.InstallmentSisa.HasValue ? ins.InstallmentSisa.Value.ToString(Helper.CommonHelper.NumberFormat) : null,
                           ins.EmployeeId != null ? ins.EmployeeId.PersonId.PersonName : null
                         }
                     }).ToArray()
