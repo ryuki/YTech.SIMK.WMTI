@@ -9,7 +9,7 @@
     <%
         if (false)
         {%>
-    <script src="../../../Scripts/jquery-1.5.2-vsdoc.js" type="text/javascript"></script>
+    <script src="../../../Scripts/jquery-1.6.2-vsdoc.js" type="text/javascript"></script>
     <%
     }%>
     <div class="box">
@@ -135,7 +135,8 @@
 
         function OpenPopupInstallment()
         {
-            var src = '<%= Url.Action("Search", "Installment") %>'; 
+            var src = '<%= Url.Action("Search", "Installment") %>';
+            src = src + '?rand=' + (new Date()).getTime();
             $("#popup_frame").attr("src", src);
             $("#popup").dialog("open");
             return false;

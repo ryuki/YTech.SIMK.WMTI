@@ -834,7 +834,6 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                     if (i == 0 && firstDate.HasValue)
                     {
                         ins.InstallmentMaturityDate = firstDate;
-                        i++;
                     }
                     else
                         ins.InstallmentMaturityDate = startDate.AddMonths(i + 1);
