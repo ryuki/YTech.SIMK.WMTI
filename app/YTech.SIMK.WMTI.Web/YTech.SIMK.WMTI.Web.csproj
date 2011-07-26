@@ -180,6 +180,7 @@
     <Content Include="Content\css\buttons.css" />
     <Content Include="Content\css\complex.css" />
     <Content Include="Content\css\layout-default-latest.css" />
+    <Content Include="Content\css\login.css" />
     <Content Include="Content\css\master.css" />
     <Content Include="Content\css\reset.css" />
     <Content Include="Content\css\samplebrowser.css" />
@@ -202,6 +203,7 @@
     <Content Include="Content\css\start\jquery-ui.css" />
     <Content Include="Content\ellipsis-xbl.xml" />
     <Content Include="Content\Images\approve24_on.png" />
+    <Content Include="Content\Images\background.jpg" />
     <Content Include="Content\Images\cancel32_on.png" />
     <Content Include="Content\Images\cross.gif" />
     <Content Include="Content\Images\edit24_on.gif" />
@@ -250,6 +252,9 @@
     <Content Include="Content\Images\icons\userinfo.png" />
     <Content Include="Content\Images\icons\usersearch.png" />
     <Content Include="Content\Images\icons\warning.png" />
+    <Content Include="Content\Images\input-bg.jpg" />
+    <Content Include="Content\Images\login-button.jpg" />
+    <Content Include="Content\Images\login.jpg" />
     <Content Include="Content\Images\logo.jpg" />
     <Content Include="Content\Images\reject32_on.png" />
     <Content Include="Content\Images\white.jpg" />

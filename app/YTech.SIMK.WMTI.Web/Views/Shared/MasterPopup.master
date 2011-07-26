@@ -4,6 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>
+    Sistem Informasi Manajemen Kredit WMTI
         <asp:ContentPlaceHolder ID="title" runat="server">
         </asp:ContentPlaceHolder>
     </title>
