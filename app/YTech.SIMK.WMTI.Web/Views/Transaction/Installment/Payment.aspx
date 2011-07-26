@@ -45,7 +45,7 @@
                     Tgl Jatuh Tempo :</label>
             </td>
             <td>
-                <%= ViewData.Model.installment.InstallmentMaturityDate.HasValue ? ViewData.Model.installment.InstallmentMaturityDate.Value.ToString(CommonHelper.DateFormat) : null %>
+                <%= CommonHelper.ConvertToString(ViewData.Model.installment.InstallmentMaturityDate) %>
             </td>
         </tr>
         <tr>
@@ -54,7 +54,7 @@
                     Total Angsuran :</label>
             </td>
             <td>
-                <%= ViewData.Model.installment.InstallmentTotal.ToString(CommonHelper.NumberFormat) %>
+                <%= CommonHelper.ConvertToString(ViewData.Model.installment.InstallmentTotal) %>
             </td>
         </tr>
         <tr>
@@ -63,7 +63,7 @@
                     Total Yg Harus Dibayar :</label>
             </td>
             <td>
-                <%= ViewData.Model.installment.InstallmentMustPaid.ToString(CommonHelper.NumberFormat) %>
+                <%= CommonHelper.ConvertToString(ViewData.Model.installment.InstallmentMustPaid) %>
             </td>
         </tr>
         <tr>
@@ -72,7 +72,7 @@
                     Tgl Pembayaran :</label>
             </td>
             <td>
-                <%= Html.TextBox("InstallmentPaymentDate", ViewData.Model.installment.InstallmentPaymentDate.HasValue ? ViewData.Model.installment.InstallmentPaymentDate.Value.ToString(CommonHelper.DateFormat) : null)%>
+                <%= Html.TextBox("InstallmentPaymentDate",CommonHelper.ConvertToString(ViewData.Model.installment.InstallmentPaymentDate))%>
             </td>
         </tr>
         <tr>
@@ -81,7 +81,7 @@
                     Jumlah Dibayar :</label>
             </td>
             <td>
-                <%= Html.TextBox("InstallmentPaid", ViewData.Model.installment.InstallmentPaid.HasValue ? ViewData.Model.installment.InstallmentPaid.Value.ToString(CommonHelper.NumberFormat) : null)%>
+                <%= Html.TextBox("InstallmentPaid", CommonHelper.ConvertToString(ViewData.Model.installment.InstallmentPaid))%>
             </td>
         </tr>
         <tr>
@@ -90,7 +90,7 @@
                     Denda :</label>
             </td>
             <td>
-               <%= Html.TextBox("InstallmentFine", ViewData.Model.installment.InstallmentFine.HasValue ? ViewData.Model.installment.InstallmentFine.Value.ToString(CommonHelper.NumberFormat) : null)%>
+               <%= Html.TextBox("InstallmentFine",CommonHelper.ConvertToString(ViewData.Model.installment.InstallmentFine) )%>
             </td>
         </tr>
         <tr>
@@ -103,6 +103,7 @@
                        }%>
     <script type="text/javascript">
         $(document).ready(function () {
+            $("#InstallmentPaymentDate").datepicker({ dateFormat: "dd-M-yy" });
             $('#InstallmentPaid').autoNumeric();
             $('#InstallmentPaid').attr("style", "text-align:right;");
             $('#InstallmentFine').autoNumeric();

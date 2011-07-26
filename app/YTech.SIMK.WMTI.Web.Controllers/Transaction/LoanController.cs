@@ -828,23 +828,23 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 TInstallment ins = null;
                 DateTime startDate = Convert.ToDateTime(string.Format("{1:yyyy-MM}-{0}", loan.LoanMaturityDate.Value, loan.LoanAccDate.Value));
 
-                //get list installment
-                var installments = _tInstallmentRepository.GetInstallments(loan.LoanCode);
-                if (installments != null)
-                {
-                    foreach (var installment in installments)
-                    {
-                        installment.InstallmentBasic = loan.LoanBasicInstallment;
-                        installment.InstallmentInterest = loan.LoanInterest;
-                        installment.InstallmentOthers = loan.LoanOtherInstallment;
+                ////get list installment
+                //var installments = _tInstallmentRepository.GetInstallments(loan.LoanCode);
+                //if (installments != null)
+                //{
+                //    foreach (var installment in installments)
+                //    {
+                //        installment.InstallmentBasic = loan.LoanBasicInstallment;
+                //        installment.InstallmentInterest = loan.LoanInterest;
+                //        installment.InstallmentOthers = loan.LoanOtherInstallment;
 
-                        installment.DataStatus = EnumDataStatus.Updated.ToString();
-                        installment.ModifiedBy = User.Identity.Name;
-                        installment.ModifiedDate = DateTime.Now;
-                        _tInstallmentRepository.Update(installment);
-                    }
-                }
-                else
+                //        installment.DataStatus = EnumDataStatus.Updated.ToString();
+                //        installment.ModifiedBy = User.Identity.Name;
+                //        installment.ModifiedDate = DateTime.Now;
+                //        _tInstallmentRepository.Update(installment);
+                //    }
+                //}
+                //else
                 {
                     for (int i = 0; i < loan.LoanTenor.Value; i++)
                     {

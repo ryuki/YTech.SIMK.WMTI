@@ -4,8 +4,8 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Web.Mvc; 
-using YTech.SIMK.WMTI.Enums; 
+using System.Web.Mvc;
+using YTech.SIMK.WMTI.Enums;
 using YTech.SIMK.WMTI.Core;
 
 namespace YTech.SIMK.WMTI.Web.Controllers.Helper
@@ -30,7 +30,13 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Helper
         public static string NumberFormat
         {
             get { return "N2"; }
-        } 
+        }
+
+        //set culture to id-ID for standardization
+        public static CultureInfo DefaultCulture
+        {
+            get { return CultureInfo.GetCultureInfo("id-ID"); }
+        }
         /// <summary>
         /// get list of enum for jqgrid combobox
         /// </summary>
@@ -56,7 +62,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Helper
                     sb.Append(";");
             }
             return (sb.ToString());
-        } 
+        }
 
         /// <summary>
         /// Will get the string value for a given enums value, this will
@@ -79,6 +85,38 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Helper
 
             // Return the first if there was a match.
             return attribs.Length > 0 ? attribs[0].StringValue : value.ToString();
-        } 
+        }
+
+        public static decimal? ConvertToDecimal(string value)
+        {
+            decimal? result = null;
+            if (!string.IsNullOrEmpty(value))
+                result = decimal.Parse(value, NumberStyles.Number, DefaultCulture);
+            return result;
+        }
+
+        public static string ConvertToString(decimal? value)
+        {
+            string result = string.Empty;
+            if (value.HasValue)
+                result = value.Value.ToString(NumberFormat, DefaultCulture);
+            return result;
+        }
+
+        public static DateTime? ConvertToDate(string value)
+        {
+            DateTime? result = null;
+            if (!string.IsNullOrEmpty(value))
+                result = DateTime.Parse(value, DefaultCulture, DateTimeStyles.AllowWhiteSpaces);
+            return result;
+        }
+
+        public static string ConvertToString(DateTime? value)
+        {
+            string result = string.Empty;
+            if (value.HasValue)
+                result = value.Value.ToString(DateFormat, DefaultCulture);
+            return result;
+        }
     }
 }

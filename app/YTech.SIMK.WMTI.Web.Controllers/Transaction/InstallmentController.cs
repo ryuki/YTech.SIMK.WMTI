@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -62,15 +64,11 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             {
                 _installmentRepository.DbContext.BeginTransaction();
                 TInstallment installment = _installmentRepository.Get(viewModel.Id);
-                installment.InstallmentPaymentDate = viewModel.InstallmentPaymentDate;
-                if (!string.IsNullOrEmpty(formCollection["InstallmentPaid"]))
-                    installment.InstallmentPaid = Convert.ToDecimal(formCollection["InstallmentPaid"].Replace(",", ""));
-                else
-                    installment.InstallmentPaid = null;
-                if (!string.IsNullOrEmpty(formCollection["InstallmentFine"]))
-                    installment.InstallmentFine = Convert.ToDecimal(formCollection["InstallmentFine"].Replace(",", ""));
-                else
-                    installment.InstallmentFine = null;
+                installment.EmployeeId = viewModel.EmployeeId;
+                installment.InstallmentPaymentDate = Helper.CommonHelper.ConvertToDate(formCollection["InstallmentPaymentDate"]);
+                installment.InstallmentPaid = Helper.CommonHelper.ConvertToDecimal(formCollection["InstallmentPaid"]);
+                installment.InstallmentFine = Helper.CommonHelper.ConvertToDecimal(formCollection["InstallmentFine"]);
+
                 installment.InstallmentStatus = EnumInstallmentStatus.Paid.ToString();
                 installment.ModifiedBy = User.Identity.Name;
                 installment.ModifiedDate = DateTime.Now;
@@ -115,13 +113,13 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                         cell = new string[] {
                             ins.Id,  
                          ins.InstallmentNo.HasValue ? ins.InstallmentNo.Value.ToString() : null,  
-                          ins.InstallmentMaturityDate.HasValue ? ins.InstallmentMaturityDate.Value.ToString(Helper.CommonHelper.DateFormat) : null,
-                         ins.InstallmentTotal.ToString(Helper.CommonHelper.NumberFormat),  
-                         ins.InstallmentFine.HasValue ? ins.InstallmentFine.Value.ToString(Helper.CommonHelper.NumberFormat) : null,
-                         ins.InstallmentMustPaid.ToString(Helper.CommonHelper.NumberFormat),  
-                         ins.InstallmentPaid.HasValue ? ins.InstallmentPaid.Value.ToString(Helper.CommonHelper.NumberFormat) : null,  
-                          ins.InstallmentPaymentDate.HasValue ? ins.InstallmentPaymentDate.Value.ToString(Helper.CommonHelper.DateFormat) : null,
-                          ins.InstallmentSisa.HasValue ? ins.InstallmentSisa.Value.ToString(Helper.CommonHelper.NumberFormat) : null,
+                          Helper.CommonHelper.ConvertToString(ins.InstallmentMaturityDate),
+                         Helper.CommonHelper.ConvertToString(ins.InstallmentTotal),
+                         Helper.CommonHelper.ConvertToString(ins.InstallmentFine), 
+                         Helper.CommonHelper.ConvertToString(ins.InstallmentMustPaid), 
+                         Helper.CommonHelper.ConvertToString(ins.InstallmentPaid),
+                          Helper.CommonHelper.ConvertToString(ins.InstallmentPaymentDate),
+                       Helper.CommonHelper.ConvertToString(ins.InstallmentSisa),
                           ins.EmployeeId != null ? ins.EmployeeId.PersonId.PersonName : null
                         }
                     }).ToArray()
