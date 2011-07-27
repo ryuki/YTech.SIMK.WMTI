@@ -129,7 +129,6 @@
                         </td>
                         <td> 
                             <%= Html.DropDownList("ZoneId", Model.ZoneList)%>
-                           <%-- <%= Html.TextBox("ZoneId", Model.LoanSurvey.LoanId.ZoneId != null ? Model.LoanSurvey.LoanId.ZoneId.Id : null, new { @style = "width:300px" })%>--%>
                             <%= Html.ValidationMessage("ZoneId")%> 
                         </td>
                     </tr>
@@ -200,7 +199,7 @@
                                 Penghasilan / Bulan :</label>
                         </td>
                         <td>
-                            <%= Html.TextBox("PersonIncome", Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonIncome.HasValue ? Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonIncome.Value.ToString(CommonHelper.NumberFormat) : null, new { @style = "width:300px" })%>
+                            <%= Html.TextBox("PersonIncome", Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonIncome.HasValue ? CommonHelper.ConvertToString(Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonIncome) : null, new { @style = "width:300px" })%>
                             <%= Html.ValidationMessage("PersonIncome")%>
                         </td>
                     </tr>
@@ -250,7 +249,7 @@
                                 Penghasilan / Bulan :</label>
                         </td>
                         <td>
-                         <%= Html.TextBox("PersonCoupleIncome", Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonCoupleIncome.HasValue ? Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonCoupleIncome.Value.ToString(CommonHelper.NumberFormat) : null, new { @style = "width:300px" })%>
+                         <%= Html.TextBox("PersonCoupleIncome", Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonCoupleIncome.HasValue ? CommonHelper.ConvertToString(Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonCoupleIncome) : null, new { @style = "width:300px" })%>
                             <%= Html.ValidationMessage("PersonCoupleIncome")%>
                         </td>
                     </tr>
@@ -318,7 +317,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label for="PersonStaySince">
+                            <label for="PersonGuarantorStaySince">
                                 Mulai tinggal di kota ini :</label>
                         </td>
                         <td>
@@ -509,7 +508,7 @@
                                 Harga Barang :</label>
                         </td>
                         <td>
-                            <%= Html.TextBox("UnitPrice", Model.LoanUnit.UnitPrice.HasValue ? Model.LoanUnit.UnitPrice.Value.ToString(CommonHelper.NumberFormat) : null, new { @style = "width:300px" })%>
+                            <%= Html.TextBox("UnitPrice", Model.LoanUnit.UnitPrice.HasValue ? CommonHelper.ConvertToString(Model.LoanUnit.UnitPrice) : null, new { @style = "width:300px" })%>
                             <%= Html.ValidationMessage("UnitPrice")%>
                         </td>
                     </tr>
@@ -530,7 +529,7 @@
                                 Jumlah Angsuran per bulan RP:</label>
                         </td>
                         <td>
-                         <%= Html.TextBox("LoanBasicInstallment", Model.LoanSurvey.LoanId.LoanBasicInstallment.HasValue ? Model.LoanSurvey.LoanId.LoanBasicInstallment.Value.ToString(CommonHelper.NumberFormat) : null, new { @style = "width:300px" })%>
+                         <%= Html.TextBox("LoanBasicInstallment", Model.LoanSurvey.LoanId.LoanBasicInstallment.HasValue ? CommonHelper.ConvertToString(Model.LoanSurvey.LoanId.LoanBasicInstallment) : null, new { @style = "width:300px" })%>
                             <%= Html.ValidationMessage("LoanBasicInstallment")%>
                         </td>
                     </tr>
@@ -550,7 +549,7 @@
                                 Bila memakai DP, maka DP adalah :</label>
                         </td>
                         <td>
-                         <%= Html.TextBox("LoanDownPayment", Model.LoanSurvey.LoanId.LoanDownPayment.HasValue ? Model.LoanSurvey.LoanId.LoanDownPayment.Value.ToString(CommonHelper.NumberFormat) : null, new { @style = "width:300px" })%>
+                         <%= Html.TextBox("LoanDownPayment", Model.LoanSurvey.LoanId.LoanDownPayment.HasValue ? CommonHelper.ConvertToString(Model.LoanSurvey.LoanId.LoanDownPayment) : null, new { @style = "width:300px" })%>
                             <%= Html.ValidationMessage("LoanDownPayment")%>
                         </td>
                     </tr>
@@ -596,8 +595,6 @@
             <td colspan="2" align="center">
                 <div>
                     <span id="toolbar" class="ui-widget-header ui-corner-all">
-                        <%--<a id="newCustomer" href="Registration">
-                            Registrasi Pasien Baru</a>--%>
                         <button id="Save" type="submit">
                             Simpan</button>
                     </span>

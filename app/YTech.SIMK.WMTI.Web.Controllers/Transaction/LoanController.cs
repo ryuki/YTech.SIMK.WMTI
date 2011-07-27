@@ -25,8 +25,9 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         private readonly ITLoanUnitRepository _tLoanUnitRepository;
         private readonly IMZoneRepository _mZoneRepository;
         private readonly IMPartnerRepository _mPartnerRepository;
+        private readonly IMDepartmentRepository _mDepartmentRepository;
 
-        public LoanController(ITLoanRepository tLoanRepository, ITLoanSurveyRepository tLoanSurveyRepository, IMCustomerRepository mCustomerRepository, IRefAddressRepository refAddressRepository, IRefPersonRepository refPersonRepository, ITInstallmentRepository tInstallmentRepository, IMEmployeeRepository mEmployeeRepository, ITLoanUnitRepository tLoanUnitRepository, IMZoneRepository mZoneRepository, IMPartnerRepository mPartnerRepository)
+        public LoanController(ITLoanRepository tLoanRepository, ITLoanSurveyRepository tLoanSurveyRepository, IMCustomerRepository mCustomerRepository, IRefAddressRepository refAddressRepository, IRefPersonRepository refPersonRepository, ITInstallmentRepository tInstallmentRepository, IMEmployeeRepository mEmployeeRepository, ITLoanUnitRepository tLoanUnitRepository, IMZoneRepository mZoneRepository, IMPartnerRepository mPartnerRepository, IMDepartmentRepository mDepartmentRepository)
         {
             Check.Require(tLoanRepository != null, "tLoanRepository may not be null");
             Check.Require(tLoanSurveyRepository != null, "tLoanSurveyRepository may not be null");
@@ -38,6 +39,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             Check.Require(tLoanUnitRepository != null, "tLoanUnitRepository may not be null");
             Check.Require(mZoneRepository != null, "mZoneRepository may not be null");
             Check.Require(mPartnerRepository != null, "mPartnerRepository may not be null");
+            Check.Require(mDepartmentRepository != null, "mDepartmentRepository may not be null");
 
             _tLoanRepository = tLoanRepository;
             _tLoanSurveyRepository = tLoanSurveyRepository;
@@ -49,6 +51,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             _tLoanUnitRepository = tLoanUnitRepository;
             _mZoneRepository = mZoneRepository;
             _mPartnerRepository = mPartnerRepository;
+            _mDepartmentRepository = mDepartmentRepository;
         }
 
         public ActionResult Index(string loanStatus)
@@ -217,12 +220,12 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
 
                 loan.LoanNo = loanVM.LoanNo;
                 if (!string.IsNullOrEmpty(formCollection["LoanBasicPrice"]))
-                    loan.LoanBasicPrice = Convert.ToDecimal(formCollection["LoanBasicPrice"].Replace(",", ""));
+                    loan.LoanBasicPrice = Helper.CommonHelper.ConvertToDecimal(formCollection["LoanBasicPrice"]);
                 else
                     loan.LoanBasicPrice = null;
 
                 if (!string.IsNullOrEmpty(formCollection["LoanCreditPrice"]))
-                    loan.LoanCreditPrice = Convert.ToDecimal(formCollection["LoanCreditPrice"].Replace(",", ""));
+                    loan.LoanCreditPrice = Helper.CommonHelper.ConvertToDecimal(formCollection["LoanCreditPrice"]);
                 else
                     loan.LoanCreditPrice = null;
 
@@ -237,12 +240,12 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 loan.LoanTenor = loanVM.LoanTenor;
 
                 if (!string.IsNullOrEmpty(formCollection["LoanDownPayment"]))
-                    loan.LoanDownPayment = Convert.ToDecimal(formCollection["LoanDownPayment"].Replace(",", ""));
+                    loan.LoanDownPayment = Helper.CommonHelper.ConvertToDecimal(formCollection["LoanDownPayment"]);
                 else
                     loan.LoanDownPayment = null;
 
                 if (!string.IsNullOrEmpty(formCollection["LoanBasicInstallment"]))
-                    loan.LoanBasicInstallment = Convert.ToDecimal(formCollection["LoanBasicInstallment"].Replace(",", ""));
+                    loan.LoanBasicInstallment = Helper.CommonHelper.ConvertToDecimal(formCollection["LoanBasicInstallment"]);
                 else
                     loan.LoanBasicInstallment = null;
 
@@ -328,7 +331,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         {
             ViewData["CurrentItem"] = "Lembar Survey";
             SurveyFormViewModel viewModel =
-                SurveyFormViewModel.CreateSurveyFormViewModel(_tLoanSurveyRepository, _mEmployeeRepository, _mZoneRepository, _mPartnerRepository, loanSurveyId);
+                SurveyFormViewModel.CreateSurveyFormViewModel(_tLoanSurveyRepository, _mEmployeeRepository, _mZoneRepository, _mPartnerRepository, _mDepartmentRepository, loanSurveyId);
 
             return View(viewModel);
         }
@@ -338,7 +341,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         {
             ViewData["CurrentItem"] = "Lembar Survey";
             SurveyFormViewModel viewModel =
-                SurveyFormViewModel.CreateSurveyFormViewModel(_tLoanSurveyRepository, _mEmployeeRepository, _mZoneRepository, _mPartnerRepository, loanSurveyId);
+                SurveyFormViewModel.CreateSurveyFormViewModel(_tLoanSurveyRepository, _mEmployeeRepository, _mZoneRepository, _mPartnerRepository, _mDepartmentRepository, loanSurveyId);
 
             return View(viewModel);
         }
@@ -489,7 +492,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 loan.PartnerId = loanVM.PartnerId;
 
                 if (!string.IsNullOrEmpty(formCollection["LoanDownPayment"]))
-                    loan.LoanDownPayment = Convert.ToDecimal(formCollection["LoanDownPayment"].Replace(",", ""));
+                    loan.LoanDownPayment = Helper.CommonHelper.ConvertToDecimal(formCollection["LoanDownPayment"]);
                 else
                     loan.LoanDownPayment = null;
 
@@ -499,12 +502,12 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 loan.LoanNo = loanVM.LoanNo;
 
                 if (!string.IsNullOrEmpty(formCollection["LoanUnitPriceTotal"]))
-                    loan.LoanUnitPriceTotal = Convert.ToDecimal(formCollection["LoanUnitPriceTotal"].Replace(",", ""));
+                    loan.LoanUnitPriceTotal = Helper.CommonHelper.ConvertToDecimal(formCollection["LoanUnitPriceTotal"]);
                 else
                     loan.LoanUnitPriceTotal = null;
 
                 if (!string.IsNullOrEmpty(formCollection["LoanBasicInstallment"]))
-                    loan.LoanBasicInstallment = Convert.ToDecimal(formCollection["LoanBasicInstallment"].Replace(",", ""));
+                    loan.LoanBasicInstallment = Helper.CommonHelper.ConvertToDecimal(formCollection["LoanBasicInstallment"]);
                 else
                     loan.LoanBasicInstallment = null;
 
@@ -542,7 +545,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 unit.UnitType = loanUnitVM.UnitType;
                 unit.UnitName = loanUnitVM.UnitName;
                 if (!string.IsNullOrEmpty(formCollection["UnitPrice"]))
-                    unit.UnitPrice = Convert.ToDecimal(formCollection["UnitPrice"].Replace(",", ""));
+                    unit.UnitPrice = Helper.CommonHelper.ConvertToDecimal(formCollection["UnitPrice"]);
                 else
                     unit.UnitPrice = null;
                 if (isSave)
@@ -680,7 +683,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             person.PersonReligion = formCollection["PersonReligion"];
 
             if (!string.IsNullOrEmpty(formCollection["PersonIncome"]))
-                person.PersonIncome = Convert.ToDecimal(formCollection["PersonIncome"].Replace(",", ""));
+                person.PersonIncome = Helper.CommonHelper.ConvertToDecimal(formCollection["PersonIncome"]);
             else
                 person.PersonIncome = null;
 
@@ -694,7 +697,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             person.PersonCoupleOccupation = formCollection["PersonCoupleOccupation"];
 
             if (!string.IsNullOrEmpty(formCollection["PersonCoupleIncome"]))
-                person.PersonCoupleIncome = Convert.ToDecimal(formCollection["PersonCoupleIncome"].Replace(",", ""));
+                person.PersonCoupleIncome = Helper.CommonHelper.ConvertToDecimal(formCollection["PersonCoupleIncome"]);
             else
                 person.PersonCoupleIncome = null;
 
@@ -828,47 +831,28 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 TInstallment ins = null;
                 DateTime startDate = Convert.ToDateTime(string.Format("{1:yyyy-MM}-{0}", loan.LoanMaturityDate.Value, loan.LoanAccDate.Value));
 
-                ////get list installment
-                //var installments = _tInstallmentRepository.GetInstallments(loan.LoanCode);
-                //if (installments != null)
-                //{
-                //    foreach (var installment in installments)
-                //    {
-                //        installment.InstallmentBasic = loan.LoanBasicInstallment;
-                //        installment.InstallmentInterest = loan.LoanInterest;
-                //        installment.InstallmentOthers = loan.LoanOtherInstallment;
-
-                //        installment.DataStatus = EnumDataStatus.Updated.ToString();
-                //        installment.ModifiedBy = User.Identity.Name;
-                //        installment.ModifiedDate = DateTime.Now;
-                //        _tInstallmentRepository.Update(installment);
-                //    }
-                //}
-                //else
+                for (int i = 0; i < loan.LoanTenor.Value; i++)
                 {
-                    for (int i = 0; i < loan.LoanTenor.Value; i++)
+                    ins = new TInstallment();
+                    ins.SetAssignedIdTo(Guid.NewGuid().ToString());
+                    ins.LoanId = loan;
+                    ins.InstallmentBasic = loan.LoanBasicInstallment;
+                    ins.InstallmentInterest = loan.LoanInterest;
+                    ins.InstallmentOthers = loan.LoanOtherInstallment;
+                    ins.InstallmentNo = i + 1;
+                    ins.InstallmentStatus = EnumInstallmentStatus.Not_Paid.ToString();
+                    //if use DP, first installment's maturity date is when item is received
+                    if (i == 0 && firstDate.HasValue)
                     {
-                        ins = new TInstallment();
-                        ins.SetAssignedIdTo(Guid.NewGuid().ToString());
-                        ins.LoanId = loan;
-                        ins.InstallmentBasic = loan.LoanBasicInstallment;
-                        ins.InstallmentInterest = loan.LoanInterest;
-                        ins.InstallmentOthers = loan.LoanOtherInstallment;
-                        ins.InstallmentNo = i + 1;
-                        ins.InstallmentStatus = EnumInstallmentStatus.Not_Paid.ToString();
-                        //if use DP, first installment's maturity date is when item is received
-                        if (i == 0 && firstDate.HasValue)
-                        {
-                            ins.InstallmentMaturityDate = firstDate;
-                        }
-                        else
-                            ins.InstallmentMaturityDate = startDate.AddMonths(i + 1);
-
-                        ins.DataStatus = EnumDataStatus.New.ToString();
-                        ins.CreatedBy = User.Identity.Name;
-                        ins.CreatedDate = DateTime.Now;
-                        _tInstallmentRepository.Save(ins);
+                        ins.InstallmentMaturityDate = firstDate;
                     }
+                    else
+                        ins.InstallmentMaturityDate = startDate.AddMonths(i + 1);
+
+                    ins.DataStatus = EnumDataStatus.New.ToString();
+                    ins.CreatedBy = User.Identity.Name;
+                    ins.CreatedDate = DateTime.Now;
+                    _tInstallmentRepository.Save(ins);
                 }
             }
         }
