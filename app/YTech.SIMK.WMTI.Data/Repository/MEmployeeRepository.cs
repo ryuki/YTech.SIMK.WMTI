@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 using NHibernate;
 using NHibernate.Criterion;
 using SharpArch.Data.NHibernate;
@@ -25,6 +26,21 @@ namespace YTech.SIMK.WMTI.Data.Repository
               ;
 
             IEnumerable<MEmployee> list = criteria.List<MEmployee>();
+            return list;
+        }
+
+        public IList<MEmployee> GetEmployeeByDept(string dept)
+        {
+            var sql = new StringBuilder();
+
+            sql.AppendLine(@" from MEmployee as emp where emp.DepartmentId = :deptId ");
+
+            string query = string.Format(" select emp {0} ", sql);
+            IQuery q = Session.CreateQuery(query);
+            q.SetString("deptId", dept);
+
+            IList<MEmployee> list = q.List<MEmployee>();
+
             return list;
         }
     }

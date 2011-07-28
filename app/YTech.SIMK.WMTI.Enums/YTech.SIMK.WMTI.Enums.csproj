@@ -43,6 +43,7 @@
     <Compile Include="EnumCommonViewData.cs" />
     <Compile Include="EnumCustomerStatus.cs" />
     <Compile Include="EnumDataStatus.cs" />
+    <Compile Include="EnumDepartment.cs" />
     <Compile Include="EnumEducation.cs" />
     <Compile Include="EnumExportFormat.cs" />
     <Compile Include="EnumGender.cs" />

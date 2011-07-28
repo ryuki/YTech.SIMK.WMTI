@@ -688,7 +688,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 person.PersonIncome = null;
 
             if (!string.IsNullOrEmpty(formCollection["PersonNoOfChildren"]))
-                person.PersonNoOfChildren = Convert.ToDecimal(formCollection["PersonNoOfChildren"].Replace(",", ""));
+                person.PersonNoOfChildren = Helper.CommonHelper.ConvertToDecimal(formCollection["PersonNoOfChildren"]);
             else
                 person.PersonNoOfChildren = null;
 

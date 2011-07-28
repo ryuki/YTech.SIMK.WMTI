@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using YTech.SIMK.WMTI.Core.Master;
 using YTech.SIMK.WMTI.Core.RepositoryInterfaces;
 using YTech.SIMK.WMTI.Core.Transaction;
+using YTech.SIMK.WMTI.Enums;
 
 namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
 {
@@ -55,22 +56,26 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
             if (loan.LoanMateraiFee != null)
                 viewModel.LoanMateraiFee = true;
 
-            var listEmployee = mEmployeeRepository.GetAll();
             MEmployee employee = new MEmployee();
-            listEmployee.Insert(0, employee);
 
-            var tls = from emps in listEmployee
-                      //where emp.DepartmentId.DepartmentName == "TEAM LEADER SALESMAN"
+            var listTlsEmployee = mEmployeeRepository.GetEmployeeByDept(EnumDepartment.TLS.ToString());
+            listTlsEmployee.Insert(0, employee);
+
+            var tls = from emps in listTlsEmployee
                       select new { Id = emps.Id, Name = emps.PersonId != null ? emps.PersonId.PersonName : "-Pilih Team Leader-" };
             viewModel.TLSList = new SelectList(tls, "Id", "Name", loan.TLSId != null ? loan.TLSId.Id : string.Empty);
 
-            var salesman = from emps in listEmployee
-                           //where emp.DepartmentId.DepartmentName == "SALESMAN"
+            var listSaEmployee = mEmployeeRepository.GetEmployeeByDept(EnumDepartment.SA.ToString());
+            listSaEmployee.Insert(0, employee);
+
+            var salesman = from emps in listSaEmployee
                            select new { Id = emps.Id, Name = emps.PersonId != null ? emps.PersonId.PersonName : "-Pilih Salesman-" };
             viewModel.SalesmanList = new SelectList(salesman, "Id", "Name", loan.SalesmanId != null ? loan.SalesmanId.Id : string.Empty);
 
-            var surveyor = from emps in listEmployee
-                           //where emp.DepartmentId.DepartmentName == "SURVEYOR"
+            var listSuEmployee = mEmployeeRepository.GetEmployeeByDept(EnumDepartment.SU.ToString());
+            listSuEmployee.Insert(0, employee);
+
+            var surveyor = from emps in listSuEmployee
                            select new { Id = emps.Id, Name = emps.PersonId != null ? emps.PersonId.PersonName : "-Pilih Surveyor-" };
             viewModel.SurveyorList = new SelectList(surveyor, "Id", "Name", loan.SurveyorId != null ? loan.SurveyorId.Id : string.Empty);
 

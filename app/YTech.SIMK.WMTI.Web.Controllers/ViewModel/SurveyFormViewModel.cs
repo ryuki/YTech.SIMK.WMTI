@@ -101,34 +101,33 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
                                 select new { ID = e, Name = CommonHelper.GetStringValue(e) };
             viewModel.KnowCustomerList = new SelectList(knowcustomers, "Id", "Name", loanSurvey.LoanId.LoanIsSalesmanKnownCustomer);
 
-            var listEmployee = mEmployeeRepository.GetAll();
-            var listDepartment = mDepartmentRepository.GetAll();
             MEmployee employee = new MEmployee();
-            //MDepartment department = new MDepartment();
-            //mCustomer.SupplierName = "-Pilih Supplier-";
-            listEmployee.Insert(0, employee);
-            //listDepartment.Insert(0, department);
-            var salesman = from emp in listEmployee
-                           join dept in listDepartment on emp.DepartmentId equals dept
-                           where dept.DepartmentName == "SALESMAN"
+
+            var listSaEmployee = mEmployeeRepository.GetEmployeeByDept(EnumDepartment.SA.ToString());
+            listSaEmployee.Insert(0, employee);
+
+            var salesman = from emp in listSaEmployee
                            select new { Id = emp.Id, Name = emp.PersonId != null ? emp.PersonId.PersonName : "-Pilih Salesman-" };
             viewModel.SalesmanList = new SelectList(salesman, "Id", "Name", loanSurvey.LoanId.SalesmanId != null ? loanSurvey.LoanId.SalesmanId.Id : string.Empty);
 
-            var surveyor = from emp in listEmployee
-                           join dept in listDepartment on emp.DepartmentId equals dept 
-                           where dept.DepartmentName == "SURVEYOR"
+            var listSuEmployee = mEmployeeRepository.GetEmployeeByDept(EnumDepartment.SU.ToString());
+            listSuEmployee.Insert(0, employee);
+
+            var surveyor = from emp in listSuEmployee
                            select new { Id = emp.Id, Name = emp.PersonId != null ? emp.PersonId.PersonName : "-Pilih Surveyor-" };
             viewModel.SurveyorList = new SelectList(surveyor, "Id", "Name", loanSurvey.LoanId.SurveyorId != null ? loanSurvey.LoanId.SurveyorId.Id : string.Empty);
 
-            var collector = from emp in listEmployee
-                            join dept in listDepartment on emp.DepartmentId equals dept
-                            where dept.DepartmentName == "COLLECTOR"
+            var listColEmployee = mEmployeeRepository.GetEmployeeByDept(EnumDepartment.COL.ToString());
+            listColEmployee.Insert(0, employee);
+
+            var collector = from emp in listColEmployee
                             select new { Id = emp.Id, Name = emp.PersonId != null ? emp.PersonId.PersonName : "-Pilih Kolektor-" };
             viewModel.CollectorList = new SelectList(collector, "Id", "Name", loanSurvey.LoanId.CollectorId != null ? loanSurvey.LoanId.CollectorId.Id : string.Empty);
 
-            var tls = from emp in listEmployee
-                      join dept in listDepartment on emp.DepartmentId equals dept
-                      where dept.DepartmentName == "TEAM LEADER SALESMAN"
+            var listTlsEmployee = mEmployeeRepository.GetEmployeeByDept(EnumDepartment.TLS.ToString());
+            listTlsEmployee.Insert(0, employee);
+
+            var tls = from emp in listTlsEmployee
                       select new { Id = emp.Id, Name = emp.PersonId != null ? emp.PersonId.PersonName : "-Pilih Team Leader-" };
             viewModel.TLSList = new SelectList(tls, "Id", "Name", loanSurvey.LoanId.TLSId != null ? loanSurvey.LoanId.TLSId.Id : string.Empty);
 
