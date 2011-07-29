@@ -72,7 +72,7 @@
                                         HD :</label>
                                 </td>
                                 <td>
-                                 <%= Html.TextBox("LoanBasicPrice", Model.Loan.LoanBasicPrice.HasValue ? CommonHelper.ConvertToString(Model.Loan.LoanBasicPrice) : null, new { @style = "width:300px" })%>
+                                 <%= Html.TextBox("LoanBasicPrice", CommonHelper.ConvertToString(Model.Loan.LoanBasicPrice), new { @style = "width:300px" })%>
                                     <%= Html.ValidationMessage("LoanBasicPrice")%>
                                 </td>
                             </tr>
@@ -82,7 +82,7 @@
                                         HT :</label>
                                 </td>
                                 <td>
-                                 <%= Html.TextBox("LoanCreditPrice", Model.Loan.LoanCreditPrice.HasValue ? CommonHelper.ConvertToString(Model.Loan.LoanCreditPrice) : null, new { @style = "width:300px" })%>
+                                 <%= Html.TextBox("LoanCreditPrice", CommonHelper.ConvertToString(Model.Loan.LoanCreditPrice), new { @style = "width:300px" })%>
                                     <%= Html.ValidationMessage("LoanCreditPrice")%>
                                 </td>
                             </tr>
@@ -92,7 +92,7 @@
                                         Tanggal :</label>
                                 </td>
                                 <td>
-                                 <%= Html.TextBox("LoanSubmissionDate", Model.Loan.LoanSubmissionDate.HasValue ? Model.Loan.LoanSubmissionDate.Value.ToString(CommonHelper.DateFormat) : null, new { @style = "width:100px" })%>
+                                 <%= Html.TextBox("LoanSubmissionDate", CommonHelper.ConvertToString(Model.Loan.LoanSubmissionDate), new { @style = "width:100px" })%>
                                     <%= Html.ValidationMessage("LoanSubmissionDate")%>
                                 </td>
                             </tr>
@@ -210,7 +210,7 @@
                                         Uang Muka/DP :</label>
                                 </td>
                                 <td>
-                                 <%= Html.TextBox("LoanDownPayment", Model.Loan.LoanDownPayment.HasValue ? CommonHelper.ConvertToString(Model.Loan.LoanDownPayment) : null, new { @style = "width:300px" })%>
+                                 <%= Html.TextBox("LoanDownPayment", CommonHelper.ConvertToString(Model.Loan.LoanDownPayment), new { @style = "width:300px" })%>
                                     <%= Html.ValidationMessage("LoanDownPayment")%>
                                 </td>
                             </tr>
@@ -231,7 +231,7 @@
                                         Angsuran/Bulan :</label>
                                 </td>
                                 <td>
-                                 <%= Html.TextBox("LoanBasicInstallment", Model.Loan.LoanBasicInstallment.HasValue ? CommonHelper.ConvertToString(Model.Loan.LoanBasicInstallment) : null, new { @style = "width:300px" })%>
+                                 <%= Html.TextBox("LoanBasicInstallment", CommonHelper.ConvertToString(Model.Loan.LoanBasicInstallment), new { @style = "width:300px" })%>
                                     <%= Html.ValidationMessage("LoanBasicInstallment")%>
                                 </td>
                             </tr>

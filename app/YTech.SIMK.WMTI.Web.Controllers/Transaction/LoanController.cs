@@ -85,7 +85,8 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                                                 loan.Id,
                                                 loan.LoanNo,
                                                 loan.LoanCode,
-                                                loan.LoanSubmissionDate.HasValue ? loan.LoanSubmissionDate.Value.ToString(Helper.CommonHelper.DateFormat) : null,
+                                                //loan.LoanSubmissionDate.HasValue ? loan.LoanSubmissionDate.Value.ToString(Helper.CommonHelper.DateFormat) : null,
+                                                Helper.CommonHelper.ConvertToString(loan.LoanSubmissionDate),
                                                 loan.PersonId.PersonName,
                                                 loan.SurveyorId != null ?  loan.SurveyorId.PersonId.PersonName : null,
                                                 loan.ZoneId != null ? loan.ZoneId.ZoneName : null,
@@ -671,7 +672,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             person.PersonIdCardNo = formCollection["PersonIdCardNo"];
 
             if (!string.IsNullOrEmpty(formCollection["PersonDob"]))
-                person.PersonDob = Convert.ToDateTime(formCollection["PersonDob"]);
+                person.PersonDob = Helper.CommonHelper.ConvertToDate(formCollection["PersonDob"]);
 
             person.PersonPob = formCollection["PersonPob"];
             person.PersonPhone = formCollection["PersonPhone"];
@@ -679,7 +680,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             person.PersonOccupation = formCollection["PersonOccupation"];
             person.PersonLastEducation = formCollection["PersonLastEducation"];
             if (!string.IsNullOrEmpty(formCollection["PersonAge"]))
-                person.PersonAge = Convert.ToDecimal(formCollection["PersonAge"]);
+                person.PersonAge = Helper.CommonHelper.ConvertToDecimal(formCollection["PersonAge"]);
             person.PersonReligion = formCollection["PersonReligion"];
 
             if (!string.IsNullOrEmpty(formCollection["PersonIncome"]))
@@ -702,7 +703,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 person.PersonCoupleIncome = null;
 
             if (!string.IsNullOrEmpty(formCollection["PersonStaySince"]))
-                person.PersonStaySince = Convert.ToDateTime(formCollection["PersonStaySince"]);
+                person.PersonStaySince = Helper.CommonHelper.ConvertToDate(formCollection["PersonStaySince"]);
             else
                 person.PersonStaySince = null;
 
@@ -712,7 +713,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             person.PersonGuarantorPhone = formCollection["PersonGuarantorPhone"];
 
             if (!string.IsNullOrEmpty(formCollection["PersonGuarantorStaySince"]))
-                person.PersonGuarantorStaySince = Convert.ToDateTime(formCollection["PersonGuarantorStaySince"]);
+                person.PersonGuarantorStaySince = Helper.CommonHelper.ConvertToDate(formCollection["PersonGuarantorStaySince"]);
             else
                 person.PersonGuarantorStaySince = null;
 
@@ -736,7 +737,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             loanSurvey.SurveyNeighborAsset = formCollection["SurveyNeighborAsset"];
             loanSurvey.SurveyHouseType = formCollection["SurveyHouseType"];
             if (!string.IsNullOrEmpty(formCollection["PersonGuarantorStaySince"]))
-                loanSurvey.SurveyUnitDeliverDate = Convert.ToDateTime(formCollection["SurveyUnitDeliverDate"]);
+                loanSurvey.SurveyUnitDeliverDate = Helper.CommonHelper.ConvertToDate(formCollection["SurveyUnitDeliverDate"]);
             else
                 loanSurvey.SurveyUnitDeliverDate = null;
             loanSurvey.SurveyUnitDeliverAddress = formCollection["SurveyUnitDeliverAddress"];

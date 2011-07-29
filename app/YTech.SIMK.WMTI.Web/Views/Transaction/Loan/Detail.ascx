@@ -52,7 +52,7 @@
                                 Tanggal PK :</label>
                         </td>
                         <td>
-                         <%= Html.TextBox("LoanSubmissionDate", Model.LoanSurvey.LoanId.LoanSubmissionDate.HasValue ? Model.LoanSurvey.LoanId.LoanSubmissionDate.Value.ToString(CommonHelper.DateFormat) : null, new { @style = "width:100px" })%>
+                         <%= Html.TextBox("LoanSubmissionDate", CommonHelper.ConvertToString(Model.LoanSurvey.LoanId.LoanSubmissionDate), new { @style = "width:100px" })%>
                             <%= Html.ValidationMessage("LoanSubmissionDate")%>
                         </td>
                     </tr>
@@ -199,7 +199,7 @@
                                 Penghasilan / Bulan :</label>
                         </td>
                         <td>
-                            <%= Html.TextBox("PersonIncome", Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonIncome.HasValue ? CommonHelper.ConvertToString(Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonIncome) : null, new { @style = "width:300px" })%>
+                            <%= Html.TextBox("PersonIncome", CommonHelper.ConvertToString(Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonIncome), new { @style = "width:300px" })%>
                             <%= Html.ValidationMessage("PersonIncome")%>
                         </td>
                     </tr>
@@ -249,7 +249,7 @@
                                 Penghasilan / Bulan :</label>
                         </td>
                         <td>
-                         <%= Html.TextBox("PersonCoupleIncome", Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonCoupleIncome.HasValue ? CommonHelper.ConvertToString(Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonCoupleIncome) : null, new { @style = "width:300px" })%>
+                         <%= Html.TextBox("PersonCoupleIncome", CommonHelper.ConvertToString(Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonCoupleIncome), new { @style = "width:300px" })%>
                             <%= Html.ValidationMessage("PersonCoupleIncome")%>
                         </td>
                     </tr>
@@ -269,7 +269,7 @@
                                 Berapa lama tinggal di kota ini :</label>
                         </td>
                         <td>
-                            <%= Html.TextBox("PersonStaySince", Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonStaySince.HasValue ? Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonStaySince.Value.ToString(CommonHelper.DateFormat) : null, new { @style = "width:300px" })%>
+                            <%= Html.TextBox("PersonStaySince", CommonHelper.ConvertToString(Model.LoanSurvey.LoanId.CustomerId.PersonId.PersonStaySince), new { @style = "width:300px" })%>
                             <%= Html.ValidationMessage("PersonStaySince")%>
                         </td>
                     </tr>
@@ -405,7 +405,7 @@
                                 Rencana Pengiriman Barang jika Disetujui Tanggal :</label>
                         </td>
                         <td>
-                            <%= Html.TextBox("SurveyUnitDeliverDate", Model.LoanSurvey.SurveyUnitDeliverDate.HasValue ? Model.LoanSurvey.SurveyUnitDeliverDate.Value.ToString(CommonHelper.DateFormat) : null, new { @style = "width:300px" })%>
+                            <%= Html.TextBox("SurveyUnitDeliverDate", CommonHelper.ConvertToString(Model.LoanSurvey.SurveyUnitDeliverDate), new { @style = "width:300px" })%>
                             <%= Html.ValidationMessage("SurveyUnitDeliverDate")%>
                         </td>
                     </tr>
@@ -508,7 +508,7 @@
                                 Harga Barang :</label>
                         </td>
                         <td>
-                            <%= Html.TextBox("UnitPrice", Model.LoanUnit.UnitPrice.HasValue ? CommonHelper.ConvertToString(Model.LoanUnit.UnitPrice) : null, new { @style = "width:300px" })%>
+                            <%= Html.TextBox("UnitPrice", CommonHelper.ConvertToString(Model.LoanUnit.UnitPrice), new { @style = "width:300px" })%>
                             <%= Html.ValidationMessage("UnitPrice")%>
                         </td>
                     </tr>
@@ -529,7 +529,7 @@
                                 Jumlah Angsuran per bulan RP:</label>
                         </td>
                         <td>
-                         <%= Html.TextBox("LoanBasicInstallment", Model.LoanSurvey.LoanId.LoanBasicInstallment.HasValue ? CommonHelper.ConvertToString(Model.LoanSurvey.LoanId.LoanBasicInstallment) : null, new { @style = "width:300px" })%>
+                         <%= Html.TextBox("LoanBasicInstallment", CommonHelper.ConvertToString(Model.LoanSurvey.LoanId.LoanBasicInstallment), new { @style = "width:300px" })%>
                             <%= Html.ValidationMessage("LoanBasicInstallment")%>
                         </td>
                     </tr>
@@ -549,7 +549,7 @@
                                 Bila memakai DP, maka DP adalah :</label>
                         </td>
                         <td>
-                         <%= Html.TextBox("LoanDownPayment", Model.LoanSurvey.LoanId.LoanDownPayment.HasValue ? CommonHelper.ConvertToString(Model.LoanSurvey.LoanId.LoanDownPayment) : null, new { @style = "width:300px" })%>
+                         <%= Html.TextBox("LoanDownPayment", CommonHelper.ConvertToString(Model.LoanSurvey.LoanId.LoanDownPayment), new { @style = "width:300px" })%>
                             <%= Html.ValidationMessage("LoanDownPayment")%>
                         </td>
                     </tr>
@@ -562,7 +562,7 @@
                                 Tanggal Survey :</label>
                         </td>
                         <td>
-                         <%= Html.TextBox("SurveyDate", Model.LoanSurvey.SurveyDate.HasValue ? Model.LoanSurvey.SurveyDate.Value.ToString(CommonHelper.DateFormat) : null, new { @style = "width:100px" })%>
+                         <%= Html.TextBox("SurveyDate", CommonHelper.ConvertToString(Model.LoanSurvey.SurveyDate), new { @style = "width:100px" })%>
                             <%= Html.ValidationMessage("SurveyDate")%>
                         </td>
                     </tr>
