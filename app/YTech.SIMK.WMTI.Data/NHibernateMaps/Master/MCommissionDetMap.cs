@@ -17,6 +17,8 @@ namespace YTech.SIMK.WMTI.Data.NHibernateMaps.Master
             mapping.Table("M_COMMISSION_DET");
             mapping.Id(x => x.Id, "COMMISSION_DET_ID").GeneratedBy.Assigned();
 
+            mapping.References(x => x.CommissionId, "COMMISSION_ID").Fetch.Join();
+
             mapping.Map(x => x.DetailType, "DETAIL_TYPE");
             mapping.Map(x => x.DetailValue, "DETAIL_VALUE");
             mapping.Map(x => x.DetailStatus, "DETAIL_STATUS");
@@ -32,6 +34,9 @@ namespace YTech.SIMK.WMTI.Data.NHibernateMaps.Master
                    .CustomSqlType("Timestamp")
                    .Not.Nullable()
                    .Generated.Always();
+
+            mapping.Map(x => x.DetailLowTarget, "DETAIL_LOW_TARGET");
+            mapping.Map(x => x.DetailHighTarget, "DETAIL_HIGH_TARGET");
         }
 
         #endregion

@@ -17,6 +17,7 @@ namespace YTech.SIMK.WMTI.Data.NHibernateMaps.Master
             mapping.Table("M_COMMISSION");
             mapping.Id(x => x.Id, "COMMISSION_ID").GeneratedBy.Assigned();
 
+            mapping.Map(x => x.CommissionType, "COMMISSION_TYPE");
             mapping.Map(x => x.CommissionLevel, "COMMISSION_LEVEL");
             mapping.Map(x => x.CommissionLowTarget, "COMMISSION_LOW_TARGET");
             mapping.Map(x => x.CommissionHighTarget, "COMMISSION_HIGH_TARGET");
