@@ -6,6 +6,11 @@
     </table>
     <div id="listPager" class="scroll" style="text-align: center;">
     </div>
+    <br />
+    <table id="subGrid" class="scroll" cellpadding="0" cellspacing="0">
+    </table>
+    <div id="subGridPager" class="scroll" style="text-align: center;">
+    </div>
     <div id="listPsetcols" class="scroll" style="text-align: center;">
     </div>
     <script type="text/javascript">
@@ -103,11 +108,12 @@
                     $("#list").editGridRow(rowid, editDialog);
                 },
                 subGrid: true,
-                subGridUrl: '<%= Url.Action("ListForSubGrid", "Commission") %>',
-                subGridModel: [{name: ['Level','Penjualan dari','Penjualan Sampai','Komisi'],
-                                width: [100, 100, 100, 100],
-                                align: ['right','right','right','right'],
-                                params: ['Id']}]
+                subGridRowExpanded: function
+                //subGridUrl: '<%= Url.Action("ListForSubGrid", "Commission") %>',
+                //subGridModel: [{name: ['Level','Penjualan dari','Penjualan Sampai','Komisi'],
+                //                width: [100, 100, 100, 100],
+                //                align: ['right','right','right','right'],
+                //                params: ['Id']}]
             });
             jQuery("#list").jqGrid('navGrid', '#listPager',
                  { edit: true, add: true, del: true, search: false, refresh: true }, //options 
