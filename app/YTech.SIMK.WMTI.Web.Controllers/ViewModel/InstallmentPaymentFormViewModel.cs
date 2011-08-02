@@ -30,7 +30,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
             viewModel.installment.InstallmentPaymentDate = DateTime.Today;
             installmentRepository.DbContext.RollbackTransaction();
 
-            var listEmployee = mEmployeeRepository.GetAll();
+            var listEmployee = mEmployeeRepository.GetEmployeeByDept(EnumDepartment.COL.ToString());
             MEmployee employee = new MEmployee();
             //mCustomer.SupplierName = "-Pilih Supplier-";
             listEmployee.Insert(0, employee);

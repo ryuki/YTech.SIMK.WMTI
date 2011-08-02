@@ -100,6 +100,8 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             var installmentList = _installmentRepository.GetPagedInstallmentList(sidx, sord, page, rows, ref totalRecords, loanCode);
             int pageSize = rows;
             int totalPages = (int)Math.Ceiling((float)totalRecords / (float)pageSize);
+
+            decimal sisa = 0;
             var jsonData = new
             {
                 total = totalPages,
@@ -119,7 +121,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                          Helper.CommonHelper.ConvertToString(ins.InstallmentMustPaid), 
                          Helper.CommonHelper.ConvertToString(ins.InstallmentPaid),
                           Helper.CommonHelper.ConvertToString(ins.InstallmentPaymentDate),
-                       Helper.CommonHelper.ConvertToString(ins.InstallmentSisa),
+                          Helper.CommonHelper.ConvertToString(GetCummulative(ins.InstallmentSisa)),
                           ins.EmployeeId != null ? ins.EmployeeId.PersonId.PersonName : null
                         }
                     }).ToArray()
@@ -127,6 +129,17 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
 
 
             return Json(jsonData, JsonRequestBehavior.AllowGet);
+        }
+
+        private decimal tempSisa = 0;
+        private decimal? GetCummulative(decimal? installmentSisa)
+        {
+            if (installmentSisa.HasValue)
+            {
+                tempSisa += installmentSisa.Value;
+                return tempSisa;
+            }
+            return null;
         }
     }
 }
