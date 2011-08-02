@@ -51,7 +51,7 @@
                 }
                 , afterShowForm: function (eparams) {
                     $('#Id').attr('disabled', 'disabled');
-                    $('#PersonDob').datepicker({ dateFormat: "dd-M-yy" });
+                    $('#PersonDob').datepicker();
                     //alert('editDialog');
                 }
                 , width: "400"
@@ -67,7 +67,7 @@
                 , modal: true
                 , afterShowForm: function (eparams) {
                     $('#Id').removeAttr('disabled');
-                    $('#PersonDob').datepicker({ dateFormat: "dd-M-yy" });
+                    $('#PersonDob').datepicker();
                     //alert('insertDialog');
                 }
                 , afterComplete: function (response, postdata, formid) {

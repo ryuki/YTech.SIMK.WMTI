@@ -348,7 +348,7 @@
     }
 
     $(function () {
-        $("#LoanSubmissionDate").datepicker({ dateFormat: "dd-M-yy" });
+        $("#LoanSubmissionDate").datepicker();
 
         $('#LoanBasicInstallment').autoNumeric();
         $('#LoanBasicInstallment').attr("style", "text-align:right;");

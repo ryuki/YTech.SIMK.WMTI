@@ -35,8 +35,8 @@
                 }
                 , afterShowForm: function (eparams) {
                     $('#Id').attr('disabled', 'disabled');
-                    $('#CommissionStartDate').datepicker({ dateFormat: "dd-M-yy" });
-                    $('#CommissionEndDate').datepicker({ dateFormat: "dd-M-yy" });
+                    $('#CommissionStartDate').datepicker();
+                    $('#CommissionEndDate').datepicker();
                     $('#CommissionValue').autoNumeric();
                     $('#CommissionValue').attr("style", "text-align:right;");
                 }

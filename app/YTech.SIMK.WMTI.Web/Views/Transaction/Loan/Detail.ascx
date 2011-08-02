@@ -728,12 +728,12 @@
     $(function () {
         $("#newCustomer").button();
         //$("#Save").button();
-        $("#PersonDob").datepicker({ dateFormat: "dd-M-yy" });
-        $("#PersonStaySince").datepicker({ dateFormat: "dd-M-yy" });
-        $("#PersonGuarantorStaySince").datepicker({ dateFormat: "dd-M-yy" });
-        $("#SurveyUnitDeliverDate").datepicker({ dateFormat: "dd-M-yy" });
-        $("#SurveyDate").datepicker({ dateFormat: "dd-M-yy" });
-        $("#LoanSubmissionDate").datepicker({ dateFormat: "dd-M-yy" });
+        $("#PersonDob").datepicker();
+        $("#PersonStaySince").datepicker();
+        $("#PersonGuarantorStaySince").datepicker();
+        $("#SurveyUnitDeliverDate").datepicker();
+        $("#SurveyDate").datepicker();
+        $("#LoanSubmissionDate").datepicker();
 
         $('#PersonIncome').autoNumeric();
         $('#PersonIncome').attr("style", "text-align:right;");

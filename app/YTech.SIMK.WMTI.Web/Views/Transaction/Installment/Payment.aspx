@@ -103,7 +103,7 @@
                        }%>
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#InstallmentPaymentDate").datepicker({ dateFormat: "dd-M-yy" });
+            $("#InstallmentPaymentDate").datepicker();
             $('#InstallmentPaid').autoNumeric();
             $('#InstallmentPaid').attr("style", "text-align:right;");
             $('#InstallmentFine').autoNumeric();
