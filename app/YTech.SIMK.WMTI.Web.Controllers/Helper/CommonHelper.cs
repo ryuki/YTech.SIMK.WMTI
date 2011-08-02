@@ -12,8 +12,8 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Helper
 {
     public class CommonHelper
     {
-        private const string CONST_FACTURFORMAT = "ERHA/[TRANS]/[YEAR]/[MONTH]/[DAY]/[XXX]";
-        public const string CONST_VOUCHERNO = "ERHA/VOUCHER/[YEAR]/[MONTH]/[DAY]/[XXX]";
+        private const string CONST_FACTURFORMAT = "WMTI/[TRANS]/[YEAR]/[MONTH]/[DAY]/[XXX]";
+        public const string CONST_VOUCHERNO = "WMTI/VOUCHER/[YEAR]/[MONTH]/[DAY]/[XXX]";
 
         public static string DateFormat
         {

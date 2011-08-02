@@ -35,7 +35,10 @@
                 }
                 , afterShowForm: function (eparams) {
                     $('#Id').attr('disabled', 'disabled');
-                    // alert(eparams);
+                    $('#CommissionStartDate').datepicker({ dateFormat: "dd-M-yy" });
+                    $('#CommissionEndDate').datepicker({ dateFormat: "dd-M-yy" });
+                    $('#CommissionValue').autoNumeric();
+                    $('#CommissionValue').attr("style", "text-align:right;");
                 }
                 , width: "400"
                 , afterComplete: function (response, postdata, formid) {
@@ -50,8 +53,8 @@
                 , modal: true
                 , afterShowForm: function (eparams) {
                     $('#Id').removeAttr('disabled');
-                    $('#CommissionStartDate').datepicker({ dateFormat: "dd-MM-yy" });
-                    $('#CommissionEndDate').datepicker({ dateFormat: "dd-MM-yy" });
+                    $('#CommissionStartDate').datepicker();
+                    $('#CommissionEndDate').datepicker();
                     $('#CommissionValue').autoNumeric();
                     $('#CommissionValue').attr("style", "text-align:right;");
                 }
