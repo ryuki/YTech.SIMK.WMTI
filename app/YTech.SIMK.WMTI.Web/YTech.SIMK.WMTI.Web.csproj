@@ -328,6 +328,7 @@
     <Content Include="Scripts\Templates\MicrosoftAjaxAdoNet.js" />
     <Content Include="Scripts\Templates\MicrosoftAjaxTemplates.js" />
     <Content Include="Views\Home\Index.aspx" />
+    <Content Include="Views\Master\Commission\Index.aspx" />
     <Content Include="Views\Master\Department\Index.aspx" />
     <Content Include="Views\Master\Employee\Index.aspx" />
     <Content Include="Views\Master\Employee\Search.aspx" />

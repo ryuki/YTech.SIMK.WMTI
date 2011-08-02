@@ -29,6 +29,11 @@
         <%= Html.ActionLinkForAreas<InstallmentController>(c => c.Index(), "Input Angsuran Baru")%>
     </div>
     <h3>
+        <a href="#">Komisi</a></h3>
+    <div class="child-menu-container">
+        <%= Html.ActionLinkForAreas<CommissionController>(c => c.Index(),"Team Leader Sales") %>
+    </div>
+    <h3>
         <a href="#">Administrasi</a></h3>
     <div class="child-menu-container">
         <%= Html.ActionLinkForAreas<DepartmentController>(c => c.Index(),"Master Departemen") %>

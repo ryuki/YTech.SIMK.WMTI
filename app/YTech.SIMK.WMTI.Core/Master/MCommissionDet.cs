@@ -10,6 +10,7 @@ namespace YTech.SIMK.WMTI.Core.Master
         [DomainSignature]
         [NotNull,NotEmpty]
         public virtual MCommission CommissionId { get; set; }
+
         public virtual string DetailType { get; set; }
         public virtual decimal? DetailValue { get; set; }
         public virtual string DetailStatus { get; set; }
@@ -21,6 +22,9 @@ namespace YTech.SIMK.WMTI.Core.Master
         public virtual string ModifiedBy { get; set; }
         public virtual DateTime? ModifiedDate { get; set; }
         public virtual byte[] RowVersion { get; set; }
+
+        public virtual int DetailLowTarget { get; set; }
+        public virtual int DetailHighTarget { get; set; }
 
         #region Implementation of IHasAssignedId<string>
 

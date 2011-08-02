@@ -96,13 +96,22 @@
     <Compile Include="..\..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Master\DepartmentController.cs" />
+    <Compile Include="Master\CommissionController.cs" />
+    <Compile Include="Master\DepartmentController.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Master\EmployeeController.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Master\MasterAreaRegistration.cs" />
-    <Compile Include="Master\PartnerController.cs" />
-    <Compile Include="Master\ZoneController.cs" />
+    <Compile Include="Master\MasterAreaRegistration.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Master\PartnerController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Master\ZoneController.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RouteRegistrar.cs" />
     <Compile Include="Transaction\InstallmentController.cs">
