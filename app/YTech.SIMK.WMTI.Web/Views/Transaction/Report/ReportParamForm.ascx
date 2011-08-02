@@ -29,7 +29,7 @@
                 Tanggal :</label>
         </td>
         <td>
-            <%= Html.TextBox("DateFrom", (Model.DateFrom.HasValue) ? Model.DateFrom.Value.ToString("dd-MMM-yyyy") : "")%>
+            <%= Html.TextBox("DateFrom", CommonHelper.ConvertToString(Model.DateFrom))%>
         </td>
     </tr>
     <% } %>
@@ -41,7 +41,7 @@
                 Sampai Tanggal :</label>
         </td>
         <td>
-            <%= Html.TextBox("DateTo", (Model.DateTo.HasValue) ? Model.DateTo.Value.ToString("dd-MMM-yyyy") : "")%>
+            <%= Html.TextBox("DateTo", CommonHelper.ConvertToString(Model.DateTo))%>
         </td>
     </tr>
     <% } %>
@@ -80,7 +80,7 @@
     
     $(document).ready(function () {
         //$("#Save").button();
-        $("#DateFrom").datepicker({ dateFormat: "dd-M-yy" });
-        $("#DateTo").datepicker({ dateFormat: "dd-M-yy" });
+        $("#DateFrom").datepicker();
+        $("#DateTo").datepicker();
     });
 </script>

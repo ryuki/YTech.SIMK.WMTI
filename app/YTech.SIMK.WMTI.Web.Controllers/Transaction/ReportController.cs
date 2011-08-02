@@ -61,10 +61,12 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         public ActionResult Report(EnumReports reports, ReportParamViewModel viewModel, FormCollection formCollection)
         {
             ReportDataSource[] repCol = new ReportDataSource[1];
+            DateTime? dateFrom = Helper.CommonHelper.ConvertToDate(formCollection["DateFrom"]);
+            DateTime? dateTo = Helper.CommonHelper.ConvertToDate(formCollection["DateTo"]);
             switch (reports)
             {
                 case EnumReports.RptDueInstallment:
-                    repCol[0] = GetDueInstallment(viewModel.DateFrom, viewModel.DateTo);
+                    repCol[0] = GetDueInstallment(dateFrom, dateTo);
                     break;
             }
             HttpContext.Session["ReportData"] = repCol;
