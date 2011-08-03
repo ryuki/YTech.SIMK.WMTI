@@ -29,16 +29,16 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Master
             this._mCommissionDetRepository = mCommissionDetRepository;
         }
 
-        public ActionResult Index()
+        public ActionResult Index(string department)
         {
             return View();
         }
 
         [Transaction]
-        public virtual ActionResult List(string sidx, string sord, int page, int rows)
+        public virtual ActionResult List(string sidx, string sord, int page, int rows, string department)
         {
             int totalRecords = 0;
-            var commissions = _mCommissionRepository.GetPagedCommissionList(sidx, sord, page, rows, ref totalRecords);
+            var commissions = _mCommissionRepository.GetPagedCommissionList(sidx, sord, page, rows, ref totalRecords, department);
             int pageSize = rows;
             int totalPages = (int)Math.Ceiling((float)totalRecords / (float)pageSize);
 
@@ -66,12 +66,14 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Master
         }
 
         [Transaction]
-        public ActionResult Insert(MCommission viewModel, FormCollection formCollection)
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Insert(MCommission viewModel, FormCollection formCollection, string department)
         {
             var commission = new MCommission();
 
             TransferFormValuesTo(commission, formCollection);
             commission.SetAssignedIdTo(Guid.NewGuid().ToString());
+            commission.CommissionStatus = department;
             commission.CreatedDate = DateTime.Now;
             commission.CreatedBy = User.Identity.Name;
             commission.DataStatus = EnumDataStatus.New.ToString();

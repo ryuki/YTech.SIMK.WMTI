@@ -47,7 +47,7 @@
                 }
             };
             var insertDialog = {
-                url: '<%= Url.Action("Insert", "Commission") %>'
+                url: '<%= Url.Action("Insert", "Commission") %>?department=<%= Request.QueryString["department"]%>'
                 , closeAfterAdd: true
                 , closeAfterEdit: true
                 , modal: true
@@ -83,6 +83,7 @@
             $.jgrid.del.msg = "Anda yakin menghapus Komisi yang dipilih?";
             $("#list").jqGrid({
                 url: '<%= Url.Action("List", "Commission") %>',
+                postData: { department: function () { return '<%= Request.QueryString["department"]%>'; } },
                 datatype: 'json',
                 mtype: 'GET',
                 colNames: ['Detail Komisi', 'Mulai Tanggal', 'Sampai Tanggal', 'Target'],
@@ -100,17 +101,18 @@
                 sortorder: "asc",
                 viewrecords: true,
                 height: 300,
-                caption: 'Komisi Team Leader Sales',
+                caption: 'Daftar Komisi',
                 autowidth: true,
                 ondblClickRow: function (rowid, iRow, iCol, e) {
                     $("#list").editGridRow(rowid, editDialog);
                 },
                 subGrid: true,
                 subGridUrl: '<%= Url.Action("ListForSubGrid", "Commission") %>',
-                subGridModel: [{name: ['Level','Penjualan dari','Penjualan Sampai','Komisi'],
-                                width: [100, 100, 100, 100],
-                                align: ['right','right','right','right'],
-                                params: ['Id']}]
+                subGridModel: [{ name: ['Level', 'Penjualan dari', 'Penjualan Sampai', 'Komisi'],
+                    width: [100, 100, 100, 100],
+                    align: ['right', 'right', 'right', 'right'],
+                    params: ['Id']
+                }]
             });
             jQuery("#list").jqGrid('navGrid', '#listPager',
                  { edit: true, add: true, del: true, search: false, refresh: true }, //options 
