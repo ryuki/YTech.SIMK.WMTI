@@ -6,11 +6,6 @@
     </table>
     <div id="listPager" class="scroll" style="text-align: center;">
     </div>
-    <br />
-    <table id="subGrid" class="scroll" cellpadding="0" cellspacing="0">
-    </table>
-    <div id="subGridPager" class="scroll" style="text-align: center;">
-    </div>
     <div id="listPsetcols" class="scroll" style="text-align: center;">
     </div>
     <script type="text/javascript">
@@ -108,21 +103,60 @@
                     $("#list").editGridRow(rowid, editDialog);
                 },
                 subGrid: true,
-                subGridRowExpanded: function
-                //subGridUrl: '<%= Url.Action("ListForSubGrid", "Commission") %>',
-                //subGridModel: [{name: ['Level','Penjualan dari','Penjualan Sampai','Komisi'],
-                //                width: [100, 100, 100, 100],
-                //                align: ['right','right','right','right'],
-                //                params: ['Id']}]
-            });
-            jQuery("#list").jqGrid('navGrid', '#listPager',
+                subGridRowExpanded: function (subGridId, rowId) {
+
+                    var subGridTableId = subGridId + "_t";
+                    var pagerId = "p_" + subGridTableId;
+
+                    var addSubDialog = {
+                        url: '<%= Url.Action("InsertSub", "Commission") %>',
+                        closeAfterAdd: true,
+                        closeAfterEdit: true,
+                        modal: true,
+                        afterComplete: function (response, postdata, formid) {
+                            $('#dialog p:first').text(response.responseText);
+                            $("#dialog").dialog("open");
+                        }, 
+                        width: "400"
+                    };
+
+                    $("#" + subGridId).html("<table id='" + subGridTableId + "' class='scroll'></table><div id='" + pagerId + "' class='scroll'></div>");
+                    $("#" + subGridTableId).jqGrid({
+                        url: '<%= Url.Action("ListForSubGrid", "Commission") %>',
+                        postData: { commissionId: function () { return rowId; } },
+                        datatype: 'json',
+                        mtype: 'GET',
+                        colNames: ['Komisi Id', 'Level', 'Penjualan dari', 'Penjualan Sampai', 'Komisi'],
+                        colModel: [
+                            { name: 'CommissionId', index: 'CommissionId', hidden: true },
+                            { name: 'DetailType', index: 'DetailType', align: 'right', editable: true, edittype: 'text' },
+                            { name: 'DetailLowTarget', index: 'DetailLowTarget', align: 'right', editable: true, edittype: 'text' },
+                            { name: 'DetailHighTarget', index: 'DetailHighTarget', align: 'right', editable: true, edittype: 'text' },
+                            { name: 'DetailValue', index: 'DetailValue', align: 'right', editable: true, edittype: 'text' }
+                        ],
+                        pager: pagerId,
+                        rowNum: 20,
+                        rowList: [20, 30, 50, 100],
+                        rownumbers: true,
+                        sortname: 'Id',
+                        sortorder: "asc",
+                        viewrecords: true,
+                        caption: 'Detail Komisi'
+                    });
+                    $("#" + subGridTableId).jqGrid('navGrid', "#" + pagerId,
+                        { edit: false, add: true, del: false, search: false, refresh: true },
+                        {}, addSubDialog
+                    );
+            }
+        });
+        jQuery("#list").jqGrid('navGrid', '#listPager',
                  { edit: true, add: true, del: true, search: false, refresh: true }, //options 
                   editDialog,
                 insertDialog,
                 deleteDialog,
                 {}
             );
-        });       
+    });       
 
     </script>
     <div id="dialog" title="Status">

@@ -153,9 +153,9 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Master
         }
 
         [Transaction]
-        public ActionResult ListForSubGrid(string id)
+        public ActionResult ListForSubGrid(string commissionId)
         {
-            var commissionDets = _mCommissionDetRepository.GetCommissionDetListById(id);
+            var commissionDets = _mCommissionDetRepository.GetCommissionDetListById(commissionId);
 
             var jsonData = new
             {
@@ -176,6 +176,39 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Master
             };
 
             return Json(jsonData, JsonRequestBehavior.AllowGet);
+        }
+
+        [Transaction]
+        public ActionResult InsertSub(MCommissionDet viewModel, FormCollection formCollection)
+        {
+            var commission = new MCommission();
+            var commissionDet = new MCommissionDet();
+            commissionDet.CommissionId = _mCommissionRepository.Get(formCollection["id"]);
+            commissionDet.DetailType = formCollection["DetailType"];
+            commissionDet.DetailLowTarget = Convert.ToInt16(formCollection["DetailLowTarget"]);
+            commissionDet.DetailHighTarget = Convert.ToInt16(formCollection["DetailHighTarget"]);
+            commissionDet.DetailValue = Helper.CommonHelper.ConvertToDecimal(formCollection["DetailValue"]);
+            //TransferFormValuesTo(commission, formCollection);
+            commissionDet.SetAssignedIdTo(Guid.NewGuid().ToString());
+            commissionDet.CreatedDate = DateTime.Now;
+            commissionDet.CreatedBy = User.Identity.Name;
+            commissionDet.DataStatus = EnumDataStatus.New.ToString();
+
+            _mCommissionDetRepository.Save(commissionDet);
+
+            try
+            {
+                _mCommissionDetRepository.DbContext.CommitChanges();
+            }
+            catch (Exception e)
+            {
+
+                _mCommissionDetRepository.DbContext.RollbackTransaction();
+
+                return Content(e.GetBaseException().Message);
+            }
+
+            return Content("Data Detail berhasil dimasukkan");
         }
     }
 }
