@@ -53,7 +53,6 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Master
                     {
                         id = commission.Id.ToString(),
                         cell = new string[] {
-                            string.Empty,
                             Helper.CommonHelper.ConvertToString(commission.CommissionStartDate),
                             Helper.CommonHelper.ConvertToString(commission.CommissionEndDate),
                             Helper.CommonHelper.ConvertToString(commission.CommissionValue)
@@ -95,7 +94,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Master
         }
 
         [Transaction]
-        public ActionResult Delete(MEmployee viewModel, FormCollection formCollection)
+        public ActionResult Delete(MCommission viewModel, FormCollection formCollection)
         {
             MCommission commission = _mCommissionRepository.Get(viewModel.Id);
 
@@ -155,9 +154,9 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Master
         }
 
         [Transaction]
-        public ActionResult ListForSubGrid(string id)
+        public ActionResult ListSub(string commissionId)
         {
-            var commissionDets = _mCommissionDetRepository.GetCommissionDetListById(id);
+            var commissionDets = _mCommissionDetRepository.GetCommissionDetListById(commissionId);
 
             var jsonData = new
             {
@@ -168,6 +167,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Master
                         i = commissionDet.Id.ToString(),
                         cell = new string[]
                         {
+                            commissionDet.Id,
                             commissionDet.DetailType,
                             Helper.CommonHelper.ConvertToString(commissionDet.DetailLowTarget),
                             Helper.CommonHelper.ConvertToString(commissionDet.DetailHighTarget),
@@ -178,6 +178,96 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Master
             };
 
             return Json(jsonData, JsonRequestBehavior.AllowGet);
+        }
+
+        [Transaction]
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult InsertSub(MCommissionDet viewModel, FormCollection formCollection, string commissionId)
+        {
+            var commissionDet = new MCommissionDet();
+            commissionDet.CommissionId = _mCommissionRepository.Get(commissionId);
+            TransferFormValuesTo(commissionDet, formCollection);
+            commissionDet.SetAssignedIdTo(Guid.NewGuid().ToString());
+            commissionDet.CreatedDate = DateTime.Now;
+            commissionDet.CreatedBy = User.Identity.Name;
+            commissionDet.DataStatus = EnumDataStatus.New.ToString();
+
+            _mCommissionDetRepository.Save(commissionDet);
+
+            try
+            {
+                _mCommissionDetRepository.DbContext.CommitChanges();
+            }
+            catch (Exception e)
+            {
+
+                _mCommissionDetRepository.DbContext.RollbackTransaction();
+
+                return Content(e.GetBaseException().Message);
+            }
+
+            return Content("Data Detail berhasil dimasukkan");
+        }
+
+        [Transaction]
+        public ActionResult UpdateSub(MCommissionDet viewModel, FormCollection formCollection)
+        {
+
+            MCommissionDet commissionDet = _mCommissionDetRepository.Get(viewModel.Id);
+
+            TransferFormValuesTo(commissionDet, formCollection);
+            commissionDet.ModifiedDate = DateTime.Now;
+            commissionDet.ModifiedBy = User.Identity.Name;
+            commissionDet.DataStatus = EnumDataStatus.Updated.ToString();
+
+            _mCommissionDetRepository.Update(commissionDet);
+
+            try
+            {
+                _mCommissionDetRepository.DbContext.CommitChanges();
+            }
+            catch (Exception e)
+            {
+
+                _mCommissionDetRepository.DbContext.RollbackTransaction();
+
+                return Content(e.GetBaseException().Message);
+            }
+
+            return Content("Data Detail Berhasil Diupdate");
+        }
+
+        [Transaction]
+        public ActionResult DeleteSub(MCommissionDet viewModel, FormCollection formCollection)
+        {
+            MCommissionDet commissionDet = _mCommissionDetRepository.Get(viewModel.Id);
+
+            if (commissionDet != null)
+            {
+                _mCommissionDetRepository.Delete(commissionDet);
+            }
+
+            try
+            {
+                _mCommissionDetRepository.DbContext.CommitChanges();
+            }
+            catch (Exception e)
+            {
+
+                _mCommissionDetRepository.DbContext.RollbackTransaction();
+
+                return Content(e.GetBaseException().Message);
+            }
+
+            return Content("Data Detail Berhasil Dihapus");
+        }
+
+        private static void TransferFormValuesTo(MCommissionDet commissionDet, FormCollection formCollection)
+        {
+            commissionDet.DetailType = formCollection["DetailType"];
+            commissionDet.DetailLowTarget = Helper.CommonHelper.ConvertToDecimal(formCollection["DetailLowTarget"]);
+            commissionDet.DetailHighTarget = Helper.CommonHelper.ConvertToDecimal(formCollection["DetailHighTarget"]);
+            commissionDet.DetailValue = Helper.CommonHelper.ConvertToDecimal(formCollection["DetailValue"]);
         }
     }
 }
