@@ -10,9 +10,9 @@ namespace YTech.SIMK.WMTI.Data.Repository
 {
     public class MCommissionRepository : NHibernateRepositoryWithTypedId<MCommission, string>, IMCommissionRepository
     {
-        public IEnumerable<MCommission> GetPagedCommissionList(string orderCol, string orderBy, int pageIndex, int maxRows, ref int totalRows)
+        public IEnumerable<MCommission> GetPagedCommissionList(string orderCol, string orderBy, int pageIndex, int maxRows, ref int totalRows, string department)
         {
-            ICriteria criteria = Session.CreateCriteria(typeof(MCommission));
+            ICriteria criteria = CreateNewCriteria(department);
 
             //calculate total rows
             totalRows = Session.CreateCriteria(typeof(MCommission))
@@ -27,6 +27,15 @@ namespace YTech.SIMK.WMTI.Data.Repository
 
             IEnumerable<MCommission> list = criteria.List<MCommission>();
             return list;
+        }
+
+        private ICriteria CreateNewCriteria(string department)
+        {
+            ICriteria criteria = Session.CreateCriteria(typeof(MCommission), "commission");
+
+            criteria.Add(Restrictions.Eq("commission.CommissionStatus", department));
+
+            return criteria;
         }
     }
 }

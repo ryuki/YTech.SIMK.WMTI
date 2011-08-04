@@ -47,7 +47,7 @@
                 }
             };
             var insertDialog = {
-                url: '<%= Url.Action("Insert", "Commission") %>'
+                url: '<%= Url.Action("Insert", "Commission") %>?department=<%= Request.QueryString["department"]%>'
                 , closeAfterAdd: true
                 , closeAfterEdit: true
                 , modal: true
@@ -83,11 +83,11 @@
             $.jgrid.del.msg = "Anda yakin menghapus Komisi yang dipilih?";
             $("#list").jqGrid({
                 url: '<%= Url.Action("List", "Commission") %>',
+                postData: { department: function () { return '<%= Request.QueryString["department"]%>'; } },
                 datatype: 'json',
                 mtype: 'GET',
-                colNames: ['Detail Komisi', 'Mulai Tanggal', 'Sampai Tanggal', 'Target'],
+                colNames: ['Mulai Tanggal', 'Sampai Tanggal', 'Target'],
                 colModel: [
-                    { name: 'act', index: 'act', width: 30, sortable: false },
                     { name: 'CommissionStartDate', index: 'CommissionStartDate', width: 100, align: 'left', editable: true, edittype: 'text', editrules: { required: true }, formoptions: { elmsuffix: ' *'} },
                     { name: 'CommissionEndDate', index: 'CommissionEndDate', width: 100, align: 'left', editable: true, edittype: 'text', editrules: { required: true }, formoptions: { elmsuffix: ' *'} },
                     { name: 'CommissionValue', index: 'CommissionValue', width: 100, align: 'right', editable: true, edittype: 'text', editrules: { required: true }, formoptions: { elmsuffix: ' *'}}],
@@ -100,26 +100,103 @@
                 sortorder: "asc",
                 viewrecords: true,
                 height: 300,
-                caption: 'Komisi Team Leader Sales',
+                caption: 'Daftar Komisi',
                 autowidth: true,
                 ondblClickRow: function (rowid, iRow, iCol, e) {
                     $("#list").editGridRow(rowid, editDialog);
                 },
                 subGrid: true,
-                subGridUrl: '<%= Url.Action("ListForSubGrid", "Commission") %>',
-                subGridModel: [{name: ['Level','Penjualan dari','Penjualan Sampai','Komisi'],
-                                width: [100, 100, 100, 100],
-                                align: ['right','right','right','right'],
-                                params: ['Id']}]
-            });
-            jQuery("#list").jqGrid('navGrid', '#listPager',
+                subGridRowExpanded: function (subGridId, rowId) {
+
+                    var subGridTableId = subGridId + "_t";
+                    var pagerId = "p_" + subGridTableId;
+
+                    var addSubDialog = {
+                        url: '<%= Url.Action("InsertSub", "Commission") %>?commissionId=' + rowId,
+                        closeAfterAdd: true,
+                        closeAfterEdit: true,
+                        modal: true,
+                        afterComplete: function (response, postdata, formid) {
+                            $('#dialog p:first').text(response.responseText);
+                            $("#dialog").dialog("open");
+                        }, 
+                        width: "400"
+                    };
+
+                    var editSubDialog = {
+                        url: '<%= Url.Action("UpdateSub", "Commission") %>'
+                        , closeAfterAdd: true
+                        , closeAfterEdit: true
+                        , modal: true
+
+                        , onclickSubmit: function (params) {
+                            var ajaxData = {};
+
+                            var list = $("#" + subGridTableId);
+                            var selectedRow = list.getGridParam("selrow");
+                            rowData = list.getRowData(selectedRow);
+                            ajaxData = { Id: rowData.Id };
+
+                            return ajaxData;
+                        }
+                        , afterShowForm: function (eparams) {
+                            //$('#Id').attr('disabled', 'disabled');
+                            // alert(eparams);
+                        }
+                        , width: "400"
+                        , afterComplete: function (response, postdata, formid) {
+                            $('#dialog p:first').text(response.responseText);
+                            $("#dialog").dialog("open");
+                        }
+                    };
+
+                    var deleteSubDialog = {
+                        url: '<%= Url.Action("DeleteSub", "Commission") %>'
+                        , modal: true
+                        , width: "400"
+                        , afterComplete: function (response, postdata, formid) {
+                            $('#dialog p:first').text(response.responseText);
+                            $("#dialog").dialog("open");
+                        }
+                    };
+
+                    $("#" + subGridId).html("<table id='" + subGridTableId + "' class='scroll'></table><div id='" + pagerId + "' class='scroll'></div>");
+                    $("#" + subGridTableId).jqGrid({
+                        url: '<%= Url.Action("ListSub", "Commission") %>',
+                        postData: { commissionId: function () { return rowId; } },
+                        datatype: 'json',
+                        mtype: 'GET',
+                        colNames: ['Id', 'Level', 'Penjualan dari', 'Penjualan Sampai', 'Komisi'],
+                        colModel: [
+                            { name: 'Id', index: 'Id', width: 75, align: 'left', key: true, editrules: { required: true, edithidden: false }, hidedlg: true, hidden: true, editable: false },
+                            { name: 'DetailType', index: 'DetailType', align: 'right', editable: true, edittype: 'text' },
+                            { name: 'DetailLowTarget', index: 'DetailLowTarget', align: 'right', editable: true, edittype: 'text' },
+                            { name: 'DetailHighTarget', index: 'DetailHighTarget', align: 'right', editable: true, edittype: 'text' },
+                            { name: 'DetailValue', index: 'DetailValue', align: 'right', editable: true, edittype: 'text' }
+                        ],
+                        pager: pagerId,
+                        rowNum: 20,
+                        rowList: [20, 30, 50, 100],
+                        rownumbers: false,
+                        sortname: 'Id',
+                        sortorder: "asc",
+                        viewrecords: true,
+                        caption: 'Detail Komisi'
+                    });
+                    $("#" + subGridTableId).jqGrid('navGrid', "#" + pagerId,
+                        { edit: true, add: true, del: true, search: false, refresh: true },
+                        editSubDialog, addSubDialog, deleteSubDialog
+                    );
+            }
+        });
+        jQuery("#list").jqGrid('navGrid', '#listPager',
                  { edit: true, add: true, del: true, search: false, refresh: true }, //options 
                   editDialog,
                 insertDialog,
                 deleteDialog,
                 {}
             );
-        });       
+    });       
 
     </script>
     <div id="dialog" title="Status">
