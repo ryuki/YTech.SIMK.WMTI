@@ -116,10 +116,18 @@
                         closeAfterAdd: true,
                         closeAfterEdit: true,
                         modal: true,
+                        afterShowForm: function (eparams) {
+                            $('#DetailLowTarget').autoNumeric();
+                            $('#DetailLowTarget').attr("style", "text-align:right;");
+                            $('#DetailHighTarget').autoNumeric();
+                            $('#DetailHighTarget').attr("style", "text-align:right;");
+                            $('#DetailValue').autoNumeric();
+                            $('#DetailValue').attr("style", "text-align:right;");
+                        },
                         afterComplete: function (response, postdata, formid) {
                             $('#dialog p:first').text(response.responseText);
                             $("#dialog").dialog("open");
-                        }, 
+                        },
                         width: "400"
                     };
 
@@ -128,7 +136,6 @@
                         , closeAfterAdd: true
                         , closeAfterEdit: true
                         , modal: true
-
                         , onclickSubmit: function (params) {
                             var ajaxData = {};
 
@@ -140,8 +147,12 @@
                             return ajaxData;
                         }
                         , afterShowForm: function (eparams) {
-                            //$('#Id').attr('disabled', 'disabled');
-                            // alert(eparams);
+                            //                            $('#DetailLowTarget').autoNumeric();
+                            $('#DetailLowTarget').attr("style", "text-align:right;");
+                            $('#DetailHighTarget').autoNumeric();
+                            $('#DetailHighTarget').attr("style", "text-align:right;");
+                            $('#DetailValue').autoNumeric();
+                            $('#DetailValue').attr("style", "text-align:right;");
                         }
                         , width: "400"
                         , afterComplete: function (response, postdata, formid) {
@@ -178,7 +189,7 @@
                         rowNum: 20,
                         rowList: [20, 30, 50, 100],
                         rownumbers: false,
-                        sortname: 'Id',
+                        sortname: 'DetailType',
                         sortorder: "asc",
                         viewrecords: true,
                         caption: 'Detail Komisi'
@@ -187,16 +198,16 @@
                         { edit: true, add: true, del: true, search: false, refresh: true },
                         editSubDialog, addSubDialog, deleteSubDialog
                     );
-            }
-        });
-        jQuery("#list").jqGrid('navGrid', '#listPager',
+                }
+            });
+            jQuery("#list").jqGrid('navGrid', '#listPager',
                  { edit: true, add: true, del: true, search: false, refresh: true }, //options 
                   editDialog,
                 insertDialog,
                 deleteDialog,
                 {}
             );
-    });       
+        });       
 
     </script>
     <div id="dialog" title="Status">
