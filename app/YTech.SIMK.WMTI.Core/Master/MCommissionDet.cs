@@ -23,8 +23,8 @@ namespace YTech.SIMK.WMTI.Core.Master
         public virtual DateTime? ModifiedDate { get; set; }
         public virtual byte[] RowVersion { get; set; }
 
-        public virtual int DetailLowTarget { get; set; }
-        public virtual int DetailHighTarget { get; set; }
+        public virtual decimal? DetailLowTarget { get; set; }
+        public virtual decimal? DetailHighTarget { get; set; }
 
         #region Implementation of IHasAssignedId<string>
 
