@@ -53,9 +53,9 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Master
                     {
                         id = commission.Id.ToString(),
                         cell = new string[] {
+                            Helper.CommonHelper.ConvertToString(commission.CommissionValue),
                             Helper.CommonHelper.ConvertToString(commission.CommissionStartDate),
-                            Helper.CommonHelper.ConvertToString(commission.CommissionEndDate),
-                            Helper.CommonHelper.ConvertToString(commission.CommissionValue)
+                            Helper.CommonHelper.ConvertToString(commission.CommissionEndDate)
                         }
                     }).ToArray()
             };

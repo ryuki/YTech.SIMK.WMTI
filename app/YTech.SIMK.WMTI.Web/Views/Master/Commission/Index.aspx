@@ -8,10 +8,10 @@
     </div>
     <div id="listPsetcols" class="scroll" style="text-align: center;">
     </div>
+
     <script type="text/javascript">
 
         $(document).ready(function () {
-
             $("#dialog").dialog({
                 autoOpen: false
             });
@@ -35,10 +35,6 @@
                 }
                 , afterShowForm: function (eparams) {
                     $('#Id').attr('disabled', 'disabled');
-                    $('#CommissionStartDate').datepicker();
-                    $('#CommissionEndDate').datepicker();
-                    $('#CommissionValue').autoNumeric();
-                    $('#CommissionValue').attr("style", "text-align:right;");
                 }
                 , width: "400"
                 , afterComplete: function (response, postdata, formid) {
@@ -53,10 +49,6 @@
                 , modal: true
                 , afterShowForm: function (eparams) {
                     $('#Id').removeAttr('disabled');
-                    $('#CommissionStartDate').datepicker();
-                    $('#CommissionEndDate').datepicker();
-                    $('#CommissionValue').autoNumeric();
-                    $('#CommissionValue').attr("style", "text-align:right;");
                 }
                 , afterComplete: function (response, postdata, formid) {
                     $('#dialog p:first').text(response.responseText);
@@ -86,11 +78,31 @@
                 postData: { department: function () { return '<%= Request.QueryString["department"]%>'; } },
                 datatype: 'json',
                 mtype: 'GET',
-                colNames: ['Mulai Tanggal', 'Sampai Tanggal', 'Target'],
+                colNames: ['Target', 'Mulai Tanggal', 'Sampai Tanggal'],
                 colModel: [
-                    { name: 'CommissionStartDate', index: 'CommissionStartDate', width: 100, align: 'left', editable: true, edittype: 'text', editrules: { required: true }, formoptions: { elmsuffix: ' *'} },
-                    { name: 'CommissionEndDate', index: 'CommissionEndDate', width: 100, align: 'left', editable: true, edittype: 'text', editrules: { required: true }, formoptions: { elmsuffix: ' *'} },
-                    { name: 'CommissionValue', index: 'CommissionValue', width: 100, align: 'right', editable: true, edittype: 'text', editrules: { required: true }, formoptions: { elmsuffix: ' *'}}],
+                    { name: 'CommissionValue', index: 'CommissionValue', width: 100, align: 'right', editable: true, edittype: 'text', editrules: { required: true }, formoptions: { elmsuffix: ' *' },
+                        editoptions: {
+                            dataInit: function (elem) {
+                                $(elem).autoNumeric();
+                                $(elem).attr("style", "text-align:right;");
+
+                            }
+                        }
+                    },
+                    { name: 'CommissionStartDate', index: 'CommissionStartDate', width: 100, align: 'left', editable: true, edittype: 'text', formoptions: { elmsuffix: ' *' },
+                        editoptions: {
+                            dataInit: function (elem) {
+                                $(elem).datepicker();
+                            }
+                        }
+                    },
+                    { name: 'CommissionEndDate', index: 'CommissionEndDate', width: 100, align: 'left', editable: true, edittype: 'text', formoptions: { elmsuffix: ' *' },
+                        editoptions: {
+                            dataInit: function (elem) {
+                                $(elem).datepicker();
+                            }
+                        }
+                    }],
 
                 pager: $('#listPager'),
                 rowNum: 20,

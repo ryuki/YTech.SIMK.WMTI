@@ -302,7 +302,7 @@
     <Content Include="Scripts\jquery-1.6.2-vsdoc.js" />
     <Content Include="Scripts\jquery-1.6.2.min.js" />
     <Content Include="Scripts\jquery-ui.min.js" />
-    <Content Include="Scripts\jquery.jqGrid.min.js" />
+    <Content Include="Scripts\jquery.jqGrid-4.1.2.min.js" />
     <Content Include="Scripts\jquery.layout.min.js" />
     <Content Include="Scripts\jquery.layout.state.js" />
     <Content Include="Scripts\jquery.maskedinput-1.2.2.min.js" />
