@@ -220,15 +220,9 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 loan.PartnerId = loanVM.PartnerId;
 
                 loan.LoanNo = loanVM.LoanNo;
-                if (!string.IsNullOrEmpty(formCollection["LoanBasicPrice"]))
-                    loan.LoanBasicPrice = Helper.CommonHelper.ConvertToDecimal(formCollection["LoanBasicPrice"]);
-                else
-                    loan.LoanBasicPrice = null;
+                loan.LoanBasicPrice = Helper.CommonHelper.ConvertToDecimal(formCollection["LoanBasicPrice"]);
 
-                if (!string.IsNullOrEmpty(formCollection["LoanCreditPrice"]))
-                    loan.LoanCreditPrice = Helper.CommonHelper.ConvertToDecimal(formCollection["LoanCreditPrice"]);
-                else
-                    loan.LoanCreditPrice = null;
+                loan.LoanCreditPrice = Helper.CommonHelper.ConvertToDecimal(formCollection["LoanCreditPrice"]);
 
                 loan.LoanSubmissionDate = Helper.CommonHelper.ConvertToDate(formCollection["LoanSubmissionDate"]); //loanVM.LoanSubmissionDate;
 
@@ -240,15 +234,9 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
 
                 loan.LoanTenor = loanVM.LoanTenor;
 
-                if (!string.IsNullOrEmpty(formCollection["LoanDownPayment"]))
-                    loan.LoanDownPayment = Helper.CommonHelper.ConvertToDecimal(formCollection["LoanDownPayment"]);
-                else
-                    loan.LoanDownPayment = null;
+                loan.LoanDownPayment = Helper.CommonHelper.ConvertToDecimal(formCollection["LoanDownPayment"]);
 
-                if (!string.IsNullOrEmpty(formCollection["LoanBasicInstallment"]))
-                    loan.LoanBasicInstallment = Helper.CommonHelper.ConvertToDecimal(formCollection["LoanBasicInstallment"]);
-                else
-                    loan.LoanBasicInstallment = null;
+                loan.LoanBasicInstallment = Helper.CommonHelper.ConvertToDecimal(formCollection["LoanBasicInstallment"]);
 
                 if (isSave)
                 {
@@ -492,25 +480,16 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 loan.LoanSubmissionDate = Helper.CommonHelper.ConvertToDate(formCollection["LoanSubmissionDate"]);// loanVM.LoanSubmissionDate;
                 loan.PartnerId = loanVM.PartnerId;
 
-                if (!string.IsNullOrEmpty(formCollection["LoanDownPayment"]))
-                    loan.LoanDownPayment = Helper.CommonHelper.ConvertToDecimal(formCollection["LoanDownPayment"]);
-                else
-                    loan.LoanDownPayment = null;
+                loan.LoanDownPayment = Helper.CommonHelper.ConvertToDecimal(formCollection["LoanDownPayment"]);
 
                 //loan.LoanDownPayment = loanVM.LoanDownPayment;
                 loan.LoanIsSalesmanKnownCustomer = loanVM.LoanIsSalesmanKnownCustomer;
                 loan.LoanTenor = loanVM.LoanTenor;
                 loan.LoanNo = loanVM.LoanNo;
 
-                if (!string.IsNullOrEmpty(formCollection["LoanUnitPriceTotal"]))
-                    loan.LoanUnitPriceTotal = Helper.CommonHelper.ConvertToDecimal(formCollection["LoanUnitPriceTotal"]);
-                else
-                    loan.LoanUnitPriceTotal = null;
+                loan.LoanUnitPriceTotal = Helper.CommonHelper.ConvertToDecimal(formCollection["LoanUnitPriceTotal"]);
 
-                if (!string.IsNullOrEmpty(formCollection["LoanBasicInstallment"]))
-                    loan.LoanBasicInstallment = Helper.CommonHelper.ConvertToDecimal(formCollection["LoanBasicInstallment"]);
-                else
-                    loan.LoanBasicInstallment = null;
+                loan.LoanBasicInstallment = Helper.CommonHelper.ConvertToDecimal(formCollection["LoanBasicInstallment"]);
 
                 loan.LoanMaturityDate = loanVM.LoanMaturityDate;
 
@@ -545,10 +524,8 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 unit.LoanId = loan;
                 unit.UnitType = loanUnitVM.UnitType;
                 unit.UnitName = loanUnitVM.UnitName;
-                if (!string.IsNullOrEmpty(formCollection["UnitPrice"]))
-                    unit.UnitPrice = Helper.CommonHelper.ConvertToDecimal(formCollection["UnitPrice"]);
-                else
-                    unit.UnitPrice = null;
+                unit.UnitPrice = Helper.CommonHelper.ConvertToDecimal(formCollection["UnitPrice"]);
+
                 if (isSave)
                 {
                     unit.SetAssignedIdTo(Guid.NewGuid().ToString());
