@@ -106,16 +106,6 @@
                     $("#list").editGridRow(rowid, editDialog);
                 },
                 subGrid: true,
-//<<<<<<< HEAD
-//                subGridUrl: '<%= Url.Action("ListForSubGrid", "Commission") %>',
-//                subGridModel: [{ name: ['Level', 'Penjualan dari', 'Penjualan Sampai', 'Komisi'],
-//                    width: [100, 100, 100, 100],
-//                    align: ['right', 'right', 'right', 'right'],
-//                    params: ['Id']
-//                }]
-//            });
-//            jQuery("#list").jqGrid('navGrid', '#listPager',
-//=======
                 subGridRowExpanded: function (subGridId, rowId) {
 
                     var subGridTableId = subGridId + "_t";
@@ -200,7 +190,6 @@
             }
         });
         jQuery("#list").jqGrid('navGrid', '#listPager',
-//>>>>>>> Subgrid
                  { edit: true, add: true, del: true, search: false, refresh: true }, //options 
                   editDialog,
                 insertDialog,
