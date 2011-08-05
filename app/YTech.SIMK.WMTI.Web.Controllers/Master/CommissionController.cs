@@ -156,8 +156,8 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Master
         [Transaction]
         public ActionResult ListSub(string commissionId)
         {
-            var commissionDets = _mCommissionDetRepository.GetCommissionDetListById(commissionId);
-
+        var commissionDets = _mCommissionDetRepository.GetCommissionDetListById(commissionId);
+            
             var jsonData = new
             {
                 rows = (
@@ -171,7 +171,12 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Master
                             commissionDet.DetailType,
                             Helper.CommonHelper.ConvertToString(commissionDet.DetailLowTarget),
                             Helper.CommonHelper.ConvertToString(commissionDet.DetailHighTarget),
-                            Helper.CommonHelper.ConvertToString(commissionDet.DetailValue)
+                            Helper.CommonHelper.ConvertToString(commissionDet.DetailValue),
+                            Helper.CommonHelper.ConvertToString(commissionDet.DetailCustomerNumber),
+                            Helper.CommonHelper.ConvertToString(commissionDet.DetailTransportAllowance),
+                            Helper.CommonHelper.ConvertToString(commissionDet.DetailIncentive),
+                            Helper.CommonHelper.ConvertToString(commissionDet.DetailIncentiveSurveyAcc),
+                            Helper.CommonHelper.ConvertToString(commissionDet.DetailIncentiveSurveyOnly)
                         }
                     }
                 ).ToArray()
@@ -268,6 +273,11 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Master
             commissionDet.DetailLowTarget = Helper.CommonHelper.ConvertToDecimal(formCollection["DetailLowTarget"]);
             commissionDet.DetailHighTarget = Helper.CommonHelper.ConvertToDecimal(formCollection["DetailHighTarget"]);
             commissionDet.DetailValue = Helper.CommonHelper.ConvertToDecimal(formCollection["DetailValue"]);
+            commissionDet.DetailCustomerNumber = Helper.CommonHelper.ConvertToInteger(formCollection["DetailCustomerNumber"]);
+            commissionDet.DetailTransportAllowance = Helper.CommonHelper.ConvertToDecimal(formCollection["DetailTransportAllowance"]);
+            commissionDet.DetailIncentive = Helper.CommonHelper.ConvertToDecimal(formCollection["DetailIncentive"]);
+            commissionDet.DetailIncentiveSurveyAcc = Helper.CommonHelper.ConvertToDecimal(formCollection["DetailIncentiveSurveyAcc"]);
+            commissionDet.DetailIncentiveSurveyOnly = Helper.CommonHelper.ConvertToDecimal(formCollection["DetailIncentiveSurveyOnly"]);
         }
     }
 }

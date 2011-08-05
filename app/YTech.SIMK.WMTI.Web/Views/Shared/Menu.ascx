@@ -32,6 +32,8 @@
         <a href="#">Komisi</a></h3>
     <div class="child-menu-container">
         <%= Html.ActionLinkForAreas<CommissionController>(c => c.Index(EnumDepartment.TLS.ToString()),"Team Leader Sales") %>
+        <%= Html.ActionLinkForAreas<CommissionController>(c => c.Index(EnumDepartment.SA.ToString()),"Sales") %>
+        <%= Html.ActionLinkForAreas<CommissionController>(c => c.Index(EnumDepartment.SU.ToString()),"Surveyor") %>
         <%= Html.ActionLinkForAreas<CommissionController>(c => c.Index(EnumDepartment.COL.ToString()),"Kolektor") %>
     </div>
     <h3>
