@@ -25,6 +25,11 @@ namespace YTech.SIMK.WMTI.Core.Master
 
         public virtual decimal? DetailLowTarget { get; set; }
         public virtual decimal? DetailHighTarget { get; set; }
+        public virtual int DetailCustomerNumber { get; set; }
+        public virtual decimal? DetailTransportAllowance { get; set; }
+        public virtual decimal? DetailIncentive { get; set; }
+        public virtual decimal? DetailIncentiveSurveyAcc { get; set; }
+        public virtual decimal? DetailIncentiveSurveyOnly { get; set; }
 
         #region Implementation of IHasAssignedId<string>
 

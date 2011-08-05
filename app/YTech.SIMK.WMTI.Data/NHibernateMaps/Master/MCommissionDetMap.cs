@@ -37,6 +37,11 @@ namespace YTech.SIMK.WMTI.Data.NHibernateMaps.Master
 
             mapping.Map(x => x.DetailLowTarget, "DETAIL_LOW_TARGET");
             mapping.Map(x => x.DetailHighTarget, "DETAIL_HIGH_TARGET");
+            mapping.Map(x => x.DetailCustomerNumber, "DETAIL_CUSTOMER_NUMBER");
+            mapping.Map(x => x.DetailTransportAllowance, "DETAIL_TRANSPORT_ALLOWANCE");
+            mapping.Map(x => x.DetailIncentive, "DETAIL_INCENTIVE");
+            mapping.Map(x => x.DetailIncentiveSurveyAcc, "DETAIL_INCENTIVE_SURVEY_ACC");
+            mapping.Map(x => x.DetailIncentiveSurveyOnly, "DETAIL_INCENTIVE_SURVEY_ONLY");
         }
 
         #endregion

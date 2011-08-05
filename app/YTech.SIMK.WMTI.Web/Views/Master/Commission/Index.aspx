@@ -128,10 +128,26 @@
                         closeAfterAdd: true,
                         closeAfterEdit: true,
                         modal: true,
+                        afterShowForm: function (eparams) {
+                            $('#DetailLowTarget').autoNumeric();
+                            $('#DetailLowTarget').attr("style", "text-align:right;");
+                            $('#DetailHighTarget').autoNumeric();
+                            $('#DetailHighTarget').attr("style", "text-align:right;");
+                            $('#DetailValue').autoNumeric();
+                            $('#DetailValue').attr("style", "text-align:right;");
+                            $('#DetailTransportAllowance').autoNumeric();
+                            $('#DetailTransportAllowance').attr("style", "text-align:right;");
+                            $('#DetailIncentive').autoNumeric();
+                            $('#DetailIncentive').attr("style", "text-align:right;");
+                            $('#DetailIncentiveSurveyAcc').autoNumeric();
+                            $('#DetailIncentiveSurveyAcc').attr("style", "text-align:right;");
+                            $('#DetailIncentiveSurveyOnly').autoNumeric();
+                            $('#DetailIncentiveSurveyOnly').attr("style", "text-align:right;");
+                        },
                         afterComplete: function (response, postdata, formid) {
                             $('#dialog p:first').text(response.responseText);
                             $("#dialog").dialog("open");
-                        }, 
+                        },
                         width: "400"
                     };
 
@@ -140,7 +156,6 @@
                         , closeAfterAdd: true
                         , closeAfterEdit: true
                         , modal: true
-
                         , onclickSubmit: function (params) {
                             var ajaxData = {};
 
@@ -152,8 +167,20 @@
                             return ajaxData;
                         }
                         , afterShowForm: function (eparams) {
-                            //$('#Id').attr('disabled', 'disabled');
-                            // alert(eparams);
+                            $('#DetailLowTarget').autoNumeric();
+                            $('#DetailLowTarget').attr("style", "text-align:right;");
+                            $('#DetailHighTarget').autoNumeric();
+                            $('#DetailHighTarget').attr("style", "text-align:right;");
+                            $('#DetailValue').autoNumeric();
+                            $('#DetailValue').attr("style", "text-align:right;");
+                            $('#DetailTransportAllowance').autoNumeric();
+                            $('#DetailTransportAllowance').attr("style", "text-align:right;");
+                            $('#DetailIncentive').autoNumeric();
+                            $('#DetailIncentive').attr("style", "text-align:right;");
+                            $('#DetailIncentiveSurveyAcc').autoNumeric();
+                            $('#DetailIncentiveSurveyAcc').attr("style", "text-align:right;");
+                            $('#DetailIncentiveSurveyOnly').autoNumeric();
+                            $('#DetailIncentiveSurveyOnly').attr("style", "text-align:right;");
                         }
                         , width: "400"
                         , afterComplete: function (response, postdata, formid) {
@@ -178,19 +205,70 @@
                         postData: { commissionId: function () { return rowId; } },
                         datatype: 'json',
                         mtype: 'GET',
-                        colNames: ['Id', 'Level', 'Penjualan dari', 'Penjualan Sampai', 'Komisi'],
+                        colNames: ['Id', 'Level', 
+                                   'Penjualan dari (%)', 'Penjualan Sampai (%)', 'Komisi (%)', 
+                                   'Jumlah Customer', 'Uang Transportasi', 'Insentif (%)',
+                                   'Insentif (Survey & ACC)', 'Insentif (Survey)'
+                                   ],
+
+<% if ((Request.QueryString["department"].Equals("COL")) || (Request.QueryString["department"].Equals("TLS")) )
+   {%>
+
                         colModel: [
                             { name: 'Id', index: 'Id', width: 75, align: 'left', key: true, editrules: { required: true, edithidden: false }, hidedlg: true, hidden: true, editable: false },
                             { name: 'DetailType', index: 'DetailType', align: 'right', editable: true, edittype: 'text' },
                             { name: 'DetailLowTarget', index: 'DetailLowTarget', align: 'right', editable: true, edittype: 'text' },
                             { name: 'DetailHighTarget', index: 'DetailHighTarget', align: 'right', editable: true, edittype: 'text' },
-                            { name: 'DetailValue', index: 'DetailValue', align: 'right', editable: true, edittype: 'text' }
+                            { name: 'DetailValue', index: 'DetailValue', align: 'right', editable: true, edittype: 'text' },
+                            { name: 'DetailCustomerNumber', index: 'DetailCustomerNumber', align: 'right', editable: true, edittype: 'text', hidden: true },
+                            { name: 'DetailTransportAllowance', index: 'DetailTransportAllowance', align: 'right', editable: true, edittype: 'text', hidden: true },
+                            { name: 'DetailIncentive', index: 'DetailIncentive', align: 'right', editable: true, edittype: 'text', hidden: true },
+                            { name: 'DetailIncentiveSurveyAcc', index: 'DetailIncentiveSurveyAcc', align: 'right', editable: true, edittype: 'text', hidden: true },
+                            { name: 'DetailIncentiveSurveyOnly', index: 'DetailIncentiveSurveyOnly', align: 'right', editable: true, edittype: 'text', hidden: true }
                         ],
+
+<%
+   }
+   else if (Request.QueryString["department"].Equals("SA"))
+   { %>	
+
+                        colModel: [
+                            { name: 'Id', index: 'Id', width: 75, align: 'left', key: true, editrules: { required: true, edithidden: false }, hidedlg: true, hidden: true, editable: false },
+                            { name: 'DetailType', index: 'DetailType', align: 'right', editable: true, edittype: 'text' },
+                            { name: 'DetailLowTarget', index: 'DetailLowTarget', align: 'right', editable: true, edittype: 'text', hidden: true },
+                            { name: 'DetailHighTarget', index: 'DetailHighTarget', align: 'right', editable: true, edittype: 'text', hidden: true },
+                            { name: 'DetailValue', index: 'DetailValue', align: 'right', editable: true, edittype: 'text', hidden: true },
+                            { name: 'DetailCustomerNumber', index: 'DetailCustomerNumber', align: 'right', editable: true, edittype: 'text' },
+                            { name: 'DetailTransportAllowance', index: 'DetailTransportAllowance', align: 'right', editable: true, edittype: 'text' },
+                            { name: 'DetailIncentive', index: 'DetailIncentive', align: 'right', editable: true, edittype: 'text' },
+                            { name: 'DetailIncentiveSurveyAcc', index: 'DetailIncentiveSurveyAcc', align: 'right', editable: true, edittype: 'text', hidden: true },
+                            { name: 'DetailIncentiveSurveyOnly', index: 'DetailIncentiveSurveyOnly', align: 'right', editable: true, edittype: 'text', hidden: true }
+                        ],
+  
+<% }
+else
+   {%>
+
+                        colModel: [
+                            { name: 'Id', index: 'Id', width: 75, align: 'left', key: true, editrules: { required: true, edithidden: false }, hidedlg: true, hidden: true, editable: false },
+                            { name: 'DetailType', index: 'DetailType', align: 'right', editable: true, edittype: 'text' },
+                            { name: 'DetailLowTarget', index: 'DetailLowTarget', align: 'right', editable: true, edittype: 'text', hidden: true },
+                            { name: 'DetailHighTarget', index: 'DetailHighTarget', align: 'right', editable: true, edittype: 'text', hidden: true },
+                            { name: 'DetailValue', index: 'DetailValue', align: 'right', editable: true, edittype: 'text', hidden: true },
+                            { name: 'DetailCustomerNumber', index: 'DetailCustomerNumber', align: 'right', editable: true, edittype: 'text', hidden: true },
+                            { name: 'DetailTransportAllowance', index: 'DetailTransportAllowance', align: 'right', editable: true, edittype: 'text', hidden: true },
+                            { name: 'DetailIncentive', index: 'DetailIncentive', align: 'right', editable: true, edittype: 'text', hidden: true },
+                            { name: 'DetailIncentiveSurveyAcc', index: 'DetailIncentiveSurveyAcc', align: 'right', editable: true, edittype: 'text' },
+                            { name: 'DetailIncentiveSurveyOnly', index: 'DetailIncentiveSurveyOnly', align: 'right', editable: true, edittype: 'text' }
+                        ],
+
+       
+ <%}%>
                         pager: pagerId,
                         rowNum: 20,
                         rowList: [20, 30, 50, 100],
                         rownumbers: false,
-                        sortname: 'Id',
+                        sortname: 'DetailType',
                         sortorder: "asc",
                         viewrecords: true,
                         caption: 'Detail Komisi'
@@ -199,16 +277,16 @@
                         { edit: true, add: true, del: true, search: false, refresh: true },
                         editSubDialog, addSubDialog, deleteSubDialog
                     );
-            }
-        });
-        jQuery("#list").jqGrid('navGrid', '#listPager',
+                }
+            });
+            jQuery("#list").jqGrid('navGrid', '#listPager',
                  { edit: true, add: true, del: true, search: false, refresh: true }, //options 
                   editDialog,
                 insertDialog,
                 deleteDialog,
                 {}
             );
-    });       
+        });       
 
     </script>
     <div id="dialog" title="Status">

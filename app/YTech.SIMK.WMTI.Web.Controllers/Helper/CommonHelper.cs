@@ -31,6 +31,10 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Helper
         {
             get { return "N2"; }
         }
+        public static string IntegerFormat
+        {
+            get { return "N0"; }
+        }
 
         //set culture to id-ID for standardization
         public static CultureInfo DefaultCulture
@@ -95,11 +99,27 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Helper
             return result;
         }
 
+        public static int ConvertToInteger(string value)
+        {
+            int result = 0;
+            if (!string.IsNullOrEmpty(value))
+                result = int.Parse(value, NumberStyles.Integer, DefaultCulture);
+            return result;
+        }
+
         public static string ConvertToString(decimal? value)
         {
             string result = string.Empty;
             if (value.HasValue)
                 result = value.Value.ToString(NumberFormat, DefaultCulture);
+            return result;
+        }
+
+        public static string ConvertToString(int? value)
+        {
+            string result = string.Empty;
+            if (value.HasValue)
+                result = value.Value.ToString(IntegerFormat, DefaultCulture);
             return result;
         }
 
