@@ -193,9 +193,19 @@
                         postData: { commissionId: function () { return rowId; } },
                         datatype: 'json',
                         mtype: 'GET',
-                        colNames: ['Id', 'Level', 
-                                   'Penjualan dari (%)', 'Penjualan Sampai (%)', 'Komisi (%)', 
-                                   'Jumlah Customer', 'Uang Transportasi', 'Insentif (%)',
+                        colNames: ['Id', 'Level',
+
+<% if (Request.QueryString["department"].Equals("COL"))
+   { %>
+                                    'Penagihan dari (%)', 'Penagihan Sampai (%)',
+ <%}
+   else
+   { %>
+                                   'Penjualan dari (%)', 'Penjualan Sampai (%)', 
+<% }%>
+                         
+                                   'Komisi (%)', 
+                                   'Jumlah Customer', 'Uang Transportasi', 'Insentif',
                                    'Insentif (Survey & ACC)', 'Insentif (Survey)'
                                    ],
 
@@ -225,7 +235,7 @@
                             { name: 'DetailType', index: 'DetailType', align: 'right', editable: true, edittype: 'text' },
                             { name: 'DetailLowTarget', index: 'DetailLowTarget', align: 'right', editable: true, edittype: 'text', hidden: true },
                             { name: 'DetailHighTarget', index: 'DetailHighTarget', align: 'right', editable: true, edittype: 'text', hidden: true },
-                            { name: 'DetailValue', index: 'DetailValue', align: 'right', editable: true, edittype: 'text', hidden: true },
+                            { name: 'DetailValue', index: 'DetailValue', align: 'right', editable: true, edittype: 'text', },
                             { name: 'DetailCustomerNumber', index: 'DetailCustomerNumber', align: 'right', editable: true, edittype: 'text' },
                             { name: 'DetailTransportAllowance', index: 'DetailTransportAllowance', align: 'right', editable: true, edittype: 'text' },
                             { name: 'DetailIncentive', index: 'DetailIncentive', align: 'right', editable: true, edittype: 'text' },
