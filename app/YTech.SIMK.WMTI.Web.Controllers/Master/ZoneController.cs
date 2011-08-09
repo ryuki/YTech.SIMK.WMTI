@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 using System.Web.Mvc;
 using SharpArch.Core;
 using SharpArch.Web.NHibernate;
@@ -145,6 +146,21 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Master
             zone.ZoneCity = viewModel.ZoneCity;
             zone.ZoneDesc = viewModel.ZoneDesc;
             zone.ZoneStatus = viewModel.ZoneStatus;
+        }
+
+        [Transaction]
+        public virtual ActionResult GetList()
+        {
+            var zones = _mZoneRepository.GetAll();
+            StringBuilder sb = new StringBuilder();
+            MZone mZone = new MZone();
+            sb.AppendFormat("{0}:{1}", string.Empty, "-Pilih Wilayah-");
+            for (int i = 0; i < zones.Count; i++)
+            {
+                mZone = zones[i];
+                sb.AppendFormat(";{0}:{1}", mZone.Id, mZone.ZoneName);
+            }
+            return Content(sb.ToString());
         }
     }
 }

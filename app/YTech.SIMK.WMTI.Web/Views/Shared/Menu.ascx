@@ -51,6 +51,7 @@
         <%= Html.ActionLinkForAreas<DepartmentController>(c => c.Index(),"Master Departemen") %>
         <%= Html.ActionLinkForAreas<EmployeeController>(c => c.Index(), "Master Karyawan")%>
         <%= Html.ActionLinkForAreas<ZoneController>(c => c.Index(), "Master Wilayah")%>
+        <%= Html.ActionLinkForAreas<ZoneEmployeeController>(c => c.Index(), "Master Pembagian Wilayah Kerja") %>
         <%= Html.ActionLinkForAreas<PartnerController>(c => c.Index(), "Master Toko")%>
     </div>
     <h3>
