@@ -112,6 +112,7 @@
     <Compile Include="Master\ZoneController.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Master\ZoneEmployeeController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RouteRegistrar.cs" />
     <Compile Include="Transaction\InstallmentController.cs">
