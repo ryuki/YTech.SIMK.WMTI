@@ -9,5 +9,7 @@ namespace YTech.SIMK.WMTI.Core.RepositoryInterfaces
         IEnumerable<MEmployee> GetPagedEmployeeList(string orderCol, string orderBy, int pageIndex, int maxRows, ref int totalRows);
 
         IList<MEmployee> GetEmployeeByDept(string dept);
+
+        IList<MEmployee> GetEmployeeBySuCol();
     }
 }

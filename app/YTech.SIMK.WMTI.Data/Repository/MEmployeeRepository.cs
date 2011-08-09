@@ -43,5 +43,19 @@ namespace YTech.SIMK.WMTI.Data.Repository
 
             return list;
         }
+
+        public IList<MEmployee> GetEmployeeBySuCol()
+        {
+            var sql = new StringBuilder();
+
+            sql.AppendLine(@" from MEmployee as emp where emp.DepartmentId in ('SU','COL')");
+
+            string query = string.Format(" select emp {0}", sql);
+            IQuery q = Session.CreateQuery(query);
+
+            IList<MEmployee> list = q.List<MEmployee>();
+
+            return list;
+        }
     }
 }

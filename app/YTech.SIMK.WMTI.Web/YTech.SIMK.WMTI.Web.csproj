@@ -161,6 +161,13 @@
     <Compile Include="ReportViewer.aspx.designer.cs">
       <DependentUpon>ReportViewer.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Master\ZoneEmployee\Index.aspx.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Master\ZoneEmployee\Index.aspx.designer.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Transaction\Loan\CustomerRequest.aspx.cs">
       <DependentUpon>CustomerRequest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -333,6 +340,7 @@
     <Content Include="Views\Master\Employee\Index.aspx" />
     <Content Include="Views\Master\Employee\Search.aspx" />
     <Content Include="Views\Master\Partner\Index.aspx" />
+    <Content Include="Views\Master\ZoneEmployee\Index.aspx" />
     <Content Include="Views\Master\Zone\Index.aspx" />
     <Content Include="Views\Shared\Error.aspx" />
     <Content Include="Views\Shared\DebugFormSubmission.ascx" />

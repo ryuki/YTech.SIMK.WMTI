@@ -303,6 +303,25 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Master
                 sb.AppendFormat(";{0}:{1} {2}", mEmployee.Id, mEmployee.PersonId.PersonFirstName, mEmployee.PersonId.PersonLastName);
             }
             return Content(sb.ToString());
-        } 
+        }
+ 
+        [Transaction]
+        public virtual ActionResult GetListSuCol()
+        {
+            var employees = _mEmployeeRepository.GetEmployeeBySuCol();
+            var sb = new StringBuilder();
+            var mEmployee = new MEmployee();
+
+            sb.AppendFormat("{0}:{1}", string.Empty, "-Pilih Karyawan-");
+
+            for (int i = 0; i < employees.Count; i++)
+            {
+                mEmployee = employees[i];
+                sb.AppendFormat(";{0}:{1} {2}", mEmployee.Id, mEmployee.PersonId.PersonFirstName,
+                                mEmployee.PersonId.PersonLastName);
+            }
+
+            return Content(sb.ToString());
+        }
     }
 }
