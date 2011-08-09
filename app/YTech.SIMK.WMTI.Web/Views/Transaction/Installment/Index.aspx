@@ -46,8 +46,8 @@
             });
             $("#popup").dialog({
                 autoOpen: false,
-                height: 480,
-                width: '80%',
+                height: 300,
+                width: 500,
                 modal: true,
                 close: function (event, ui) {
                     $("#list").trigger("reloadGrid");
