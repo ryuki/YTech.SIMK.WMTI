@@ -15,7 +15,7 @@
         <a href="#">Pengajuan Kredit</a></h3>
     <div class="child-menu-container">
         <%= Html.ActionLinkForAreas<LoanController>(c => c.CustomerRequest(null), "Entry Permohonan Konsumen") %>
-        <%= Html.ActionLinkForAreas<LoanController>(c => c.Index(EnumLoanStatus.Request.ToString()), "Daftar Permohonan Konsumen")%>
+        <%= Html.ActionLinkForAreas<LoanController>(c => c.Index(string.Empty), "Daftar Permohonan Konsumen")%>
     </div>
 
      <h3>

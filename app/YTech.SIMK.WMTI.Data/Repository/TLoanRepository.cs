@@ -27,7 +27,7 @@ namespace YTech.SIMK.WMTI.Data.Repository
             //get list results
             criteria.SetMaxResults(maxRows)
                 .SetFirstResult((pageIndex - 1) * maxRows);
-            
+
             criteria.AddOrder(new Order(orderCol, orderBy.Equals("asc") ? true : false));
 
             IEnumerable<TLoan> list = criteria.List<TLoan>();
@@ -39,11 +39,11 @@ namespace YTech.SIMK.WMTI.Data.Repository
             ICriteria criteria = Session.CreateCriteria(typeof(TLoan), "loan");
             //join table person
             criteria.CreateCriteria("PersonId", "person", JoinType.LeftOuterJoin);
-            criteria.Add(Restrictions.Eq("loan.LoanStatus", loanStatus));
+            if (!string.IsNullOrEmpty(loanStatus))
+                criteria.Add(Restrictions.Eq("loan.LoanStatus", loanStatus));
             if (!string.IsNullOrEmpty(searchText))
-            {
                 criteria.Add(Restrictions.Like(searchBy, searchText, MatchMode.Anywhere));
-            }
+
             return criteria;
         }
 

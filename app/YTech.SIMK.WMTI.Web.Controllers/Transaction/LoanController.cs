@@ -726,7 +726,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                     loan.DataStatus = EnumDataStatus.Updated.ToString();
                     _tLoanRepository.Update(loan);
 
-                    if (enumLoanStatus == EnumLoanStatus.Approve)
+                    if (enumLoanStatus == EnumLoanStatus.Run)
                     {
                         //save installment
                         SaveInstallment(loan);
