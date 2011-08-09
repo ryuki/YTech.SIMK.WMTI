@@ -56,13 +56,13 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Master
                     {
                         id = zoneEmployee.Id.ToString(),
                         cell = new string[] {
-                            zoneEmployee.Id, 
-                            zoneEmployee.EmployeeId.Id,
-                            zoneEmployee.EmployeeId.PersonId.PersonFirstName,
-                            Helper.CommonHelper.ConvertToString(zoneEmployee.StartDate),
-                            Helper.CommonHelper.ConvertToString(zoneEmployee.EndDate),
-                            zoneEmployee.ZoneId.Id,
-                            zoneEmployee.ZoneId.ZoneName
+                        zoneEmployee.Id, 
+                        zoneEmployee.EmployeeId != null ? zoneEmployee.EmployeeId.Id : null,
+                        zoneEmployee.EmployeeId != null ?zoneEmployee.EmployeeId.PersonId.PersonName : null,
+                        Helper.CommonHelper.ConvertToString(zoneEmployee.StartDate),
+                        Helper.CommonHelper.ConvertToString(zoneEmployee.EndDate),
+                        zoneEmployee.ZoneId != null ?zoneEmployee.ZoneId.Id : null,
+                        zoneEmployee.ZoneId != null ?zoneEmployee.ZoneId.ZoneName : null
                         }
                     }).ToArray()
             };

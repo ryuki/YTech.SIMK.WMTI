@@ -161,13 +161,6 @@
     <Compile Include="ReportViewer.aspx.designer.cs">
       <DependentUpon>ReportViewer.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Master\ZoneEmployee\Index.aspx.cs">
-      <DependentUpon>Index.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\Master\ZoneEmployee\Index.aspx.designer.cs">
-      <DependentUpon>Index.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Views\Transaction\Loan\CustomerRequest.aspx.cs">
       <DependentUpon>CustomerRequest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

@@ -84,11 +84,11 @@
                 colNames: ['Id', 'Nama Surveyor/Kolektor', 'Nama Surveyor/Kolektor', 'Mulai Tanggal', 'Sampai Tanggal', 'Wilayah', 'Wilayah'],
                 colModel: [
                     { name: 'Id', index: 'Id', width: 100, align: 'left', key: true, editrules: { required: false, edithidden: false }, hidedlg: true, hidden: true, editable: false },
-                    { name: 'EmployeeId', index: 'EmployeeId', width: 200, align: 'left', editable: true, edittype: 'select', editrules: { edithidden: true }, hidden: true },
-                    { name: 'PersonFirstName', index: 'PersonFirstName', width: 200, align: 'left', editable: false, edittype: 'select', editrules: { edithidden: true} },
+                    { name: 'EmployeeId', index: 'EmployeeId', width: 200, align: 'left', editable: true, edittype: 'select', editrules: { edithidden: true, required: true }, hidden: true, formoptions: { elmsuffix: ' *'} },
+                    { name: 'PersonName', index: 'PersonName', width: 200, align: 'left', editable: false, edittype: 'select', editrules: { edithidden: true} },
                     { name: 'StartDate', index: 'StartDate', width: 100, align: 'left', editable: true, edittype: 'text', editrules: { required: true }, formoptions: { elmsuffix: ' *'} },
                     { name: 'EndDate', index: 'EndDate', width: 150, sortable: false, align: 'left', editable: true, edittype: 'text', editrules: { required: false }, formoptions: { elmsuffix: ' *'} },
-                    { name: 'ZoneId', index: 'ZoneId', width: 200, align: 'left', editable: true, edittype: 'select', editrules: { edithidden: true }, hidden: true },
+                    { name: 'ZoneId', index: 'ZoneId', width: 200, align: 'left', editable: true, edittype: 'select', editrules: { edithidden: true, required: true }, hidden: true, formoptions: { elmsuffix: ' *'} },
                     { name: 'ZoneName', index: 'ZoneName', width: 200, align: 'left', editable: false, edittype: 'select', editrules: { edithidden: true}}],
 
                 pager: $('#listPager'),
