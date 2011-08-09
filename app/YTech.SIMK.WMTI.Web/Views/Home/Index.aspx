@@ -6,7 +6,7 @@
        { %>
     <script src="../../Scripts/jquery-1.5-vsdoc.js" type="text/javascript"></script>
     <% } %>
-    <h2>Sistem Informasi Manajemen Kredit WMTI</h2>
+    <h2>Sistem Informasi Managemen Kredit Wahana Finance</h2>
     <%--<input type="button" id="btnTest" value='line 1&#13;&#10;line 2' />
 
     <script type="text/javascript">
