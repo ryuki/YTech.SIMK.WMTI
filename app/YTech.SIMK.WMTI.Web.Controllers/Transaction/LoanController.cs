@@ -835,5 +835,45 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         {
             return ChangeLoanStatus(EnumLoanStatus.Reject, loanId, "Kredit Berhasil Ditolak");
         }
+
+        [Transaction]
+        public virtual ActionResult ListToday(string sidx, string sord, int page, int rows)
+        {
+
+            int totalRecords = 0;
+            var loans = _tLoanRepository.GetPagedLoanListToday(sidx, sord, page, rows, ref totalRecords);
+
+            int pageSize = rows;
+            int totalPages = (int)Math.Ceiling((float)totalRecords / (float)pageSize);
+            var jsonData = new
+            {
+                total = totalPages,
+                page = page,
+                records = totalRecords,
+                rows = (
+                    from loan in loans
+                    select new
+                    {
+                        i = loan.Id,
+                        cell = new string[]
+                                                {
+                                                loan.Id,
+                                                loan.LoanNo,
+                                                loan.PersonId.PersonName,
+                                                loan.AddressId.AddressLine1,
+                                                loan.LoanUnits[0].UnitType,
+                                                Helper.CommonHelper.ConvertToString(loan.LoanBasicPrice),
+                                                Helper.CommonHelper.ConvertToString(loan.LoanCreditPrice),
+                                                Helper.CommonHelper.ConvertToString(loan.LoanTenor),
+                                                loan.SalesmanId != null ? loan.SalesmanId.Id : null,
+                                                loan.TLSId != null ? loan.TLSId.Id : null,
+                                                loan.LoanStatus
+                                                }
+                    }
+                ).ToArray()
+            };
+
+            return Json(jsonData, JsonRequestBehavior.AllowGet);
+        }
     }
 }

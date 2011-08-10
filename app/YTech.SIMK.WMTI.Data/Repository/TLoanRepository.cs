@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using NHibernate;
 using NHibernate.Criterion;
@@ -45,6 +46,27 @@ namespace YTech.SIMK.WMTI.Data.Repository
                 criteria.Add(Restrictions.Like(searchBy, searchText, MatchMode.Anywhere));
 
             return criteria;
+        }
+
+        public IEnumerable<TLoan> GetPagedLoanListToday(string orderCol, string orderBy, int pageIndex, int maxRows, ref int totalRows)
+        {
+            ICriteria criteria = Session.CreateCriteria(typeof(TLoan));
+
+            //calculate total rows
+            totalRows = Session.CreateCriteria(typeof(TLoan))
+                .SetProjection(Projections.RowCount())
+                .FutureValue<int>().Value;
+
+            //get list results
+            criteria.Add(Restrictions.Eq("LoanSubmissionDate", DateTime.Today));
+            criteria.SetMaxResults(maxRows)
+              .SetFirstResult((pageIndex - 1) * maxRows)
+              .AddOrder(new Order(orderCol, orderBy.Equals("asc") ? true : false))
+              ;
+
+            IEnumerable<TLoan> list = criteria.List<TLoan>();
+
+            return list;
         }
 
         #endregion

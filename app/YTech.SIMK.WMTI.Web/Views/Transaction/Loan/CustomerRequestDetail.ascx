@@ -1,4 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewUserControl<CRFormViewModel>" %>
+<%@ Register TagPrefix="uc" TagName="CrDetailList" Src="~/Views/Transaction/Loan/CustomerRequestDetailList.ascx" %>
 
 <% if (false)
    { %>
@@ -271,6 +272,11 @@
     <p>
     </p>
 </div>
+<%
+    if (string.IsNullOrEmpty(Request.QueryString["loanCustomerRequestId"]))
+    { %>
+        <uc:CrDetailList id="crListDetailList" runat="server" />
+<%  } %>
 
 <script language="javascript" type="text/javascript">
     function onSavedSuccess(e) {
@@ -281,6 +287,7 @@
             if (success) {
                 $("#Save").attr('disabled', 'disabled');
                 $('#status').html(msg);
+                $("#list").trigger("reloadGrid");
             }
             else {
                 $("#Save").removeAttr('disabled');

@@ -7,7 +7,7 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="title" runat="server">
     <asp:ContentPlaceHolder ID="title" runat="server">
-    Sistem Informasi Manajemen Kredit WMTI
+    Sistem Informasi Manajemen Kredit Wahana Finance
     </asp:ContentPlaceHolder>
 </asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="SampleContent" runat="server">
