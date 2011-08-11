@@ -31,7 +31,7 @@
     <h3>
         <a href="#">Cicilan & Pelunasan Kredit</a></h3>
     <div class="child-menu-container">
-     <a href="#">Daftar Kredit Berjalan</a>
+     <%= Html.ActionLinkForAreas<LoanController>(c => c.Index(EnumLoanStatus.OK.ToString()), "Daftar Kredit Berjalan")%>
      <a href="#">Cetak Kwitansi Jatuh Tempo</a>
         <%= Html.ActionLinkForAreas<InstallmentController>(c => c.Index(), "Pembayaran Angsuran")%>
      <a href="#">Daftar Menunggak</a>
