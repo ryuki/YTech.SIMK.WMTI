@@ -230,7 +230,7 @@
             return PostChangeStatus('Anda yakin menyetujui kredit?','<%= Url.Action("Approve","Loan") %>?loanId=' + loanId);
         }
 
-        function OpenPopupOk(loanId) {
+        function OpenPopupOke(loanId) {
             return PostChangeStatus('Anda yakin kredit Ok?', '<%= Url.Action("Oke","Loan") %>?loanId=' + loanId);
         }
 
