@@ -114,6 +114,9 @@
                         //enable approve if status is survey or postpone
                         if (status == 'Survey' || status == 'Postpone')
                             disableApprove = "";
+                        //enable cancel if status is postpone
+                        if (status == 'Postpone')
+                            disableCancel = "";
                         //enable ok if status is approve
                         if (status == 'Approve')
                             disableOk = "";
@@ -144,6 +147,7 @@
                                 be = be + "<img src='../Content/Images/edit24_on.gif' title='Edit Survey' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopup('" + cl + "');\" />&nbsp; | &nbsp;";
 
                                 be = be + "<img src='../Content/Images/approve24_on.png' title='Approve Kredit' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupApprove('" + row.LoanId + "');\" " + disableApprove + " />&nbsp;";
+                                be = be + "<img src='../Content/Images/cancel32_on.png' title='Cancel Kredit' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupCancel('" + row.LoanId + "');\" " + disableCancel + " />&nbsp;";
                                 break;
 
                             default:
