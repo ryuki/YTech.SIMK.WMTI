@@ -256,6 +256,7 @@
     <Content Include="Content\Images\login-button.jpg" />
     <Content Include="Content\Images\login.jpg" />
     <Content Include="Content\Images\logo.jpg" />
+    <Content Include="Content\Images\ok24_on.png" />
     <Content Include="Content\Images\reject32_on.png" />
     <Content Include="Content\Images\white.jpg" />
     <Content Include="Content\Images\window16.gif" />

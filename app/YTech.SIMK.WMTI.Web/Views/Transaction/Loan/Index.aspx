@@ -39,6 +39,9 @@
             <img src='<%= Url.Content("~/Content/Images/approve24_on.png") %>' title='Edit PK'
                 style='cursor: hand; width: 16px; height: 16px;' alt='Edit PK' />
             = Setuju Permohonan Kredit<br />
+            <img src='<%= Url.Content("~/Content/Images/ok24_on.png") %>'title='Proses PK'
+                style='cursor: hand; width: 16px; height: 16px' alt='Proses PK' />
+            = Proses Permohonan Kredit<br />
             <img src='<%= Url.Content("~/Content/Images/reject32_on.png") %>' title='Edit PK'
                 style='cursor: hand; width: 16px; height: 16px;' alt='Edit PK' />
             = Tolak Permohonan Kredit<br />
@@ -87,17 +90,17 @@
                 colNames: ['', 'Id', 'LoanId', 'No PK', 'No Account', 'Tgl Pengajuan Kredit', 'Pemohon', 'Surveyor', 'Wilayah', 'Status'],
                 colModel: [
                     {
-                        name: 'act', index: 'act', width: 155, sortable: false
+                        name: 'act', index: 'act', width: 200, sortable: false
                     },
                    { name: 'Id', index: 'Id', width: 75, align: 'left', key: true, editrules: { required: true, edithidden: false }, hidedlg: true, hidden: true, editable: false },
                    { name: 'LoanId', index: 'LoanId', width: 100, align: 'left', editrules: { required: true, edithidden: false }, hidedlg: true, hidden: true, editable: false },
                     { name: 'LoanNo', index: 'LoanNo', width: 100, align: 'left', editable: false, edittype: 'text', editrules: { required: false} },
-                    { name: 'LoanCode', index: 'LoanCode', width: 100, align: 'left', editable: false, edittype: 'text', editrules: { required: false} },
+                    { name: 'LoanCode', index: 'LoanCode', width: 95, align: 'left', editable: false, edittype: 'text', editrules: { required: false} },
                     { name: 'LoanSubmissionDate', index: 'LoanSubmissionDate', width: 125, align: 'left', editable: false, edittype: 'text', editrules: { required: false} },
                     { name: 'CustomerName', index: 'CustomerName', width: 125, align: 'left', editable: false, edittype: 'text', editrules: { required: false} },
                    { name: 'SurveyorName', index: 'SurveyorName', width: 125, align: 'left', editable: true, edittype: 'text', editrules: { required: false} },
                    { name: 'ZoneName', index: 'ZoneName', width: 100, align: 'left', editable: true, edittype: 'text', editrules: { required: false, edithidden: true} },
-                     { name: 'LoanStatus', index: 'LoanStatus', width: 100, align: 'left', editable: true, edittype: 'text', editrules: { required: false, edithidden: true} }
+                     { name: 'LoanStatus', index: 'LoanStatus', width: 60, align: 'left', editable: true, edittype: 'text', editrules: { required: false, edithidden: true} }
                    ],
 
                 pager: $('#listPager'),
@@ -121,10 +124,14 @@
                         var disableReject = "disabled='disabled'";
                         var disableCancel = "disabled='disabled'";
                         var disablePostpone = "disabled='disabled'";
+                        var disableOk = "disabled='disabled'";
 
                         //enable approve if status is survey or postpone
                         if (status == 'Survey' || status == 'Postpone')
                             disableApprove = "";
+                        //enable ok if status is approve
+                        if (status == 'Approve')
+                            disableOk = "";
                         //enable button if status is survey
                         if (status == 'Survey') {
                             disableReject = "";
@@ -134,7 +141,9 @@
 
                         switch (status) {
                             case 'Approve':
-                                var be = "<img src='../Content/Images/window16.gif' title='Edit Survey' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopup('" + cl + "');\" />";
+                                var be = "<img src='../Content/Images/window16.gif' title='Edit Survey' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopup('" + cl + "');\" />&nbsp;";
+
+                                be = be + "<img src='../Content/Images/ok24_on.png' title='Kredit Oke' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupOke('" + row.LoanId + "');\" " + disableOk + " />";
                                 break;
 
                             case "Cancel":
@@ -160,7 +169,9 @@
                                 be = be + "<img src='../Content/Images/reject32_on.png' title='Reject Kredit' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupReject('" + row.LoanId + "');\" " + disableReject + " />&nbsp; | &nbsp;";
 
                                 be = be + "<img src='../Content/Images/cancel32_on.png' title='Cancel Kredit' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupCancel('" + row.LoanId + "');\" " + disableCancel + " />&nbsp;";
-                                be = be + "<img src='../Content/Images/exit32_on.gif' title='Tunda Kredit' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupPostpone('" + row.LoanId + "');\" " + disablePostpone + " />";
+                                be = be + "<img src='../Content/Images/exit32_on.gif' title='Tunda Kredit' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupPostpone('" + row.LoanId + "');\" " + disablePostpone + " />&nbsp; | &nbsp;";
+
+                                be = be + "<img src='../Content/Images/ok24_on.png' title='Kredit Oke' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupOke('" + row.LoanId + "');\" " + disableOk + " />";
                         }
 
                         $(this).setRowData(ids[i], { act: be });
@@ -232,6 +243,10 @@
 
         function OpenPopupApprove(loanId) {
             return PostChangeStatus('Anda yakin menyetujui kredit?','<%= Url.Action("Approve","Loan") %>?loanId=' + loanId);
+        }
+
+        function OpenPopupOk(loanId) {
+            return PostChangeStatus('Anda yakin kredit Ok?', '<%= Url.Action("Oke","Loan") %>?loanId=' + loanId);
         }
 
         function OpenPopupCancel(loanId) {

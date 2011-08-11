@@ -707,6 +707,13 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             return ChangeLoanStatus(EnumLoanStatus.Approve, loanId, "Kredit Berhasil Disetujui");
         }
 
+        [Transaction]
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Oke(string loanId)
+        {
+            return ChangeLoanStatus(EnumLoanStatus.Run, loanId, "Kredit Ok");
+        }
+
         private ActionResult ChangeLoanStatus(EnumLoanStatus enumLoanStatus, string loanId, string successMsg)
         {
             string Message = string.Empty;
