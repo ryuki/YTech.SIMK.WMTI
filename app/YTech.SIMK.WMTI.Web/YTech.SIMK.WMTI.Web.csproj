@@ -349,6 +349,7 @@
     <Content Include="Views\Transaction\Loan\CustomerRequestDetailList.ascx" />
     <Content Include="Views\Transaction\Loan\Detail.ascx" />
     <Content Include="Views\Transaction\Loan\Index.aspx" />
+    <Content Include="Views\Transaction\Loan\Legend.ascx" />
     <Content Include="Views\Transaction\Loan\Survey.aspx" />
     <Content Include="Views\Transaction\Report\Report.aspx" />
     <Content Include="Views\Transaction\Report\ReportParamForm.ascx" />

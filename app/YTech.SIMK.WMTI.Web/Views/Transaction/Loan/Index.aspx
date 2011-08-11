@@ -1,6 +1,8 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/MyMaster.master" AutoEventWireup="true"
     Inherits="System.Web.Mvc.ViewPage" %>
 
+<%@ Register TagPrefix="uc" TagName="Legend" Src="~/Views/Transaction/Loan/Legend.ascx" %>
+
 <asp:Content ID="indexContent" ContentPlaceHolderID="MainContent" runat="server">
     <div>
         <label for="ddlSearchBy">
@@ -25,36 +27,16 @@
         <p>
         </p>
     </div>
-    <% if (!((Request.QueryString["loanStatus"].Equals("Cancel"))||(Request.QueryString["loanStatus"].Equals("Reject")))) 
+    <% if (!String.IsNullOrEmpty(Request.QueryString.ToString()))
+       {
+           if (!((Request.QueryString["loanStatus"].Equals("Cancel")) || (Request.QueryString["loanStatus"].Equals("Reject"))))
+           { %>
+                <uc:Legend ID="ucLegendNotEmpty" runat="server" />
+    <%     }
+       }
+       else if (String.IsNullOrEmpty(Request.QueryString.ToString()))
        { %>
-    <div style="width:600px;">
-        <div style="float: left;">
-        <strong>Keterangan :</strong><br />
-            <img src='<%= Url.Content("~/Content/Images/window16.gif") %>' title='Edit PK' style='cursor: hand;
-                width: 16px; height: 16px;' alt='Edit PK' />
-            = Edit Permohonan Kredit<br />
-            <img src='<%= Url.Content("~/Content/Images/edit24_on.gif") %>' title='Edit PK' style='cursor: hand;
-                width: 16px; height: 16px;' alt='Edit PK' />
-            = Input / Edit Hasil Survey
-        </div>
-        <div style="float: right;">
-            <img src='<%= Url.Content("~/Content/Images/approve24_on.png") %>' title='Edit PK'
-                style='cursor: hand; width: 16px; height: 16px;' alt='Edit PK' />
-            = Setuju Permohonan Kredit<br />
-            <img src='<%= Url.Content("~/Content/Images/ok24_on.png") %>'title='Proses PK'
-                style='cursor: hand; width: 16px; height: 16px' alt='Proses PK' />
-            = Proses Permohonan Kredit<br />
-            <img src='<%= Url.Content("~/Content/Images/reject32_on.png") %>' title='Edit PK'
-                style='cursor: hand; width: 16px; height: 16px;' alt='Edit PK' />
-            = Tolak Permohonan Kredit<br />
-            <img src='<%= Url.Content("~/Content/Images/cancel32_on.png") %>' title='Edit PK'
-                style='cursor: hand; width: 16px; height: 16px;' alt='Edit PK' />
-            = Pembatalan Permohonan Kredit<br />
-            <img src='<%= Url.Content("~/Content/Images/exit32_on.gif") %>' title='Edit PK' style='cursor: hand;
-                width: 16px; height: 16px;' alt='Edit PK' />
-            = Tunda Proses Permohonan Kredit
-        </div>
-    </div>
+            <uc:Legend ID="ucLegendEmpty" runat="server" />
     <% } %>
     <script type="text/javascript">
         $(document).ready(function () {
