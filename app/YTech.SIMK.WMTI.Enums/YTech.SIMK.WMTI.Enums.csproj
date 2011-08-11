@@ -52,6 +52,7 @@
     <Compile Include="EnumIdCardType.cs" />
     <Compile Include="EnumInstallmentStatus.cs" />
     <Compile Include="EnumKnowCustomer.cs" />
+    <Compile Include="EnumLoanFeedbackType.cs" />
     <Compile Include="EnumLoanStatus.cs" />
     <Compile Include="EnumMarriedStatus.cs" />
     <Compile Include="EnumNeighborChar.cs" />

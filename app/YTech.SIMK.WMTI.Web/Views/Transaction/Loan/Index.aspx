@@ -131,6 +131,9 @@
                                 be = be + "<img src='../Content/Images/ok24_on.png' title='Kredit Oke' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupOke('" + row.LoanId + "');\" " + disableOk + " />";
                                 break;
 
+                            case "OK":
+                                var be = "";
+                                break;
                             case "Cancel":
                                 var be = "";
                                 break;
