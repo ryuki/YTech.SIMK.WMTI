@@ -711,7 +711,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Oke(string loanId)
         {
-            return ChangeLoanStatus(EnumLoanStatus.Run, loanId, "Kredit Ok");
+            return ChangeLoanStatus(EnumLoanStatus.OK, loanId, "Kredit Ok");
         }
 
         private ActionResult ChangeLoanStatus(EnumLoanStatus enumLoanStatus, string loanId, string successMsg)
@@ -733,7 +733,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                     loan.DataStatus = EnumDataStatus.Updated.ToString();
                     _tLoanRepository.Update(loan);
 
-                    if (enumLoanStatus == EnumLoanStatus.Run)
+                    if (enumLoanStatus == EnumLoanStatus.OK)
                     {
                         //save installment
                         SaveInstallment(loan);

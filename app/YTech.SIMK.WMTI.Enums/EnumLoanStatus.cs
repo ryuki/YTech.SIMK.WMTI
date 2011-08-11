@@ -13,6 +13,6 @@ namespace YTech.SIMK.WMTI.Enums
         Reject,
         Request,
         Survey,
-        Run
+        OK
     }
 }
