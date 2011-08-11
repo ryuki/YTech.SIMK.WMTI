@@ -25,6 +25,8 @@
         <p>
         </p>
     </div>
+    <% if (!((Request.QueryString["loanStatus"].Equals("Cancel"))||(Request.QueryString["loanStatus"].Equals("Reject")))) 
+       { %>
     <div style="width:600px;">
         <div style="float: left;">
         <strong>Keterangan :</strong><br />
@@ -53,6 +55,7 @@
             = Tunda Proses Permohonan Kredit
         </div>
     </div>
+    <% } %>
     <script type="text/javascript">
         $(document).ready(function () {
 
