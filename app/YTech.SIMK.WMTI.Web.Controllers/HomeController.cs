@@ -9,5 +9,10 @@ namespace YTech.SIMK.WMTI.Web.Controllers
         {
             return View();
         }
+
+        public ActionResult Calculate()
+        {
+            return View();
+        }
     }
 }
