@@ -26,65 +26,63 @@
                     <td>
                         <table>
                             <tr>
-                                <td>
-                                    <label for="LoanNo">
-                                        No PK:</label>
-                                </td>
-                                <td>
-                                    <%= Model.CanEditId ? Html.TextBox("LoanNo", Model.Loan.LoanNo ?? string.Empty, new { @style = "width:150px" }) :
-                                                          Html.TextBox("LoanNo", Model.Loan.LoanNo ?? string.Empty, new { @readonly = Model.CanEditId ? "true" : "false", @style = "width:150px" })
-                                    %>
-                                    <%= Html.ValidationMessage("LoanNo")%>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label for="TLSId">
-                                        Team Name :</label>
-                                </td>
-                                <td>
-                                    <%= Html.DropDownList("TLSId", Model.TLSList)%>
-                                    <%= Html.ValidationMessage("TLSId")%>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label for="SalesmanId">
-                                        SA CODE :</label>
-                                </td>
-                                <td>
-                                    <%= Html.DropDownList("SalesmanId", Model.SalesmanList)%>
-                                    <%= Html.ValidationMessage("SalesmanId")%>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label for="SurveyorId">
-                                        Survey Code :</label>
-                                </td>
-                                <td>
-                                    <%= Html.DropDownList("SurveyorId", Model.SurveyorList)%>
-                                    <%= Html.ValidationMessage("SurveyorId")%>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label for="LoanBasicPrice">
-                                        HD :</label>
-                                </td>
-                                <td>
-                                 <%= Html.TextBox("LoanBasicPrice", CommonHelper.ConvertToString(Model.Loan.LoanBasicPrice), new { @style = "width:300px" })%>
-                                    <%= Html.ValidationMessage("LoanBasicPrice")%>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label for="LoanCreditPrice">
-                                        HT :</label>
-                                </td>
-                                <td>
-                                 <%= Html.TextBox("LoanCreditPrice", CommonHelper.ConvertToString(Model.Loan.LoanCreditPrice), new { @style = "width:300px" })%>
-                                    <%= Html.ValidationMessage("LoanCreditPrice")%>
+                                <td colspan="2">
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <label for="LoanNo">
+                                                    No PK:</label>
+                                            </td>
+                                            <td>
+                                                <%= Model.CanEditId ? Html.TextBox("LoanNo", Model.Loan.LoanNo ?? string.Empty, new { @style = "width:150px" }) :
+                                                                      Html.TextBox("LoanNo", Model.Loan.LoanNo ?? string.Empty, new { @readonly = Model.CanEditId ? "true" : "false", @style = "width:150px" })
+                                                %>
+                                                <%= Html.ValidationMessage("LoanNo")%>
+                                            </td>
+                                            <td>
+                                                <label for="SalesmanId">
+                                                    SA CODE :</label>
+                                            </td>
+                                            <td>
+                                                <%= Html.DropDownList("SalesmanId", Model.SalesmanList)%>
+                                                <%= Html.ValidationMessage("SalesmanId")%>
+                                            </td>
+                                            <td>
+                                                <label for="LoanBasicPrice">
+                                                    HD :</label>
+                                            </td>
+                                            <td>
+                                                <%= Html.TextBox("LoanBasicPrice", CommonHelper.ConvertToString(Model.Loan.LoanBasicPrice), new { @style = "width:300px" })%>
+                                                <%= Html.ValidationMessage("LoanBasicPrice")%>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label for="TLSId">
+                                                    Team Name :</label>
+                                            </td>
+                                            <td>
+                                                <%= Html.DropDownList("TLSId", Model.TLSList)%>
+                                                <%= Html.ValidationMessage("TLSId")%>
+                                            </td>
+                                            <td>
+                                                <label for="SurveyorId">
+                                                    Survey Code :</label>
+                                            </td>
+                                            <td>
+                                                <%= Html.DropDownList("SurveyorId", Model.SurveyorList)%>
+                                                <%= Html.ValidationMessage("SurveyorId")%>
+                                            </td>
+                                            <td>
+                                                <label for="LoanCreditPrice">
+                                                    HT :</label>
+                                            </td>
+                                            <td>
+                                                 <%= Html.TextBox("LoanCreditPrice", CommonHelper.ConvertToString(Model.Loan.LoanCreditPrice), new { @style = "width:300px" })%>
+                                                 <%= Html.ValidationMessage("LoanCreditPrice")%>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </td>
                             </tr>
                             <tr>
@@ -98,14 +96,19 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>
-                                </td>
-                                <td>
+                                <td colspan="2">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
                                     <%= Html.CheckBox("LoanAdminFee", Model.LoanAdminFee)%>&nbsp;Biaya Administrasi sebesar Rp. 14.000,- (Empat Belas Ribu Rupiah)
+                                    <%= Html.ValidationMessage("LoanAdminFee")%>
                                     &nbsp;&nbsp;&nbsp;&nbsp;
                                     <%= Html.CheckBox("LoanMateraiFee", Model.LoanMateraiFee)%>&nbsp;Biaya Materai sebesar Rp. 6.000,- (Enam Ribu Rupiah)
-                                    <%= Html.ValidationMessage("LoanAdminFee")%>
+                                    <%= Html.ValidationMessage("LoanMateraiFee")%>
                                 </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
                             </tr>
                             <tr>
                                 <td>
@@ -113,7 +116,7 @@
                                         Nama Pemohon :</label>
                                 </td>
                                 <td>
-                                    <%= Html.TextBox("PersonFirstName", Model.Loan.CustomerId.PersonId.PersonFirstName, new { @style = "width:300px" })%>
+                                    <%= Html.TextBox("PersonFirstName", Model.Loan.CustomerId.PersonId.PersonFirstName, new { @style = "width:393px" })%>
                                     <%= Html.ValidationMessage("PersonFirstName")%>
                                 </td>
                             </tr>  
@@ -123,7 +126,7 @@
                                         No. KTP :</label>
                                 </td>
                                 <td>
-                                    <%= Html.TextBox("PersonIdCardNo", Model.Loan.CustomerId.PersonId.PersonIdCardNo, new { @style = "width:300px" })%>
+                                    <%= Html.TextBox("PersonIdCardNo", Model.Loan.CustomerId.PersonId.PersonIdCardNo, new { @style = "width:393px" })%>
                                     <%= Html.ValidationMessage("PersonIdCardNo")%>
                                 </td>
                             </tr>
@@ -133,7 +136,7 @@
                                         Alamat :</label>
                                 </td>
                                 <td> 
-                                    <%= Html.TextBox("AddressLine1", Model.Loan.CustomerId.AddressId.AddressLine1, new { @style = "width:300px" })%>
+                                    <%= Html.TextBox("AddressLine1", Model.Loan.CustomerId.AddressId.AddressLine1, new { @style = "width:393px" })%>
                                     <%= Html.ValidationMessage("AddressLine1")%> 
                                 </td>
                             </tr>
@@ -159,7 +162,7 @@
                                         Pekerjaan/Usaha :</label>
                                 </td>
                                 <td> 
-                                    <%= Html.TextBox("PersonOccupation", Model.Loan.CustomerId.PersonId.PersonOccupation, new { @style = "width:300px" })%>
+                                    <%= Html.TextBox("PersonOccupation", Model.Loan.CustomerId.PersonId.PersonOccupation, new { @style = "width:103px" })%>
                                     <%= Html.ValidationMessage("PersonOccupation")%>
                                     <label for="PersonOccupationSector">
                                         Dibidang :</label> 
@@ -177,13 +180,16 @@
                                         Alamat Kantor :</label>
                                 </td>
                                 <td> 
-                                    <%= Html.TextBox("AddressOffice", Model.Loan.CustomerId.AddressId.AddressOffice, new { @style = "width:300px" })%>
+                                    <%= Html.TextBox("AddressOffice", Model.Loan.CustomerId.AddressId.AddressOffice, new { @style = "width:214px" })%>
                                     <%= Html.ValidationMessage("AddressOffice")%> 
                                     <label for="AddressOfficePhone">
                                         Telpon Kantor :</label>
                                     <%= Html.TextBox("AddressOfficePhone", Model.Loan.CustomerId.AddressId.AddressOfficePhone, new { style = "width:75px" })%>
                                     <%= Html.ValidationMessage("AddressOfficePhone")%>
                                 </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
                             </tr>
                             <tr>
                                 <td>
@@ -248,6 +254,9 @@
                             </span>
                         </div>
                     </td>
+                </tr>
+                <tr>
+                    <td colspan="2"></td>
                 </tr>
                 <tr>
                     <td colspan="2" align="center">
