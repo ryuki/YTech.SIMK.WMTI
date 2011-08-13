@@ -244,7 +244,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                     loan.CreatedDate = DateTime.Now;
                     loan.CreatedBy = User.Identity.Name;
                     loan.DataStatus = EnumDataStatus.New.ToString();
-                    loan.LoanStatus = EnumLoanStatus.Request.ToString();
+                    loan.LoanStatus = EnumLoanStatus.Survey.ToString();
                     _tLoanRepository.Save(loan);
                 }
                 else
