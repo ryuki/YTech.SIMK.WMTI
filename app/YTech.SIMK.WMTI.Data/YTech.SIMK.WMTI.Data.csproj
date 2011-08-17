@@ -91,6 +91,7 @@
     <Compile Include="NHibernateMaps\Transaction\TInstallmentMap.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="NHibernateMaps\Transaction\TLoanFeedbackMap.cs" />
     <Compile Include="NHibernateMaps\Transaction\TLoanMap.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -126,6 +127,7 @@
     <Compile Include="Repository\TInstallmentRepository.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Repository\TLoanFeedbackRepository.cs" />
     <Compile Include="Repository\TLoanRepository.cs">
       <SubType>Code</SubType>
     </Compile>
