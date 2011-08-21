@@ -127,18 +127,18 @@
                             disablePostpone = "";
                         }
 
+                        var loanStatus = '<%= Request.QueryString["loanStatus"]%>';
+                        
                         switch (status) {
                             case 'Approve':
                                 var be = "<img src='../Content/Images/window16.gif' title='Edit Survey' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopup('" + cl + "');\" />&nbsp;";
 
-    <% if (!String.IsNullOrEmpty(Request.QueryString.ToString()))
-       { %>
-                                be = be + "<img src='../Content/Images/ok24_on.png' title='Kredit Oke' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupOke('" + row.LoanId + "');\" " + disableOk + " />";
-    <% } %>
+                                if (!isNaN(loanStatus) && loanStatus.length != 0)
+                                    be = be + "<img src='../Content/Images/ok24_on.png' title='Kredit Oke' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupOke('" + row.LoanId + "');\" " + disableOk + " />";
                                 break;
 
                             case "OK":
-                                var be = "";
+                                var be = "<img src='../Content/Images/Note-48.png' title='Catatan' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupNotes('" + row.LoanId + "');\" />&nbsp;";
                                 break;
 
                             case "Cancel":
@@ -182,6 +182,58 @@
                     //                        Pixastic.process(images, "desaturate", { average: false });
                     //                    };
                 },
+<% if (Request.QueryString["loanStatus"].Equals("OK"))
+   { %>
+                subGrid: true,
+                subGridRowExpanded: function (subGridId, rowId) {
+
+                    var subGridTableId = subGridId + "_t";
+                    var pagerId = "p_" + subGridTableId;
+                    var row = $("#list").getRowData(rowId);
+                    
+                    $("#" + subGridId).html("<table id='" + subGridTableId + "' class='scroll'></table><div id='" + pagerId + "' class='scroll'></div>");
+                    $("#" + subGridTableId).jqGrid({
+                        url: '<%= Url.Action("List", "Installment") %>',
+                        postData: { loanCode: function () { return row.LoanCode; } },
+                        datatype: 'json',
+                        mtype: 'GET',
+                        colNames: ['',
+                                    'Angsuran Ke',
+                                    'Jatuh Tempo',
+                                    'Jlh Angsuran (Rp)',
+                                    'Denda (Rp)',
+                                    'Total Harus Dibayar (Rp)',
+                                    'Total Bayar (Rp)',
+                                    'Tgl Bayar',
+                                    'Lebih Bayar (Rp)',
+                                    'Kolektor'],
+                        colModel: [
+                            { name: 'Id', index: 'Id', width: 100, align: 'left', key: true, editrules: { required: true, edithidden: true }, hidedlg: true, hidden: true, editable: true },
+                           { name: 'InstallmentNo', index: 'InstallmentNo', width: 200, align: 'left', editable: false, edittype: 'text', editrules: { required: false, edithidden: true} },
+                           { name: 'InstallmentMaturityDate', index: 'InstallmentMaturityDate', width: 200, align: 'left', editable: false, edittype: 'text', editrules: { required: false, edithidden: true} },
+                           { name: 'InstallmentTotal', index: 'InstallmentTotal', width: 200, align: 'right', editable: false, edittype: 'text', editrules: { required: false, edithidden: true} },
+                           { name: 'InstallmentFine', index: 'InstallmentFine', width: 200, align: 'right', editable: false, edittype: 'text', editrules: { required: false, edithidden: true} },
+                           { name: 'InstallmentMustPaid', index: 'InstallmentMustPaid', width: 200, align: 'right', editable: false, edittype: 'text', editrules: { required: false, edithidden: true} },
+                           { name: 'InstallmentPaid', index: 'InstallmentPaid', width: 200, align: 'right', editable: false, edittype: 'text', editrules: { required: false, edithidden: true} },
+                           { name: 'InstallmentPaymentDate', index: 'InstallmentPaymentDate', width: 200, align: 'left', editable: false, edittype: 'text', editrules: { required: false, edithidden: true} },
+                           { name: 'InstallmentSisa', index: 'InstallmentSisa', width: 200, align: 'right', editable: false, edittype: 'text', editrules: { required: false, edithidden: true}},
+                           { name: 'PersonName', index: 'PersonName', width: 200, align: 'left', editable: false, edittype: 'text', editrules: { required: false, edithidden: true} }
+                           ],
+                        pager: pagerId,
+                        rowNum: 20,
+                        rowList: [20, 30, 50, 100],
+                        rownumbers: false,
+                        sortname: 'Id',
+                        sortorder: "asc",
+                        viewrecords: true,
+                        caption: 'Daftar Angsuran'
+                    });
+                    $("#" + subGridTableId).jqGrid('navGrid', "#" + pagerId,
+                        { edit: false, add: false, del: false, search: false, refresh: true }
+                    );
+                },
+<%
+   } %>
                 ondblClickRow: function (rowid, iRow, iCol, e) {
 
                 }
@@ -276,6 +328,20 @@
 
             if (id) {
                 url += 'loanCustomerRequestId=' + id;
+                url += '&rand=' + (new Date()).getTime();
+            }
+
+            $("#popup_frame").attr("src", url);
+            $("#popup").dialog("open");
+
+            return false;
+        }
+
+        function OpenPopupNotes(loanId) {
+            var url = '<%= Url.Action( "FeedBack", "Loan") %>?';
+
+            if (loanId) {
+                url += 'loanId=' + loanId;
                 url += '&rand=' + (new Date()).getTime();
             }
 

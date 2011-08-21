@@ -168,6 +168,20 @@
     <Compile Include="Views\Transaction\Loan\CustomerRequest.aspx.designer.cs">
       <DependentUpon>CustomerRequest.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Transaction\Loan\Feedback.aspx.cs">
+      <DependentUpon>Feedback.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Transaction\Loan\Feedback.aspx.designer.cs">
+      <DependentUpon>Feedback.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Transaction\Loan\FeedbackDetail.ascx.cs">
+      <DependentUpon>FeedbackDetail.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Transaction\Loan\FeedbackDetail.ascx.designer.cs">
+      <DependentUpon>FeedbackDetail.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Transaction\Loan\Survey.aspx.cs">
       <DependentUpon>Survey.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -350,6 +364,8 @@
     <Content Include="Views\Transaction\Loan\CustomerRequestDetail.ascx" />
     <Content Include="Views\Transaction\Loan\CustomerRequestDetailList.ascx" />
     <Content Include="Views\Transaction\Loan\Detail.ascx" />
+    <Content Include="Views\Transaction\Loan\Feedback.aspx" />
+    <Content Include="Views\Transaction\Loan\FeedbackDetail.ascx" />
     <Content Include="Views\Transaction\Loan\Index.aspx" />
     <Content Include="Views\Transaction\Loan\Legend.ascx" />
     <Content Include="Views\Transaction\Loan\Survey.aspx" />
