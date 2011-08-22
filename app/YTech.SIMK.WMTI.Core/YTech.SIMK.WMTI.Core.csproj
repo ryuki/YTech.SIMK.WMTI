@@ -109,6 +109,7 @@
     <Compile Include="RepositoryInterfaces\ITInstallmentRepository.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="RepositoryInterfaces\ITLoanFeedbackRepository.cs" />
     <Compile Include="RepositoryInterfaces\ITLoanRepository.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -124,6 +125,7 @@
     <Compile Include="Transaction\TLoan.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Transaction\TLoanFeedback.cs" />
     <Compile Include="Transaction\TLoanSurvey.cs">
       <SubType>Code</SubType>
     </Compile>

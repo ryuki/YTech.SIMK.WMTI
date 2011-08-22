@@ -885,5 +885,13 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
 
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
+
+        [Transaction]
+        public ActionResult Feedback(string loanId)
+        {
+            ViewData["CurrentItem"] = "Catatan Konsumen";
+
+            return View();
+        }
     }
 }
