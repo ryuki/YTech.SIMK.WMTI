@@ -247,7 +247,7 @@
                             { name: 'DetailType', index: 'DetailType', align: 'right', editable: true, edittype: 'text' },
                             { name: 'DetailLowTarget', index: 'DetailLowTarget', align: 'right', editable: true, edittype: 'text', hidden: true },
                             { name: 'DetailHighTarget', index: 'DetailHighTarget', align: 'right', editable: true, edittype: 'text', hidden: true },
-                            { name: 'DetailValue', index: 'DetailValue', align: 'right', editable: true, edittype: 'text', },
+                            { name: 'DetailValue', index: 'DetailValue', align: 'right', editable: true, edittype: 'text' },
                             { name: 'DetailCustomerNumber', index: 'DetailCustomerNumber', align: 'right', editable: true, edittype: 'text' },
                             { name: 'DetailTransportAllowance', index: 'DetailTransportAllowance', align: 'right', editable: true, edittype: 'text' },
                             { name: 'DetailIncentive', index: 'DetailIncentive', align: 'right', editable: true, edittype: 'text' },

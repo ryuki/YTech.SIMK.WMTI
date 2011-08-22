@@ -763,10 +763,10 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             if (loan.LoanTenor.HasValue)
             {
                 DateTime? firstDate = null;
-                //if use DP, first installment's maturity date is when item is received
-                if (loan.LoanDownPayment.HasValue)
+                //if not use DP, first installment's maturity date is when item is received
+                if (!loan.LoanDownPayment.HasValue)
                 {
-                    if (loan.LoanDownPayment.Value > 0)
+                    //if (loan.LoanDownPayment.Value > 0)
                     {
                         if (loan.Surveys.Count > 0)
                         {
@@ -806,13 +806,16 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                     ins.InstallmentOthers = loan.LoanOtherInstallment;
                     ins.InstallmentNo = i + 1;
                     ins.InstallmentStatus = EnumInstallmentStatus.Not_Paid.ToString();
-                    //if use DP, first installment's maturity date is when item is received
+                    //if not use DP, first installment's maturity date is when item is received
                     if (i == 0 && firstDate.HasValue)
                     {
                         ins.InstallmentMaturityDate = firstDate;
                     }
                     else
-                        ins.InstallmentMaturityDate = startDate.AddMonths(i + 1);
+                    {
+                        startDate = startDate.AddMonths(1);
+                        ins.InstallmentMaturityDate = startDate;
+                    }
 
                     ins.DataStatus = EnumDataStatus.New.ToString();
                     ins.CreatedBy = User.Identity.Name;
