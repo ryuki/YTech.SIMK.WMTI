@@ -6,5 +6,6 @@ namespace YTech.SIMK.WMTI.Core.RepositoryInterfaces
 {
     public interface ITLoanFeedbackRepository : INHibernateRepositoryWithTypedId<TLoanFeedback, string>
     {
+        IList<TLoanFeedback> GetLoanFeedbackbyType(string type, string loanId);
     }
 }
