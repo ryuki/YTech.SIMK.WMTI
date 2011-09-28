@@ -45,5 +45,6 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
 
         public TInstallment installment { get; internal set; }
         public SelectList CollectorList { get; internal set; }
+        public string ReceiptNo { get; set; }
     }
 }

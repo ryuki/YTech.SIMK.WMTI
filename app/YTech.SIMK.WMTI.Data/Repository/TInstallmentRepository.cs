@@ -25,7 +25,6 @@ namespace YTech.SIMK.WMTI.Data.Repository
             string queryCount = string.Format(" select count(ins.Id) {0}", sql);
             IQuery q = Session.CreateQuery(queryCount);
             q.SetString("loanCode", loanCode);
-            q.SetString("loanCode", loanCode);
 
             totalRows = Convert.ToInt32(q.UniqueResult());
 
@@ -88,6 +87,54 @@ namespace YTech.SIMK.WMTI.Data.Repository
             q.SetDecimal("loanInterest", loanInterest);
             q.SetDecimal("loanOtherInstallment", loanOtherInstallment);
             q.ExecuteUpdate();
+        }
+
+        public IEnumerable<TInstallment> GetInstallment(string loanCode, int installmentNo)
+        {
+            StringBuilder sql = new StringBuilder();
+            sql.AppendLine(@"  from TInstallment as ins
+                                               inner join ins.LoanId as loan ");
+
+            sql.AppendLine(@" where loan.LoanCode = :loanCode and ins.InstallmentNo = :installmentNo  ");
+
+            string query = string.Format(" select ins {0}  order by loan.LoanCode ", sql);
+            IQuery q = Session.CreateQuery(query);
+            q.SetString("loanCode", loanCode);
+            q.SetInt32("installmentNo", installmentNo);
+
+            return q.List<TInstallment>(); 
+        }
+
+        public IEnumerable<TInstallment> GetLastInstallmentByLoanId(string loanId)
+        {
+            StringBuilder sql = new StringBuilder();
+            sql.AppendLine(@"  from TInstallment as ins
+                                               inner join ins.LoanId as loan ");
+
+            sql.AppendLine(@" where loan.Id = :loanId and ins.InstallmentStatus = :status  ");
+
+            string query = string.Format(" select ins {0}  order by ins.InstallmentNo ", sql);
+            IQuery q = Session.CreateQuery(query);
+            q.SetString("loanId", loanId);
+            q.SetString("status", EnumInstallmentStatus.Not_Paid.ToString());
+            q.SetMaxResults(1);
+            return q.List<TInstallment>(); 
+        }
+
+        public IList<TInstallment> GetListByMaturityDate(DateTime? dateFrom, DateTime? dateTo)
+        {
+            StringBuilder sql = new StringBuilder();
+            sql.AppendLine(@"  from TInstallment as ins ");
+
+            sql.AppendLine(@" where ins.InstallmentMaturityDate >= :dateFrom  ");
+            sql.AppendLine(@"  and ins.InstallmentMaturityDate <= :dateTo  ");
+
+            string query = string.Format(" select ins {0} ", sql);
+            IQuery q = Session.CreateQuery(query);
+            q.SetDateTime("dateFrom", dateFrom.Value);
+            q.SetDateTime("dateTo", dateTo.Value);
+
+            return q.List<TInstallment>(); 
         }
     }
 }

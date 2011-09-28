@@ -5,5 +5,6 @@ namespace YTech.SIMK.WMTI.Core.RepositoryInterfaces
 {
     public interface ITReferenceRepository : INHibernateRepositoryWithTypedId<TReference, string>
     {
+        TReference GetByReferenceType(Enums.EnumReferenceType referenceType);
     }
 }

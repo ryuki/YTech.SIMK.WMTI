@@ -1,8 +1,17 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/MyMaster.master" AutoEventWireup="true"
-    Inherits="System.Web.Mvc.ViewPage" %>
+    Inherits="System.Web.Mvc.ViewPage<LoanViewModel>" %>
 
 <%@ Register TagPrefix="uc" TagName="Legend" Src="~/Views/Transaction/Loan/Legend.ascx" %>
-
+<asp:Content ID="headContent" ContentPlaceHolderID="head" runat="server">
+    <style type="text/css">
+        .imgButton
+        {
+            cursor: hand;
+            width: 16px;
+            height: 16px;
+        }
+    </style>
+</asp:Content>
 <asp:Content ID="indexContent" ContentPlaceHolderID="MainContent" runat="server">
     <div>
         <label for="ddlSearchBy">
@@ -27,16 +36,9 @@
         <p>
         </p>
     </div>
-    <% if (!String.IsNullOrEmpty(Request.QueryString.ToString()))
-       {
-           if (!((Request.QueryString["loanStatus"].Equals("Cancel")) || (Request.QueryString["loanStatus"].Equals("Reject"))))
-           { %>
-                <uc:Legend ID="ucLegendNotEmpty" runat="server" />
-    <%     }
-       }
-       else if (String.IsNullOrEmpty(Request.QueryString.ToString()))
+    <% if (Model.ShowLegend)
        { %>
-            <uc:Legend ID="ucLegendEmpty" runat="server" />
+    <uc:Legend ID="ucLegendNotEmpty" runat="server" />
     <% } %>
     <script type="text/javascript">
         $(document).ready(function () {
@@ -99,90 +101,9 @@
                 caption: 'Daftar Kredit',
                 autowidth: true,
                 loadComplete: function () {
-                    var ids = jQuery("#list").getDataIDs();
-                    for (var i = 0; i < ids.length; i++) {
-                        var cl = ids[i];
-                        var row = $("#list").getRowData(cl);
-                        var status = row.LoanStatus;
-
-                        var disableApprove = "disabled='disabled'";
-                        var disableReject = "disabled='disabled'";
-                        var disableCancel = "disabled='disabled'";
-                        var disablePostpone = "disabled='disabled'";
-                        var disableOk = "disabled='disabled'";
-
-                        //enable approve if status is survey or postpone
-                        if (status == 'Survey' || status == 'Postpone')
-                            disableApprove = "";
-                        //enable cancel if status is postpone
-                        if (status == 'Postpone')
-                            disableCancel = "";
-                        //enable ok if status is approve
-                        if (status == 'Approve')
-                            disableOk = "";
-                        //enable button if status is survey
-                        if (status == 'Survey') {
-                            disableReject = "";
-                            disableCancel = "";
-                            disablePostpone = "";
-                        }
-
-                        var loanStatus = '<%= Request.QueryString["loanStatus"]%>';
-                        
-                        switch (status) {
-                            case 'Approve':
-                                var be = "<img src='../Content/Images/window16.gif' title='Edit Survey' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopup('" + cl + "');\" />&nbsp;";
-
-                                if (!isNaN(loanStatus) && loanStatus.length != 0)
-                                    be = be + "<img src='../Content/Images/ok24_on.png' title='Kredit Oke' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupOke('" + row.LoanId + "');\" " + disableOk + " />";
-                                break;
-
-                            case "OK":
-                                var be = "<img src='../Content/Images/Note-48.png' title='Catatan' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupNotes('" + row.LoanId + "');\" />&nbsp;";
-                                break;
-
-                            case "Cancel":
-                                var be = "";
-                                break;
-
-                            case "Reject":
-                                var be = "";
-                                break;
-
-                            case "Postpone":
-                                var be = "<img src='../Content/Images/window16.gif' title='Edit PK' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupPK('" + row.LoanId + "');\" />&nbsp;";
-                                be = be + "<img src='../Content/Images/edit24_on.gif' title='Edit Survey' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopup('" + cl + "');\" />&nbsp; | &nbsp;";
-
-                                be = be + "<img src='../Content/Images/approve24_on.png' title='Approve Kredit' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupApprove('" + row.LoanId + "');\" " + disableApprove + " />&nbsp;";
-                                be = be + "<img src='../Content/Images/cancel32_on.png' title='Cancel Kredit' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupCancel('" + row.LoanId + "');\" " + disableCancel + " />&nbsp;";
-                                break;
-
-                            default:
-                                var be = "<img src='../Content/Images/window16.gif' title='Edit PK' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupPK('" + row.LoanId + "');\" />&nbsp;";
-                                be = be + "<img src='../Content/Images/edit24_on.gif' title='Edit Survey' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopup('" + cl + "');\" />&nbsp; | &nbsp;";
-
-                                be = be + "<img src='../Content/Images/approve24_on.png' title='Approve Kredit' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupApprove('" + row.LoanId + "');\" " + disableApprove + " />&nbsp;";
-                                be = be + "<img src='../Content/Images/reject32_on.png' title='Reject Kredit' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupReject('" + row.LoanId + "');\" " + disableReject + " />&nbsp; | &nbsp;";
-
-                                be = be + "<img src='../Content/Images/cancel32_on.png' title='Cancel Kredit' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupCancel('" + row.LoanId + "');\" " + disableCancel + " />&nbsp;";
-                                be = be + "<img src='../Content/Images/exit32_on.gif' title='Tunda Kredit' style='cursor: hand;width:16px;height:16px;' onClick=\"OpenPopupPostpone('" + row.LoanId + "');\" " + disablePostpone + " />";
-                        }
-
-                        $(this).setRowData(ids[i], { act: be });
-                    }
-                    $("img[disabled='disabled']").pixastic("desaturate");
-                    //grayscale($("img[disabled='disabled']"));
-                    $("img[disabled='disabled']").css("filter", 'progid:DXImageTransform.Microsoft.BasicImage(grayscale=1)');
-                    //                    var images = $("img[disabled='disabled']");
-                    //                    images.hide();
-                    //                    alert('test');
-                    //                    //alert(images[0].attr('src'));
-                    //                    //images.show();
-                    //                    images.complete = function () {
-                    //                        Pixastic.process(images, "desaturate", { average: false });
-                    //                    };
+                    SetLoanFunctionButton();                    
                 },
-<% if (Request.QueryString["loanStatus"].Equals("OK"))
+<% if (Model.ShowInstallmentSubGrid)
    { %>
                 subGrid: true,
                 subGridRowExpanded: function (subGridId, rowId) {
@@ -209,15 +130,15 @@
                                     'Kolektor'],
                         colModel: [
                             { name: 'Id', index: 'Id', width: 100, align: 'left', key: true, editrules: { required: true, edithidden: true }, hidedlg: true, hidden: true, editable: true },
-                           { name: 'InstallmentNo', index: 'InstallmentNo', width: 200, align: 'left', editable: false, edittype: 'text', editrules: { required: false, edithidden: true} },
-                           { name: 'InstallmentMaturityDate', index: 'InstallmentMaturityDate', width: 200, align: 'left', editable: false, edittype: 'text', editrules: { required: false, edithidden: true} },
-                           { name: 'InstallmentTotal', index: 'InstallmentTotal', width: 200, align: 'right', editable: false, edittype: 'text', editrules: { required: false, edithidden: true} },
-                           { name: 'InstallmentFine', index: 'InstallmentFine', width: 200, align: 'right', editable: false, edittype: 'text', editrules: { required: false, edithidden: true} },
-                           { name: 'InstallmentMustPaid', index: 'InstallmentMustPaid', width: 200, align: 'right', editable: false, edittype: 'text', editrules: { required: false, edithidden: true} },
-                           { name: 'InstallmentPaid', index: 'InstallmentPaid', width: 200, align: 'right', editable: false, edittype: 'text', editrules: { required: false, edithidden: true} },
-                           { name: 'InstallmentPaymentDate', index: 'InstallmentPaymentDate', width: 200, align: 'left', editable: false, edittype: 'text', editrules: { required: false, edithidden: true} },
-                           { name: 'InstallmentSisa', index: 'InstallmentSisa', width: 200, align: 'right', editable: false, edittype: 'text', editrules: { required: false, edithidden: true}},
-                           { name: 'PersonName', index: 'PersonName', width: 200, align: 'left', editable: false, edittype: 'text', editrules: { required: false, edithidden: true} }
+                           { name: 'InstallmentNo', index: 'InstallmentNo', width: 25, align: 'left', editable: false, edittype: 'text', editrules: { required: false, edithidden: true} },
+                           { name: 'InstallmentMaturityDate', index: 'InstallmentMaturityDate', width: 100, align: 'left', editable: false, edittype: 'text', editrules: { required: false, edithidden: true} },
+                           { name: 'InstallmentTotal', index: 'InstallmentTotal', width: 100, align: 'right', editable: false, edittype: 'text', editrules: { required: false, edithidden: true} },
+                           { name: 'InstallmentFine', index: 'InstallmentFine', width: 100, align: 'right', editable: false, edittype: 'text', editrules: { required: false, edithidden: true} },
+                           { name: 'InstallmentMustPaid', index: 'InstallmentMustPaid', width: 100, align: 'right', editable: false, edittype: 'text', editrules: { required: false, edithidden: true} },
+                           { name: 'InstallmentPaid', index: 'InstallmentPaid', width: 100, align: 'right', editable: false, edittype: 'text', editrules: { required: false, edithidden: true} },
+                           { name: 'InstallmentPaymentDate', index: 'InstallmentPaymentDate', width: 100, align: 'left', editable: false, edittype: 'text', editrules: { required: false, edithidden: true} },
+                           { name: 'InstallmentSisa', index: 'InstallmentSisa', width: 100, align: 'right', editable: false, edittype: 'text', editrules: { required: false, edithidden: true}},
+                           { name: 'PersonName', index: 'PersonName', width: 100, align: 'left', editable: false, edittype: 'text', editrules: { required: false, edithidden: true} }
                            ],
                         pager: pagerId,
                         rowNum: 20,
@@ -275,6 +196,102 @@
             });
 
         });
+
+        function SetLoanFunctionButton()
+        {
+            var ids = jQuery("#list").getDataIDs();
+
+            var disableApprove = "disabled='disabled'";
+            var disableReject = "disabled='disabled'";
+            var disableCancel = "disabled='disabled'";
+            var disablePostpone = "disabled='disabled'";
+            var disableOk = "disabled='disabled'";
+
+            var loanStatus = '<%= Request.QueryString["loanStatus"]%>';
+            //alert(loanStatus);
+
+            var status;
+            var row;
+            for (var i = 0; i < ids.length; i++) {
+                var cl = ids[i];
+                row = $("#list").getRowData(cl);
+                status = row.LoanStatus;
+                        
+                //enable approve if status is survey or postpone
+                if (status == 'Survey' || status == 'Postpone')
+                    disableApprove = "";
+                //enable cancel if status is postpone
+                if (status == 'Postpone')
+                    disableCancel = "";
+                //enable ok if status is approve
+                if (status == 'Approve')
+                    disableOk = "";
+                    disableCancel = "";
+                    disablePostpone = "";
+                //enable button if status is survey
+                if (status == 'Survey') {
+                    disableReject = "";
+                    disableCancel = "";
+                    disablePostpone = "";
+                }
+
+                var separator = " | &nbsp;"; 
+                var survey = "<img src='../Content/Images/edit24_on.gif' title='Edit Survey' class='imgButton' onClick=\"OpenPopup('" + cl + "');\" />&nbsp;";
+                var ok = "<img src='../Content/Images/ok24_on.png' title='Kredit Oke' class='imgButton' onClick=\"OpenPopupOke('" + row.LoanId + "');\" " + disableOk + " />";
+                var notes = "<img src='../Content/Images/Note-48.png' title='Catatan' class='imgButton' onClick=\"OpenPopupNotes('" + row.LoanId + "');\" />&nbsp;";
+                var edit = "<img src='../Content/Images/window16.gif' title='Edit PK' class='imgButton' onClick=\"OpenPopupPK('" + row.LoanId + "');\" />&nbsp;";
+                var approve = "<img src='../Content/Images/approve24_on.png' title='Approve Kredit' class='imgButton' onClick=\"OpenPopupApprove('" + row.LoanId + "');\" " + disableApprove + " />&nbsp;";
+                var cancel = "<img src='../Content/Images/cancel32_on.png' title='Cancel Kredit' class='imgButton' onClick=\"OpenPopupCancel('" + row.LoanId + "');\" " + disableCancel + " />&nbsp;";
+                var reject = "<img src='../Content/Images/reject32_on.png' title='Reject Kredit' class='imgButton' onClick=\"OpenPopupReject('" + row.LoanId + "');\" " + disableReject + " />&nbsp;";
+                var postpone = "<img src='../Content/Images/exit32_on.gif' title='Tunda Kredit' class='imgButton' onClick=\"OpenPopupPostpone('" + row.LoanId + "');\" " + disablePostpone + " />&nbsp;";
+                var sp = "<a href='#' onClick=\"OpenPopupSP('" + row.LoanId + "');\">Cetak SP</a>&nbsp;";
+                var tarik = "<a href='#' onClick=\"OpenPopupTarik('" + row.LoanId + "');\">Penarikan</a>&nbsp;";
+                        
+                var be = "";
+                switch (status) {
+                    case 'Approve':
+                        be = be + survey + separator + cancel + postpone;
+                        if (loanStatus == 'Approve')
+                            be = be + ok;
+                        break;
+
+                    case "OK":
+                        if (loanStatus == 'OK' || loanStatus == '')
+                            be = be + notes;
+                        else if (loanStatus == 'LatePay')
+                            be = sp + separator + tarik;
+                        break;
+
+                    case "Cancel":
+                        be = "";
+                        break;
+
+                    case "Reject":
+                        be = "";
+                        break;
+
+                    case "Postpone":
+                        be = be + edit + survey + separator + approve + cancel;
+                        break;
+
+                    default:
+                        be = be + edit + survey + separator + approve + reject + separator + cancel + postpone;
+                }
+                //alert(be);
+                $("#list").setRowData(ids[i], { act: be });
+            }
+            $("img[disabled='disabled']").pixastic("desaturate");
+            //grayscale($("img[disabled='disabled']"));
+            $("img[disabled='disabled']").css("filter", 'progid:DXImageTransform.Microsoft.BasicImage(grayscale=1)');
+            //                    var images = $("img[disabled='disabled']");
+            //                    images.hide();
+            //                    alert('test');
+            //                    //alert(images[0].attr('src'));
+            //                    //images.show();
+            //                    images.complete = function () {
+            //                        Pixastic.process(images, "desaturate", { average: false });
+            //                    };
+        }
 
         function OpenPopup(id) {
             var url = '<%= Url.Action("Survey", "Loan" ) %>?';
@@ -348,6 +365,29 @@
             $("#popup_frame").attr("src", url);
             $("#popup").dialog("open");
 
+            return false;
+        }
+
+        function OpenPopupSP(loanId) {
+            return Print('Anda yakin mencetak Surat Peringatan?', '<%= Url.Action("Print","Loan") %>?loanId=' + loanId + '&letterType=SP');
+        }
+
+        function OpenPopupTarik(loanId) {
+             return Print('Anda yakin melakukan penarikan?', '<%= Url.Action("Print","Loan") %>?loanId=' + loanId + '&letterType=Tarik');
+        }
+
+         function Print(confirm_msg,posturl) {
+            var conf = confirm(confirm_msg);
+
+            if (!conf)
+                return false;
+
+            var printPage = $.ajax({ url: posturl, async: false, type: 'POST', cache: false, success: function (data, result) { if (!result) alert('Failure to retrieve the page.'); } }).responseText;
+
+            var result = $.parseJSON(printPage);
+              var urlreport ='<%= ResolveUrl("~/ReportViewer.aspx?rpt=") %>' + result.UrlReport;
+        //alert(urlreport);
+        window.open(urlreport);
             return false;
         }
     </script>

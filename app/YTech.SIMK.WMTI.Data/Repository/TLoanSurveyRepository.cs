@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using NHibernate;
 using NHibernate.Criterion;
@@ -26,6 +27,22 @@ namespace YTech.SIMK.WMTI.Data.Repository
               ;
 
             IEnumerable<TLoanSurvey> list = criteria.List<TLoanSurvey>();
+            return list;
+        }
+
+        public IList<TLoanSurvey> GetListBySurveyDate(DateTime? startDate, DateTime? endDate)
+        {
+            StringBuilder sql = new StringBuilder();
+            sql.AppendLine(@"  from TLoanSurvey as survey ");
+            sql.AppendLine(@" where survey.SurveyDate >= :startDate ");
+            sql.AppendLine(@"   and survey.SurveyDate <= :endDate ");
+
+            string query = string.Format(" select survey {0} ", sql);
+            IQuery q = Session.CreateQuery(query);
+            q = Session.CreateQuery(query);
+            q.SetDateTime("startDate", startDate.Value);
+            q.SetDateTime("endDate", endDate.Value);
+            IList<TLoanSurvey> list = q.List<TLoanSurvey>();
             return list;
         }
     }

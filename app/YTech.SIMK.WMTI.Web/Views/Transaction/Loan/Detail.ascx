@@ -1,14 +1,15 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewUserControl<SurveyFormViewModel>" %>
 <% if (false)
    { %>
-<script src="../../../Scripts/jquery-1.6.2-vsdoc.js" type="text/javascript"></script>
+<script src="../../../Scripts/jquery-1.6.3-vsdoc.js" type="text/javascript"></script>
 <% } %>
 <% using (Ajax.BeginForm(new AjaxOptions
                                        {
                                            //UpdateTargetId = "status",
                                            InsertionMode = InsertionMode.Replace,
                                            OnBegin = "ajaxValidate",
-                                           OnSuccess = "onSavedSuccess"
+                                           OnSuccess = "onSavedSuccess",
+                                           LoadingElementId = "progress"
                                        }
 
           ))

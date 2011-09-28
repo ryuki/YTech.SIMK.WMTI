@@ -175,13 +175,6 @@
     <Compile Include="Views\Transaction\Loan\Feedback.aspx.designer.cs">
       <DependentUpon>Feedback.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Transaction\Loan\FeedbackDetail.ascx.cs">
-      <DependentUpon>FeedbackDetail.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\Transaction\Loan\FeedbackDetail.ascx.designer.cs">
-      <DependentUpon>FeedbackDetail.ascx</DependentUpon>
-    </Compile>
     <Compile Include="Views\Transaction\Loan\Survey.aspx.cs">
       <DependentUpon>Survey.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -267,9 +260,11 @@
     <Content Include="Content\Images\icons\usersearch.png" />
     <Content Include="Content\Images\icons\warning.png" />
     <Content Include="Content\Images\input-bg.jpg" />
+    <Content Include="Content\Images\loading.gif" />
     <Content Include="Content\Images\login-button.jpg" />
     <Content Include="Content\Images\login.jpg" />
     <Content Include="Content\Images\logo.jpg" />
+    <Content Include="Content\Images\Note-48.png" />
     <Content Include="Content\Images\ok24_on.png" />
     <Content Include="Content\Images\reject32_on.png" />
     <Content Include="Content\Images\white.jpg" />
@@ -316,6 +311,9 @@
     <Content Include="Scripts\grid.locale-en.js" />
     <Content Include="Scripts\jquery-1.6.2-vsdoc.js" />
     <Content Include="Scripts\jquery-1.6.2.min.js" />
+    <Content Include="Scripts\jquery-1.6.3-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.6.3.min.js" />
+    <Content Include="Scripts\jquery-1.6.4.min.js" />
     <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\jquery.jqGrid-4.1.2.min.js" />
     <Content Include="Scripts\jquery.layout.min.js" />
@@ -352,12 +350,16 @@
     <Content Include="Views\Master\Partner\Index.aspx" />
     <Content Include="Views\Master\ZoneEmployee\Index.aspx" />
     <Content Include="Views\Master\Zone\Index.aspx" />
+    <Content Include="Views\Shared\Progress.ascx" />
     <Content Include="Views\Shared\Error.aspx" />
     <Content Include="Views\Shared\DebugFormSubmission.ascx" />
     <Content Include="Views\Shared\Js.ascx" />
     <Content Include="Views\Shared\LogOnUserControl.ascx" />
     <Content Include="Views\Shared\Menu.ascx" />
     <Content Include="Views\Shared\Status.ascx" />
+    <Content Include="Views\Transaction\Closing\Index.aspx" />
+    <Content Include="Views\Transaction\Closing\Opening.aspx" />
+    <Content Include="Views\Transaction\Installment\PrintReceipt.aspx" />
     <Content Include="Views\Transaction\Installment\Index.aspx" />
     <Content Include="Views\Transaction\Installment\Payment.aspx" />
     <Content Include="Views\Transaction\Loan\CustomerRequest.aspx" />
@@ -419,9 +421,20 @@
   <ItemGroup>
     <None Include="Content\Images\icons\Thumbs.db" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Views\Transaction\Report\RptPrintInstallment.rdlc" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Transaction\Report\RptDueInstallment.rdlc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Transaction\Report\RptLetterSP.rdlc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Transaction\Report\RptLetterTarik.rdlc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Transaction\Report\RptCommission.rdlc" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

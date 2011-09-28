@@ -21,5 +21,6 @@
         <asp:ContentPlaceHolder ID="MainContent" runat="server">
         </asp:ContentPlaceHolder>
     </div>
+    <% Html.RenderPartial("Progress"); %>
 </body>
 </html>

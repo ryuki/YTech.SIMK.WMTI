@@ -115,6 +115,7 @@
     <Compile Include="Master\ZoneEmployeeController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RouteRegistrar.cs" />
+    <Compile Include="Transaction\ClosingController.cs" />
     <Compile Include="Transaction\InstallmentController.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -128,10 +129,15 @@
     <Compile Include="Utility\UserAccountController.cs" />
     <Compile Include="Utility\UserAdministrationController.cs" />
     <Compile Include="Utility\UtilityAreaRegistration.cs" />
+    <Compile Include="ViewModel\ClosingViewModel.cs" />
     <Compile Include="ViewModel\CRFormViewModel.cs" />
     <Compile Include="ViewModel\FeedbackViewModel.cs" />
     <Compile Include="ViewModel\InstallmentPaymentFormViewModel.cs" />
+    <Compile Include="ViewModel\LoanViewModel.cs" />
+    <Compile Include="ViewModel\OpeningViewModel.cs" />
+    <Compile Include="ViewModel\PrintReceiptViewModel.cs" />
     <Compile Include="ViewModel\ReportParamViewModel.cs" />
+    <Compile Include="ViewModel\Reports\CommissionViewModel.cs" />
     <Compile Include="ViewModel\Reports\InstallmentViewModel.cs" />
     <Compile Include="ViewModel\SurveyFormViewModel.cs" />
     <Compile Include="ViewModel\UserAdministration\DetailsViewModel.cs" />

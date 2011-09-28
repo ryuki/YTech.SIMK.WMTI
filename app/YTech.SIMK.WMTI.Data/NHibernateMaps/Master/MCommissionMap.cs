@@ -6,7 +6,7 @@ namespace YTech.SIMK.WMTI.Data.NHibernateMaps.Master
 {
     public class MCommissionMap : IAutoMappingOverride<MCommission>
     {
-        #region Implementation of IAutoMappingOverride<MZoneEmployee>
+        #region Implementation of IAutoMappingOverride<MCommission>
 
         public void Override(AutoMapping<MCommission> mapping)
         {
@@ -32,6 +32,12 @@ namespace YTech.SIMK.WMTI.Data.NHibernateMaps.Master
             mapping.Map(x => x.CreatedDate, "CREATED_DATE");
             mapping.Map(x => x.ModifiedBy, "MODIFIED_BY");
             mapping.Map(x => x.ModifiedDate, "MODIFIED_DATE");
+
+            mapping.HasMany(x => x.CommissionDets)
+                .AsBag()
+                .Inverse()
+                .KeyColumn("COMMISSION_ID");
+
             mapping.Version(x => x.RowVersion)
                    .Column("ROW_VERSION")
                    .CustomSqlType("Timestamp")

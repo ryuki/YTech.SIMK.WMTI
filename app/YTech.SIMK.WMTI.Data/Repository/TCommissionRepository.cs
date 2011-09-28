@@ -14,5 +14,30 @@ namespace YTech.SIMK.WMTI.Data.Repository
 {
     public class TCommissionRepository : NHibernateRepositoryWithTypedId<TCommission, string>, ITCommissionRepository
     {
+        public IEnumerable<TCommission> GetListByRecapId(string recPeriodId, EnumDepartment? dep)
+        {
+            StringBuilder sql = new StringBuilder();
+            sql.AppendLine(@"   select com
+                                from TCommission as com
+                                    where 1=1 ");
+            if (!string.IsNullOrEmpty(recPeriodId))
+            {
+                sql.AppendLine(@"   and com.RecPeriodId.Id = :recPeriodId");
+            }
+            if (dep != null)
+            {
+                sql.AppendLine(@"   and com.CommissionStatus = :dep");
+            }
+            IQuery q = Session.CreateQuery(sql.ToString());
+            if (!string.IsNullOrEmpty(recPeriodId))
+            {
+                q.SetString("recPeriodId", recPeriodId);
+            }
+            if (dep != null)
+            {
+                q.SetString("dep", dep.ToString());
+            }
+            return q.List<TCommission>();
+        }
     }
 }

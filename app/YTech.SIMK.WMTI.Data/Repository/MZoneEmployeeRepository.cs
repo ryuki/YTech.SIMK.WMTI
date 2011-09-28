@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using NHibernate;
 using NHibernate.Criterion;
 using SharpArch.Data.NHibernate;
@@ -25,6 +27,23 @@ namespace YTech.SIMK.WMTI.Data.Repository
               ;
 
             IEnumerable<MZoneEmployee> list = criteria.List<MZoneEmployee>();
+            return list;
+        }
+
+        public IList<MZoneEmployee> GetListByDate(DateTime? startDate, DateTime? endDate)
+        {
+            StringBuilder sql = new StringBuilder();
+            sql.AppendLine(@"  from MZoneEmployee as ze ");
+
+            sql.AppendLine(@" where ze.StartDate <= :startDate ");
+            sql.AppendLine(@"   and ze.EndDate >= :endDate ");
+
+            string query = string.Format(" select ze {0} ", sql);
+            IQuery q = Session.CreateQuery(query);
+            q.SetDateTime("startDate", startDate.Value);
+            q.SetDateTime("endDate", endDate.Value);
+
+            IList<MZoneEmployee> list = q.List<MZoneEmployee>();
             return list;
         }
     }

@@ -59,6 +59,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="RptLetterTarik.rdlc" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -72,6 +73,10 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Content Include="RptDueInstallment.rdlc" />
+    <Content Include="RptPrintInstallment.rdlc" />
+    <Content Include="RptLetterSP.rdlc" />
+    <Content Include="RptCommission.rdlc" />
+    <None Include="Properties\DataSources\YTech.SIMK.WMTI.Web.Controllers.ViewModel.Reports.CommissionViewModel.datasource" />
     <None Include="Properties\DataSources\YTech.SIMK.WMTI.Web.Controllers.ViewModel.Reports.InstallmentViewModel.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

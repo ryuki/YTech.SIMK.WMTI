@@ -4,7 +4,7 @@
 <asp:Content ID="indexContent" ContentPlaceHolderID="MainContent" runat="server">
  <% if (false)
        { %>
-    <script src="../../Scripts/jquery-1.5-vsdoc.js" type="text/javascript"></script>
+    <script src="../../Scripts/jquery-1.6.3-vsdoc.js" type="text/javascript"></script>
     <% } %>
     <h2>Sistem Informasi Manajemen Kredit Wahana Finance</h2>
     <%--<input type="button" id="btnTest" value='line 1&#13;&#10;line 2' />

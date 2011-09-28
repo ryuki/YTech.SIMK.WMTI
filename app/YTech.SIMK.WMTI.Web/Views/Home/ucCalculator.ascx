@@ -3,68 +3,87 @@
 <div id="formArea">
     <table>
         <tr>
-            <td colspan="2"><label for="UnitPrice" style="font-size:x-large;">HARGA UNIT BARANG :</label></td>
-            <td><input type="text" id="UnitPrice" style="font-size:x-large;" /></td>
-            <td style="width: 106px;">&nbsp;</td>
+            <td colspan="2"><label for="UnitPrice">HARGA UNIT BARANG :</label></td>
+            <td><input type="text" id="UnitPrice" /></td>
+            <td>&nbsp;</td>
             <td>&nbsp;</td>
         </tr>
         <tr>
-            <td colspan="2"><label for="LoanDownPayment" style="font-size:x-large;">DOWN PAYMENT :</label></td>
-            <td><input type="text" id="LoanDownPayment" style="font-size:x-large;" /></td>
-            <td style="width: 106px;">&nbsp;</td>
+            <td colspan="2"><label for="LoanDownPayment">DOWN PAYMENT :</label></td>
+            <td><input type="text" id="LoanDownPayment" /></td>
+            <td>&nbsp;</td>
             <td>&nbsp;</td>
         </tr>
         <tr>
-            <td colspan="2"><label for="LoanBasicPrice" style="font-size:x-large;">HD (HARGA DASAR) :</label></td>
-            <td><input type="text" id="LoanBasicPrice" style="font-size:x-large;" /></td>
-            <td style="width: 106px;">&nbsp;</td>
+            <td colspan="2"><label for="LoanBasicPrice">HD (HARGA DASAR) :</label></td>
+            <td><input type="text" id="LoanBasicPrice" /></td>
+            <td>&nbsp;</td>
             <td>&nbsp;</td>
         </tr>
         <tr>
-            <td colspan="2"><label for="LoanCreditPrice" style="font-size:x-large;">HT (HARGA KREDIT) :</label></td>
-            <td><input type="text" id="LoanCreditPrice" style="font-size:x-large;" /></td>
-            <td style="width: 106px;">&nbsp;</td>
-            <td><input type="text" id="LoanTotal" style="font-size:x-large; width: 200px;" /></td>
+            <td colspan="2"><label for="LoanCreditPrice">HT (HARGA KREDIT) :</label></td>
+            <td><input type="text" id="LoanCreditPrice" /></td>
+            <td>&nbsp;</td>
+            <td><input type="text" id="LoanTotal"  /></td>
         </tr>
         <tr>
-            <td colspan="2"><label for="LendingRate" style="font-size:x-large;">BUNGA :</label></td>
-            <td><input type="text" id="LendingRate" style="font-size:x-large;" /></td>
-            <td style="width: 106px;"><label for="LoanProfit" style="font-size:x-large;">LABA :</label></td>
-            <td><input type="text" id="LoanProfit" style="font-size:x-large; width: 200px;" /></td>
+            <td colspan="2"><label for="LendingRate">BUNGA :</label></td>
+            <td><input type="text" id="LendingRate" /></td>
+            <td><label for="LoanProfit">LABA :</label></td>
+            <td><input type="text" id="LoanProfit"  /></td>
         </tr>
         <tr>
-            <td style="width: 188px;"><label for="LoanTenor" style="font-size:x-large;">ANGSURAN :</label></td>
-            <td style="width: 57px;"><input type="text" id="LoanTenor" 
-                    style="font-size:x-large; width:73px" /></td>
+            <td><label for="LoanTenor">ANGSURAN :</label></td>
+            <td><input type="text" id="LoanTenor" size="5" /></td>
             <td>
                 <table>
                     <tr>
-                        <td style="width: 95px;">
+                        <td>
                             <label for="TenorModal">Modal :</label></td>
-                        <td style="width: 118px;">
-                            <input type="text" id="TenorModal" style="width: 124px;" /></td>
+                        <td>
+                            <input type="text" id="TenorModal" /></td>
                     </tr>
                     <tr>
-                        <td style="width: 95px;">
+                        <td>
                             <label for="TenorRate">Bunga :</label></td>
-                        <td style="width: 118px;">
-                            <input type="text" id="TenorRate" style="width: 124px;" /></td>
+                        <td>
+                            <input type="text" id="TenorRate" /></td>
                     </tr>
                 </table>
             </td>
-            <td style="width: 106px;">
+            <td>
                 <label for="TotalTenorMonth">Total Angsuran / Bulan :</label></td>
             <td>
-                <input type="text" id="TotalTenorMonth" 
-                    style="font-size:x-large; width: 200px;" /></td>
+                <input type="text" id="TotalTenorMonth" /></td>
         </tr>
         </table>
 </div>
 
 <script language="javascript" type="text/javascript">
     $(document).ready(function () {
-        function onTyped() {
-            var UP = parseFloat($('#UnitPrice').val());
+        $('input').autoNumeric();
+        $('input').attr("style", "text-align:right;");
+        $('input').attr("disabled", "disabled");
+
+        $('#UnitPrice').removeAttr("disabled");
+        $('#LoanDownPayment').removeAttr("disabled");
+        $('#LoanTenor').removeAttr("disabled");
+
+        $('#UnitPrice').keyup(CalculateInstallment);
+        $('#LoanDownPayment').keyup(CalculateInstallment);
+        $('#LoanTenor').keyup(CalculateInstallment);
+    });
+
+    function CalculateDP() {
+        var minUP = 2450000;
+        if (UP >= minUP)
+            $('#LoanDownPayment').val(UP * 0.20);
+        else
+            $('#LoanDownPayment').val(0);
+    }
+
+        function CalculateInstallment() {
+            var UP = ConvertToDecimal($('#UnitPrice').val());
             var minUP = 2450000;
             var CreditCost = 25000;
             var CreditMultiply = 1.35;
@@ -77,7 +96,7 @@
 
             $('#LoanBasicPrice').each(function () {
                 if (!isNaN($('#LoanDownPayment').val()) && $('#LoanDownPayment').val().length != 0)
-                    this.value = UP - parseFloat($('#LoanDownPayment').val());
+                    this.value = UP - ConvertToDecimal($('#LoanDownPayment').val());
                 else
                     this.value = UP;
             });
@@ -86,36 +105,37 @@
 
             $('#LendingRate').each(function () {
                 if (!isNaN($('#LoanTenor').val()) && $('#LoanTenor').val().length != 0)
-                    this.value = parseFloat($('#LoanCreditPrice').val()) * ($('#LoanTenor').val() * LendingRatePercent);
+                    this.value = ConvertToDecimal($('#LoanCreditPrice').val()) * (ConvertToDecimal($('#LoanTenor').val()) * LendingRatePercent);
             });
 
             $('#TenorModal').each(function () {
                 if (!isNaN($('#LoanTenor').val()) && $('#LoanTenor').val().length != 0)
-                    this.value = (parseFloat($('#LoanCreditPrice').val()) / parseFloat($('#LoanTenor').val()));
+                    this.value = (ConvertToDecimal($('#LoanCreditPrice').val()) / ConvertToDecimal($('#LoanTenor').val()));
             });
 
             $('#TenorRate').each(function () {
                 if (!isNaN($('#LoanTenor').val()) && $('#LoanTenor').val().length != 0)
-                    this.value = (parseFloat($('#LendingRate').val()) / parseFloat($('#LoanTenor').val()));
+                    this.value = (ConvertToDecimal($('#LendingRate').val()) / ConvertToDecimal($('#LoanTenor').val()));
             });
 
             $('#TotalTenorMonth').each(function () {
                 if (!isNaN($('#LoanTenor').val()) && $('#LoanTenor').val().length != 0)
-                    this.value = parseFloat($('#TenorModal').val()) + parseFloat($('#TenorRate').val());
+                    this.value = ConvertToDecimal($('#TenorModal').val()) + ConvertToDecimal($('#TenorRate').val());
             });
 
             $('#LoanTotal').each(function () {
                 if (!isNaN($('#LendingRate').val()) && $('#LendingRate').val().length != 0)
-                    this.value = parseFloat($('#LoanDownPayment').val()) + parseFloat($('#LoanCreditPrice').val()) + parseFloat($('#LendingRate').val());
+                    this.value = ConvertToDecimal($('#LoanDownPayment').val()) + ConvertToDecimal($('#LoanCreditPrice').val()) + ConvertToDecimal($('#LendingRate').val());
             });
 
             $('#LoanProfit').each(function () {
                 if (!isNaN($('#LoanTotal').val()) && $('#LoanTotal').val().length != 0)
-                    this.value = parseFloat($('#LoanTotal').val()) - (parseFloat($('#LoanDownPayment').val()) + parseFloat($('#LoanBasicPrice').val()));
+                    this.value = ConvertToDecimal($('#LoanTotal').val()) - (ConvertToDecimal($('#LoanDownPayment').val()) + ConvertToDecimal($('#LoanBasicPrice').val()));
             });
         };
 
-        $('#UnitPrice').keyup(onTyped);
-        $('#LoanTenor').keyup(onTyped);
-    });
+        function ConvertToDecimal(str) {
+            var result = parseFloat(str.replace(/\./gi, "").replace(/,/gi, "."));
+            return result;
+        }
 </script>

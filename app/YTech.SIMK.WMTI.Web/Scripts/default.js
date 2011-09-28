@@ -1,4 +1,4 @@
-﻿/// <reference path="jquery-1.5-vsdoc.js" />
+﻿/// <reference path="jquery-1.6.3-vsdoc.js" />
 
 // Numeric only control handler
 jQuery.fn.ForceNumericOnly =

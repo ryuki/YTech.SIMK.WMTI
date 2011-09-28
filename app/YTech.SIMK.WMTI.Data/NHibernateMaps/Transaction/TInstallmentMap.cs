@@ -32,6 +32,7 @@ namespace YTech.SIMK.WMTI.Data.NHibernateMaps.Transaction
 
             mapping.Map(x => x.InstallmentDesc, "INSTALLMENT_DESC");
             mapping.Map(x => x.InstallmentStatus, "INSTALLMENT_STATUS");
+            mapping.Map(x => x.InstallmentReceiptNo, "INSTALLMENT_RECEIPT_NO");
 
             mapping.Map(x => x.DataStatus, "DATA_STATUS");
             mapping.Map(x => x.CreatedBy, "CREATED_BY");

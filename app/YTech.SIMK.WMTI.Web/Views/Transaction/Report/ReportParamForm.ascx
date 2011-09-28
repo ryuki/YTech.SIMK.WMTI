@@ -5,7 +5,8 @@
                                        {
                                            //UpdateTargetId = "status",
                                            InsertionMode = InsertionMode.Replace,
-                                           OnSuccess = "onSavedSuccess"
+                                           OnSuccess = "onSavedSuccess",
+                                           LoadingElementId = "progress"
                                        }
 
           ))
@@ -42,6 +43,18 @@
         </td>
         <td>
             <%= Html.TextBox("DateTo", CommonHelper.ConvertToString(Model.DateTo))%>
+        </td>
+    </tr>
+    <% } %>
+    <% if (ViewData.Model.ShowRecPeriod)
+       {	%>
+    <tr>
+        <td>
+            <label for="RecPeriodId">
+                Periode :</label>
+        </td>
+        <td>
+            <%= Html.DropDownList("RecPeriodId", Model.RecPeriodList)%>
         </td>
     </tr>
     <% } %>

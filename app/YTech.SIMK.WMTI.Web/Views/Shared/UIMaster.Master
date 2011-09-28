@@ -9,40 +9,40 @@
         </asp:ContentPlaceHolder>
     </title>
     <% Html.RenderPartial("Js"); %>
-     <style type="text/css">
-        .selected 
+    <style type="text/css">
+        .selected
         {
             background-color: #F6E46F;
-            border: 1px blue solid; 
-            text-decoration : none;
+            border: 1px blue solid;
+            text-decoration: none;
         }
-       #accordion .child-menu-container
+        #accordion .child-menu-container
         {
-            margin:0px;
-            padding:3px;
-            height : 20px;
+            margin: 0px;
+            padding: 3px;
+            height: 20px;
         }
-         #accordion .child-menu-container a
-        { 
-             border: none;  
-            border-bottom: 1px solid #C2C8D1;  
-            color: #999;  
-            padding: 5px 10px;  
-           color: #025185; text-decoration: none;
-           width : 220px;
-           float:left;
+        #accordion .child-menu-container a
+        {
+            border: none;
+            border-bottom: 1px solid #C2C8D1;
+            color: #999;
+            padding: 5px 10px;
+            color: #025185;
+            text-decoration: none;
+            width: 220px;
+            float: left;
         }
-         #accordion .child-menu-container a:hover
+        #accordion .child-menu-container a:hover
         {
             background-color: #cfe3fd;
-            border:solid 1px #7da2ce; 
+            border: solid 1px #7da2ce;
         }
-        </style>
-  
+    </style>
     <script type="text/javascript">
-    
+
         // bind save() to window.onunload
-        $(window).unload(function () { layoutState.save('myLayout') }); 
+        $(window).unload(function () { layoutState.save('myLayout') });
 
 
         /*
@@ -61,9 +61,10 @@
         *#######################
         */
         $(document).ready(function () {
+
             // create the OUTER LAYOUT
             outerLayout = $("body").layout(
-             $.extend( layoutSettings_Outer, layoutState.load('myLayout') )            
+             $.extend(layoutSettings_Outer, layoutState.load('myLayout'))
             );
             $("#accordion").accordion({
                 autoHeight: true,
@@ -87,11 +88,11 @@
             */
 
             // BIND events to hard-coded buttons in the NORTH toolbar
-//            outerLayout.addToggleBtn("#tbarToggleNorth", "north");
-//            outerLayout.addOpenBtn("#tbarOpenSouth", "south");
-//            outerLayout.addCloseBtn("#tbarCloseSouth", "south");
-//            outerLayout.addPinBtn("#tbarPinWest", "west");
-//            outerLayout.addPinBtn("#tbarPinEast", "east");
+            //            outerLayout.addToggleBtn("#tbarToggleNorth", "north");
+            //            outerLayout.addOpenBtn("#tbarOpenSouth", "south");
+            //            outerLayout.addCloseBtn("#tbarCloseSouth", "south");
+            //            outerLayout.addPinBtn("#tbarPinWest", "west");
+            //            outerLayout.addPinBtn("#tbarPinEast", "east");
 
             // save selector strings to vars so we don't have to repeat it
             // must prefix paneClass with "body > " to target ONLY the outerLayout panes
@@ -256,7 +257,6 @@
 		, minHeight: 200
 	}
         };
-
     </script>
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
@@ -264,7 +264,7 @@
 <body>
     <div id="mainContent">
         <div class="ui-layout-center">
-         <%--   <h3 class="header">
+            <%--   <h3 class="header">
                 Inner - Center</h3>--%>
             <div class="ui-layout-content">
                 <h2>
@@ -273,18 +273,18 @@
                 <asp:ContentPlaceHolder ID="SampleContent" runat="server">
                 </asp:ContentPlaceHolder>
             </div>
-          <%--  <div class="footer">
+            <%--  <div class="footer">
                 Center panes can have headers &amp; footers too</div>--%>
         </div>
     </div>
     <div class="ui-layout-north">
-        <div class="header" style="text-align:right;">
+        <div class="header" style="text-align: right;">
             <div id="logindisplay">
-				<% Html.RenderPartial("LogOnUserControl"); %>
-			</div> 
+                <% Html.RenderPartial("LogOnUserControl"); %>
             </div>
+        </div>
         <div class="content">
-        <div class="sbheader">
+            <div class="sbheader">
             </div>
         </div>
         <%--<ul class="toolbar" style="display:none;">
@@ -297,8 +297,8 @@
     </div>
     <div class="ui-layout-south">
         <div class="header">
-           ©2011 YTech</div>
-       <%-- <div class="content">
+            ©2011 YTech</div>
+        <%-- <div class="content">
             <p>
                 I only have a resizer/toggler when 'open'</p>
         </div>--%>
@@ -319,11 +319,12 @@
     </div>
     <div class="ui-layout-west">
         <div class="header">
-           Menu</div>
+            Menu</div>
         <div class="content">
             <% Html.RenderPartial("Menu"); %>
         </div>
-           <%-- <div class="footer"></div>--%>
+        <%-- <div class="footer"></div>--%>
     </div>
+    <% Html.RenderPartial("Progress"); %>
 </body>
 </html>

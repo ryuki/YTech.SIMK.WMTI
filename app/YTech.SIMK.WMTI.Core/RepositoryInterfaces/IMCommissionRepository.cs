@@ -7,5 +7,7 @@ namespace YTech.SIMK.WMTI.Core.RepositoryInterfaces
     public interface IMCommissionRepository : INHibernateRepositoryWithTypedId<MCommission, string>
     {
         IEnumerable<MCommission> GetPagedCommissionList(string orderCol, string orderBy, int pageIndex, int maxRows, ref int totalRows, string department);
+
+        MCommission GetCommissionByDate(Enums.EnumDepartment department, System.DateTime? startDate, System.DateTime? endDate);
     }
 }

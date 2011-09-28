@@ -9,5 +9,7 @@ namespace YTech.SIMK.WMTI.Core.RepositoryInterfaces
         IEnumerable<TLoan> GetPagedLoanList(string orderCol, string orderBy, int pageIndex, int maxRows, ref int totalRows, string loanStatus, string searchBy, string searchText);
 
         IEnumerable<TLoan> GetPagedLoanListToday(string orderCol, string orderBy, int pageIndex, int maxRows, ref int totalRows);
+
+        IList<TLoan> GetListByAccDate(System.DateTime? startDate, System.DateTime? endDate);
     }
 }

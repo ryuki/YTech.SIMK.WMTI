@@ -88,6 +88,7 @@
     <Compile Include="NHibernateMaps\Master\RefPersonMap.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="NHibernateMaps\Transaction\TCommissionMap.cs" />
     <Compile Include="NHibernateMaps\Transaction\TInstallmentMap.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -99,6 +100,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="NHibernateMaps\Transaction\TLoanUnitMap.cs" />
+    <Compile Include="NHibernateMaps\Transaction\TRecPeriodMap.cs" />
     <Compile Include="NHibernateMaps\Transaction\TReferenceMap.cs" />
     <Compile Include="NHibernateMaps\Transaction\TSettleMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -124,6 +126,7 @@
     <Compile Include="Repository\RefPersonRepository.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Repository\TCommissionRepository.cs" />
     <Compile Include="Repository\TInstallmentRepository.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -135,6 +138,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Repository\TLoanUnitRepository.cs" />
+    <Compile Include="Repository\TRecPeriodRepository.cs" />
     <Compile Include="Repository\TReferenceRepository.cs" />
     <Compile Include="Repository\TSettleRepository.cs" />
   </ItemGroup>

@@ -9,5 +9,7 @@ namespace YTech.SIMK.WMTI.Core.RepositoryInterfaces
     public interface ITRecPeriodRepository : INHibernateRepositoryWithTypedId<TRecPeriod, string>
     {
         DateTime? GetLastDateClosing();
+
+        void DeleteByRecPeriodId(string recPeriodId);
     }
 }

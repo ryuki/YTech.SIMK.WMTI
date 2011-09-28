@@ -57,7 +57,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
 
         public ActionResult Index()
         {
-            ClosingViewModel viewModel = ClosingViewModel.Create();
+            ClosingViewModel viewModel = ClosingViewModel.Create(_tRecPeriodRepository);
             return View(viewModel);
         }
 
@@ -121,105 +121,79 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             IList<MCommissionDet> listDets = comm.CommissionDets;
 
             IList<MZoneEmployee> zoneEmployees = _mZoneEmployeeRepository.GetListByDate(recPeriod.PeriodFrom, recPeriod.PeriodTo);
+            IList<MZoneEmployee> orderedZe = (from ze in zoneEmployees
+                            orderby ze.EmployeeId.Id
+                            select ze).ToList();
+
             //get installment group by tls that status is OK
             IList<TInstallment> listInstallment = _installmentRepository.GetListByMaturityDate(recPeriod.PeriodFrom, recPeriod.PeriodTo);
 
             //save collector commission
             MCommissionDet det;
-            foreach (MZoneEmployee ze in zoneEmployees)
+            MEmployee tempEmp = null;
+            decimal? target = 0;
+            decimal? real = 0;
+            foreach (MZoneEmployee ze in orderedZe)
             {
-                //get target and real
-                decimal? target = (from ins in listInstallment
-                                   where ins.LoanId.ZoneId == ze.ZoneId
-                                   select ins.InstallmentBasic).Sum();
-                decimal? real = (from ins in listInstallment
-                                 where ins.LoanId.ZoneId == ze.ZoneId && ins.InstallmentStatus == EnumInstallmentStatus.Paid.ToString() && ins.InstallmentPaymentDate <= ins.InstallmentMaturityDate
-                                 select ins.InstallmentBasic).Sum();
-
-                //if (real.HasValue)
+                //get total by employee
+                //if (tempEmp != null)
                 {
-                    decimal percentReal = Math.Ceiling(target.HasValue && real.HasValue ? real.Value / target.Value * 100 : 0);
-
-                    //get incentive
-                    det = (from d in listDets
-                           where d.DetailLowTarget <= percentReal && d.DetailHighTarget >= percentReal
-                           select d).FirstOrDefault();
-
-                    //check if it has commission to calculate
-                    if (det != null)
+                    if (ze.EmployeeId == tempEmp)
                     {
-                        //normal commission
-                        SaveCommission(recPeriod, EnumCommissionType.Commission, EnumDepartment.COL, ze.EmployeeId, 1, real, det.DetailValue.Value / 100);
-                        //transport commission
-                        SaveCommission(recPeriod, EnumCommissionType.TransportAllowance, EnumDepartment.COL, ze.EmployeeId, 2, 30, det.DetailTransportAllowance);
+                        //sum target and real by employee 
+                        //get target and real
+                        target = target + (from ins in listInstallment
+                                           where ins.LoanId.ZoneId == ze.ZoneId
+                                           select ins.InstallmentBasic).Sum();
+                        real = real + (from ins in listInstallment
+                                       where
+                                           ins.LoanId.ZoneId == ze.ZoneId &&
+                                           ins.InstallmentStatus == EnumInstallmentStatus.Paid.ToString() &&
+                                           ins.InstallmentPaymentDate <= ins.InstallmentMaturityDate
+                                       select ins.InstallmentBasic).Sum();
+                    }
+                    else
+                    {
+                        //calculate commission
+                        if (tempEmp != null)
+                        {
+                            CalculateCommissionCollectorDetail(recPeriod, target, real, tempEmp, listDets);
+                        }
+
+                        target = 0;
+                        real = 0;
                     }
                 }
-
+                tempEmp = ze.EmployeeId;
             }
+            //calculate last commission
+            if (tempEmp != null)
+            {
+                CalculateCommissionCollectorDetail(recPeriod, target, real, tempEmp, listDets);
+            }
+        }
 
-            //var listIns = from ins in listInstallment
-            //              select new
-            //              {
-            //                  EmployeeId = ins.EmployeeId,
-            //                  ZoneId = ins.LoanId.ZoneId,
-            //                  InstallmentBasic = ins.InstallmentBasic
-            //              };
+        private void CalculateCommissionCollectorDetail(TRecPeriod recPeriod, decimal? target, decimal? real, MEmployee tempEmp, IList<MCommissionDet> listDets)
+        {
+            MCommissionDet det;
+            //if (real.HasValue)
+            {
+                decimal percentReal = Math.Ceiling(target.HasValue && real.HasValue && target != 0 ? real.Value / target.Value * 100 : 0);
 
-            //var listInsZe = from ins in listIns
-            //                join ze in zoneEmployees on new { ins.EmployeeId, ins.ZoneId } equals new { ze.EmployeeId, ze.ZoneId } into joinInsZe
-            //                from ze in joinInsZe.DefaultIfEmpty()
-            //                select new
-            //                {
-            //                    EmployeeId = ins.EmployeeId ?? ze.EmployeeId,
-            //                    ZoneId = ins.ZoneId,
-            //                    InstallmentBasic = ins != null ? ins.InstallmentBasic : null
-            //                };
+                //get incentive
+                det = (from d in listDets
+                       where d.DetailLowTarget <= percentReal && d.DetailHighTarget >= percentReal
+                       select d).FirstOrDefault();
 
-            //var recapIns = from ins in listIns
-            //               group ins by ins.EmployeeId into grouped
-            //               select new
-            //               {
-            //                   EmployeeId = grouped.Key,
-            //                   SumInstallment = grouped != null ? grouped.Sum(x => x.InstallmentBasic) : 0
-            //               };
-
-            //var recapPaidIns = from ins in listInstallment
-            //                   where ins.InstallmentStatus == EnumInstallmentStatus.Paid.ToString() && ins.InstallmentPaymentDate <= ins.InstallmentMaturityDate
-            //                   select ins;
-
-            //var recapJoined = from ins in recapIns
-            //                  join paid in recapPaidIns on ins.EmployeeId equals paid.EmployeeId into joinIns
-            //                  from paid in joinIns.DefaultIfEmpty()
-            //                  select new
-            //                    {
-            //                        ins.EmployeeId,
-            //                        ins.SumInstallment,
-            //                        paid.SumPaidInstallment
-            //                    };
-
-            ////save collector commission
-            //MCommissionDet det;
-            //foreach (var recap in recapJoined)
-            //{
-            //    decimal target = recap.SumInstallment.Value;
-            //    decimal real = recap.SumPaidInstallment.Value;
-
-            //    decimal percentReal = Math.Ceiling(target != 0 ? real / target * 100 : 0);
-
-            //    //get incentive
-            //    det = (from d in listDets
-            //           where d.DetailLowTarget <= percentReal && d.DetailHighTarget >= percentReal
-            //           select d).FirstOrDefault();
-
-            //    //check if it has commission to calculate
-            //    if (det != null)
-            //    {
-            //        //normal commission
-            //        SaveCommission(recPeriod, EnumCommissionType.Commission, EnumDepartment.COL, recap.EmployeeId, 1, real, det.DetailValue.Value / 100);
-            //        //transport commission
-            //        SaveCommission(recPeriod, EnumCommissionType.TransportAllowance, EnumDepartment.COL, recap.EmployeeId, 2, 30, det.DetailTransportAllowance);
-            //    }
-            //}
+                //check if it has commission to calculate
+                if (det != null)
+                {
+                    //normal commission
+                    SaveCommission(recPeriod, EnumCommissionType.Commission, EnumDepartment.COL, tempEmp, 1, real, det.DetailValue.Value / 100);
+                    //transport commission
+                    SaveCommission(recPeriod, EnumCommissionType.TransportAllowance, EnumDepartment.COL, tempEmp, 2, 30, det.DetailTransportAllowance);
+                }
+            }
         }
 
         private void CalculateCommissionSales(TRecPeriod recPeriod, IList<TLoan> listLoan)
@@ -254,8 +228,6 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             int endLoanNo = 0;
             decimal commissionRun = 0;
             int sisaLoan = 0;
-            decimal? incentive = 0;
-            decimal? transport = 0;
             bool hasInsertAddedIncentive = false;
             //get commission value
             foreach (var recap in recapLoan)
@@ -269,8 +241,6 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 sisaLoan = recap.CountLoan;
                 startLoanNo = 0;
                 endLoanNo = 0;
-                incentive = 0;
-                transport = 0;
                 hasInsertAddedIncentive = false;
                 //loop commission detail
                 foreach (MCommissionDet det in listDets)
@@ -288,7 +258,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                         {
                             //save commission
                             loanToCalc = listOrderedLoan[j];
-                            SaveCommission(recPeriod, EnumCommissionType.Commission, EnumDepartment.SA, recap.SalesmanId, j, loanToCalc.LoanBasicPrice, det.DetailValue / 100);
+                            SaveCommission(recPeriod, EnumCommissionType.Commission, EnumDepartment.SA, recap.SalesmanId, j, loanToCalc.LoanBasicPrice, det.DetailValue / 100, loanToCalc.LoanCode);
                         }
                         startLoanNo = endLoanNo;
 
@@ -416,7 +386,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             }
         }
 
-        private void SaveCommission(TRecPeriod recPeriod, EnumCommissionType enumCommissionType, EnumDepartment department, MEmployee mEmployee, int level, decimal? commissionFactor, decimal? commissionValue)
+        private void SaveCommission(TRecPeriod recPeriod, EnumCommissionType enumCommissionType, EnumDepartment department, MEmployee mEmployee, int level, decimal? commissionFactor, decimal? commissionValue, string desc = null)
         {
             TCommission comm = new TCommission();
             comm.SetAssignedIdTo(Guid.NewGuid().ToString());
@@ -427,11 +397,45 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             comm.CommissionType = enumCommissionType.ToString();
             comm.CommissionStatus = department.ToString();
             comm.RecPeriodId = recPeriod;
+            comm.CommissionDesc = desc;
 
             comm.CreatedBy = User.Identity.Name;
             comm.CreatedDate = DateTime.Now;
             comm.DataStatus = EnumDataStatus.Updated.ToString();
             _tCommissionRepository.Save(comm);
+        }
+
+
+        [Transaction]
+        public ActionResult Opening()
+        {
+            OpeningViewModel viewModel = OpeningViewModel.Create(_tRecPeriodRepository);
+            ViewData["CurrentItem"] = "Buka Buku";
+            return View(viewModel);
+        }
+
+        [ValidateAntiForgeryToken]      // Helps avoid CSRF attacks
+        [Transaction]                   // Wraps a transaction around the action
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Opening(OpeningViewModel viewModel, FormCollection formCollection)
+        {
+            _tRecPeriodRepository.DbContext.BeginTransaction();
+            try
+            {
+                if (!string.IsNullOrEmpty(viewModel.RecPeriodId))
+                {
+                    _tRecPeriodRepository.DeleteByRecPeriodId(viewModel.RecPeriodId);
+                    _tRecPeriodRepository.DbContext.CommitChanges();
+                }
+
+                TempData[EnumCommonViewData.SaveState.ToString()] = EnumSaveState.Success;
+            }
+            catch (Exception)
+            {
+                _tRecPeriodRepository.DbContext.RollbackTransaction();
+                TempData[EnumCommonViewData.SaveState.ToString()] = EnumSaveState.Failed;
+            }
+            return RedirectToAction("Opening");
         }
     }
 }

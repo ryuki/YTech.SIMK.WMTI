@@ -2,15 +2,16 @@
 
 <% if (false)
    { %>
-<script src="../../../Scripts/jquery-1.6.2-vsdoc.js" type="text/javascript"></script>
+<script src="../../../Scripts/jquery-1.6.3-vsdoc.js" type="text/javascript"></script>
 <script src="../../../Scripts/jquery.validate-vsdoc.js" type="text/javascript"></script>
 <% } %>
 
 <% using (Ajax.BeginForm(new AjaxOptions
                                        {
-                                           InsertionMode = InsertionMode.Replace,
+                                           //InsertionMode = InsertionMode.Replace,
                                            OnBegin = "ajaxValidate",
-                                           OnSuccess = "onSavedSuccess"
+                                           OnSuccess = "onSavedSuccess",
+                                           LoadingElementId = "progress"
                                        }
 
           ))
@@ -27,36 +28,38 @@
                         <table>
                             <tr>
                                 <td>
-                                    <label for="LoanFeedbackTypeCommon">Umum :</label>
+                                    <label for="LoanFeedbackCommon">Umum :</label>
                                 </td>
                                 <td>
-                                    <textarea id="LoanFeedbackTypeCommon" rows="3" cols="50"></textarea>
-                                    <%= Html.TextArea("LoanFeedbackCommon", Model.LoanFeedbackCommon) %>
+                                    <%= Html.TextArea("LoanFeedbackCommon", Model.LoanFeedbackCommon)%>
                                     <%= Html.ValidationMessage("LoanFeedbackCommon")%>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <label for="LoanFeedbackTypePaymentCharacter">Karakter Pembayaran :</label>
+                                    <label for="LoanFeedbackPaymentCharacter">Karakter Pembayaran :</label>
                                 </td>
                                 <td>
-                                    <textarea id="LoanFeedbackTypePaymentCharacter" rows="3" cols="50"></textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label for="LoanFeedbackTypeProblem">Problem :</label>
-                                </td>
-                                <td>
-                                    <textarea id="LoanFeedbackTypeProblem" rows="3" cols="50"></textarea>
+                                    <%= Html.TextArea("LoanFeedbackPaymentCharacter", Model.LoanFeedbackCommon)%>
+                                    <%= Html.ValidationMessage("LoanFeedbackPaymentCharacter")%>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <label for="LoanFeedbackTypeSolution">Solusi :</label>
+                                    <label for="LoanFeedbackProblem">Problem :</label>
                                 </td>
                                 <td>
-                                    <textarea id="LoanFeedbackTypeSolution" rows="3" cols="50"></textarea>
+                                    <%= Html.TextArea("LoanFeedbackProblem", Model.LoanFeedbackProblem)%>
+                                    <%= Html.ValidationMessage("LoanFeedbackProblem")%>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="LoanFeedbackSolution">Solusi :</label>
+                                </td>
+                                <td>
+                                    <%= Html.TextArea("LoanFeedbackSolution", Model.LoanFeedbackSolution)%>
+                                    <%= Html.ValidationMessage("LoanFeedbackSolution")%>
                                 </td>
                             </tr>
                         </table>
@@ -106,6 +109,8 @@
             var json = e.get_response().get_object();
             var success = json.Success;
             var msg = json.Message;
+            //alert(success);
+            //alert(msg);
             if (success) {
                 $("#Save").attr('disabled', 'disabled');
                 $('#status').html(msg);
@@ -119,6 +124,10 @@
                 }
             }
         }
+    }
+
+    function ajaxValidate() {
+        return true;
     }
 
     $(document).ready(function () {

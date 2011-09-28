@@ -9,7 +9,7 @@
     <%
         if (false)
         {%>
-    <script src="../../../Scripts/jquery-1.6.2-vsdoc.js" type="text/javascript"></script>
+    <script src="../../../Scripts/jquery-1.6.3-vsdoc.js" type="text/javascript"></script>
     <%
     }%>
     <div class="box">
@@ -46,7 +46,7 @@
             });
             $("#popup").dialog({
                 autoOpen: false,
-                height: 300,
+                height: 360,
                 width: 500,
                 modal: true,
                 close: function (event, ui) {

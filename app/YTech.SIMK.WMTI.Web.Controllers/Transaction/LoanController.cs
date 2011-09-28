@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
+using Microsoft.Reporting.WebForms;
 using SharpArch.Core;
 using SharpArch.Web.NHibernate;
 using YTech.SIMK.WMTI.Core.Master;
@@ -26,8 +28,9 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         private readonly IMZoneRepository _mZoneRepository;
         private readonly IMPartnerRepository _mPartnerRepository;
         private readonly IMDepartmentRepository _mDepartmentRepository;
+        private readonly ITLoanFeedbackRepository _tLoanFeedbackRepository;
 
-        public LoanController(ITLoanRepository tLoanRepository, ITLoanSurveyRepository tLoanSurveyRepository, IMCustomerRepository mCustomerRepository, IRefAddressRepository refAddressRepository, IRefPersonRepository refPersonRepository, ITInstallmentRepository tInstallmentRepository, IMEmployeeRepository mEmployeeRepository, ITLoanUnitRepository tLoanUnitRepository, IMZoneRepository mZoneRepository, IMPartnerRepository mPartnerRepository, IMDepartmentRepository mDepartmentRepository)
+        public LoanController(ITLoanRepository tLoanRepository, ITLoanSurveyRepository tLoanSurveyRepository, IMCustomerRepository mCustomerRepository, IRefAddressRepository refAddressRepository, IRefPersonRepository refPersonRepository, ITInstallmentRepository tInstallmentRepository, IMEmployeeRepository mEmployeeRepository, ITLoanUnitRepository tLoanUnitRepository, IMZoneRepository mZoneRepository, IMPartnerRepository mPartnerRepository, IMDepartmentRepository mDepartmentRepository, ITLoanFeedbackRepository tLoanFeedbackRepository)
         {
             Check.Require(tLoanRepository != null, "tLoanRepository may not be null");
             Check.Require(tLoanSurveyRepository != null, "tLoanSurveyRepository may not be null");
@@ -40,6 +43,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             Check.Require(mZoneRepository != null, "mZoneRepository may not be null");
             Check.Require(mPartnerRepository != null, "mPartnerRepository may not be null");
             Check.Require(mDepartmentRepository != null, "mDepartmentRepository may not be null");
+            Check.Require(tLoanFeedbackRepository != null, "tLoanFeedbackRepository may not be null");
 
             _tLoanRepository = tLoanRepository;
             _tLoanSurveyRepository = tLoanSurveyRepository;
@@ -52,11 +56,13 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             _mZoneRepository = mZoneRepository;
             _mPartnerRepository = mPartnerRepository;
             _mDepartmentRepository = mDepartmentRepository;
+            _tLoanFeedbackRepository = tLoanFeedbackRepository;
         }
 
-        public ActionResult Index(string loanStatus)
+        public ActionResult Index(EnumLoanStatus? loanStatus)
         {
-            return View();
+            LoanViewModel viewModel = LoanViewModel.Create(loanStatus);
+            return View(viewModel);
         }
 
         [Transaction]
@@ -724,8 +730,6 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 TLoan loan = _tLoanRepository.Get(loanId);
                 if (loan != null)
                 {
-                    //loan.LoanAccBy = User.Identity.Name;
-                    loan.LoanAccDate = DateTime.Now;
                     loan.LoanStatus = enumLoanStatus.ToString();
 
                     loan.ModifiedBy = User.Identity.Name;
@@ -735,6 +739,8 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
 
                     if (enumLoanStatus == EnumLoanStatus.OK)
                     {
+                        //loan.LoanAccBy = User.Identity.Name;
+                        loan.LoanAccDate = DateTime.Now;
                         //save installment
                         SaveInstallment(loan);
                     }
@@ -816,6 +822,8 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                         startDate = startDate.AddMonths(1);
                         ins.InstallmentMaturityDate = startDate;
                     }
+                    //generate installment receipt no
+                    ins.InstallmentReceiptNo = Helper.CommonHelper.GetReceiptNo();
 
                     ins.DataStatus = EnumDataStatus.New.ToString();
                     ins.CreatedBy = User.Identity.Name;
@@ -891,7 +899,124 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         {
             ViewData["CurrentItem"] = "Catatan Konsumen";
 
-            return View();
+            FeedbackViewModel viewModel = FeedbackViewModel.Create(_tLoanRepository, _tLoanFeedbackRepository, loanId);
+            return View(viewModel);
+        }
+
+        [Transaction]
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Feedback(string loanId, FeedbackViewModel viewModel, FormCollection formCollection)
+        {
+            string Message = string.Empty;
+            bool Success = true;
+            try
+            {
+                _tLoanFeedbackRepository.DbContext.BeginTransaction();
+                TLoan loan = _tLoanRepository.Get(loanId);
+                //save each feedback
+                SaveFeedback(loan, EnumLoanFeedbackType.Common, viewModel.LoanFeedbackCommon);
+                SaveFeedback(loan, EnumLoanFeedbackType.PaymentCharacter, viewModel.LoanFeedbackPaymentCharacter);
+                SaveFeedback(loan, EnumLoanFeedbackType.Problem, viewModel.LoanFeedbackProblem);
+                SaveFeedback(loan, EnumLoanFeedbackType.Solution, viewModel.LoanFeedbackSolution);
+                _tLoanFeedbackRepository.DbContext.CommitTransaction();
+
+                Success = true;
+                Message = "Catatan berhasil disimpan";
+            }
+            catch (Exception ex)
+            {
+                Success = false;
+                Message = "Error :\n" + ex.GetBaseException().Message;
+                _tLoanSurveyRepository.DbContext.RollbackTransaction();
+            }
+            var e = new
+            {
+                Success,
+                Message
+            };
+            return Json(e, JsonRequestBehavior.AllowGet);
+
+        }
+
+        private void SaveFeedback(TLoan loan, EnumLoanFeedbackType feedbackType, string feedback)
+        {
+            TLoanFeedback f = new TLoanFeedback();
+            f.SetAssignedIdTo(Guid.NewGuid().ToString());
+            f.LoanId = loan;
+            f.LoanFeedbackBy = User.Identity.Name;
+            f.LoanFeedbackType = feedbackType.ToString();
+            f.LoanFeedbackDesc = feedback;
+
+            f.DataStatus = EnumDataStatus.New.ToString();
+            f.CreatedBy = User.Identity.Name;
+            f.CreatedDate = DateTime.Now;
+            _tLoanFeedbackRepository.Save(f);
+        }
+
+        [Transaction]
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Print(string loanId, string letterType, FormCollection formCollection)
+        {
+            string Message = string.Empty;
+            bool Success = true;
+            EnumReports reports = EnumReports.RptDueInstallment;
+            if (letterType == "SP")
+            {
+                reports = EnumReports.RptLetterSP;
+            }
+            else if (letterType == "Tarik")
+            {
+                reports = EnumReports.RptLetterTarik;
+            }
+            try
+            {
+                ReportDataSource[] repCol = new ReportDataSource[1];
+                repCol[0] = GetNotPaidLastInstallment(loanId);
+                HttpContext.Session["ReportData"] = repCol;
+
+                Success = true;
+                Message = "redirect";
+            }
+            catch (Exception ex)
+            {
+                Success = false;
+                Message = "Error :\n" + ex.GetBaseException().Message;
+            }
+            var e = new
+            {
+                Success,
+                Message,
+                UrlReport = string.Format("{0}", reports.ToString())
+            };
+            return Json(e, JsonRequestBehavior.AllowGet);
+
+        }
+
+        private ReportDataSource GetNotPaidLastInstallment(string loanId)
+        {
+            IEnumerable<TInstallment> installments = _tInstallmentRepository.GetLastInstallmentByLoanId(loanId);
+
+            var list = from ins in installments
+                       select new
+                       {
+                           ins.Id,
+                           ins.LoanId.LoanCode,
+                           CustomerName = ins.LoanId.PersonId.PersonName,
+                           ins.InstallmentMaturityDate,
+                           ins.InstallmentTotal,
+                           ins.InstallmentFine,
+                           ins.InstallmentMustPaid,
+                           ins.InstallmentReceiptNo,
+                           CustomerAddress = ins.LoanId.AddressId.AddressLine1,
+                           ins.InstallmentNo,
+                           ins.LoanId.LoanTenor,
+                           ins.LoanId.LoanUnits[0].UnitName,
+                           ins.LoanId.LoanUnits[0].UnitType
+                       }
+            ;
+
+            ReportDataSource reportDataSource = new ReportDataSource("InstallmentViewModel", list.ToList());
+            return reportDataSource;
         }
     }
 }

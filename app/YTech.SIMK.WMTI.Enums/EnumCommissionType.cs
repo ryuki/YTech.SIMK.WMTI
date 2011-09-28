@@ -7,7 +7,15 @@ namespace YTech.SIMK.WMTI.Enums
 {
     public enum EnumCommissionType
     {
-        Percent,
-        Fix
+        [StringValue("Insentif Survey")]
+        IncentiveSurvey,
+        [StringValue("Insentif Kredit OK")]
+        IncentiveApprove,
+        [StringValue("Uang Transportasi")]
+        TransportAllowance,
+        [StringValue("Komisi")]
+        Commission,
+        [StringValue("Insentif")] 
+        IncentiveCredit
     }
 }

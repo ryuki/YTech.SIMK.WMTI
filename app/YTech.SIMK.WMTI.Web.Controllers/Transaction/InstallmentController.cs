@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Microsoft.Reporting.WebForms;
 using SharpArch.Core;
 using SharpArch.Data.NHibernate;
 using SharpArch.Web.NHibernate;
@@ -60,10 +61,18 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         {
             string Message = string.Empty;
             bool Success = true;
+
             try
             {
                 _installmentRepository.DbContext.BeginTransaction();
                 TInstallment installment = _installmentRepository.Get(viewModel.Id);
+
+                //validate receipt no
+                if (installment.InstallmentReceiptNo != formCollection["ReceiptNo"])
+                {
+                    throw new Exception("No kwitansi salah, data angsuran tidak dapat disimpan.");
+                }
+
                 installment.EmployeeId = viewModel.EmployeeId;
                 installment.InstallmentPaymentDate = Helper.CommonHelper.ConvertToDate(formCollection["InstallmentPaymentDate"]);
                 installment.InstallmentPaid = Helper.CommonHelper.ConvertToDecimal(formCollection["InstallmentPaid"]);
@@ -140,6 +149,70 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 return tempSisa;
             }
             return null;
+        }
+
+        public ActionResult PrintReceipt()
+        {
+            PrintReceiptViewModel viewModel = PrintReceiptViewModel.Create();
+            return View(viewModel);
+        }
+
+        [ValidateAntiForgeryToken]      // Helps avoid CSRF attacks
+        [Transaction]                   // Wraps a transaction around the action
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult PrintReceipt(PrintReceiptViewModel viewModel, FormCollection formCollection)
+        {
+            string Message = string.Empty;
+            bool Success = true;
+            try
+            {
+                ReportDataSource[] repCol = new ReportDataSource[1];
+                repCol[0] = GetInstallment(_installmentRepository, viewModel.LoanAcc, viewModel.InstallmentNo);
+
+                HttpContext.Session["ReportData"] = repCol;
+                Success = true;
+                Message = "redirect";
+            }
+            catch (Exception ex)
+            {
+                Success = false;
+                Message = "Error :\n" + ex.GetBaseException().Message;
+            }
+
+            var e = new
+            {
+                Success = Success,
+                Message = Message,
+                UrlReport = string.Format("{0}", EnumReports.RptPrintInstallment.ToString())
+            };
+            return Json(e, JsonRequestBehavior.AllowGet);
+        }
+
+        public static ReportDataSource GetInstallment(ITInstallmentRepository installmentRepository, string loanAcc, int installmentNo)
+        {
+            IEnumerable<TInstallment> installments = installmentRepository.GetInstallment(loanAcc, installmentNo);
+
+            var list = from ins in installments
+                       select new
+                       {
+                           ins.Id,
+                           ins.LoanId.LoanCode,
+                           CustomerName = ins.LoanId.PersonId.PersonName,
+                           ins.InstallmentMaturityDate,
+                           ins.InstallmentTotal,
+                           ins.InstallmentFine,
+                           ins.InstallmentMustPaid,
+                           ins.InstallmentReceiptNo,
+                           CustomerAddress = ins.LoanId.AddressId.AddressLine1,
+                           ins.InstallmentNo,
+                           ins.LoanId.LoanTenor,
+                           ins.LoanId.LoanUnits[0].UnitName,
+                           ins.LoanId.LoanUnits[0].UnitType
+                       }
+            ;
+
+            ReportDataSource reportDataSource = new ReportDataSource("InstallmentViewModel", list.ToList());
+            return reportDataSource;
         }
     }
 }

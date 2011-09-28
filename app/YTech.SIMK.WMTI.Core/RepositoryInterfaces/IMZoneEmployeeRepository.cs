@@ -7,5 +7,7 @@ namespace YTech.SIMK.WMTI.Core.RepositoryInterfaces
     public interface IMZoneEmployeeRepository : INHibernateRepositoryWithTypedId<MZoneEmployee, string>
     {
         IEnumerable<MZoneEmployee> GetPagedZoneEmployeeList(string orderCol, string orderBy, int pageIndex, int maxRows, ref int totalRows);
+
+        IList<MZoneEmployee> GetListByDate(System.DateTime? startDate, System.DateTime? endDate);
     }
 }

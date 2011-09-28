@@ -25,6 +25,7 @@ namespace YTech.SIMK.WMTI.Core.Transaction
         public virtual string InstallmentDesc { get; set; }
         public virtual string InstallmentStatus { get; set; }
         public virtual decimal? InstallmentPaid { get; set; }
+        public virtual string InstallmentReceiptNo { get; set; }
 
         public virtual decimal InstallmentTotal
         {

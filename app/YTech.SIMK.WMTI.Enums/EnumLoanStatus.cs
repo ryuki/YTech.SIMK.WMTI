@@ -13,6 +13,8 @@ namespace YTech.SIMK.WMTI.Enums
         Reject,
         Request,
         Survey,
-        OK
+        OK,
+        LatePay,
+        Paid
     }
 }

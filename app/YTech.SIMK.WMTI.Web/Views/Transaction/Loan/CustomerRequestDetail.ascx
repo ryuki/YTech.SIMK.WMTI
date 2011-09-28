@@ -3,14 +3,15 @@
 
 <% if (false)
    { %>
-<script src="../../../Scripts/jquery-1.6.2-vsdoc.js" type="text/javascript"></script>
+<script src="../../../Scripts/jquery-1.6.3-vsdoc.js" type="text/javascript"></script>
 <script src="../../../Scripts/jquery.validate-vsdoc.js" type="text/javascript"></script>
 <% } %>
 <% using (Ajax.BeginForm(new AjaxOptions
                                        {
                                            InsertionMode = InsertionMode.Replace,
                                            OnBegin = "ajaxValidate",
-                                           OnSuccess = "onSavedSuccess"
+                                           OnSuccess = "onSavedSuccess",
+                                           LoadingElementId = "progress"
                                        }
 
           ))

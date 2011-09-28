@@ -25,19 +25,25 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
     {
         private readonly ITLoanRepository _loanRepository;
         private readonly ITInstallmentRepository _installmentRepository;
-        public ReportController(ITLoanRepository loanRepository, ITInstallmentRepository installmentRepository)
+        private readonly ITCommissionRepository _tCommissionRepository;
+        private readonly ITRecPeriodRepository _tRecPeriodRepository;
+        public ReportController(ITLoanRepository loanRepository, ITInstallmentRepository installmentRepository, ITCommissionRepository tCommissionRepository, ITRecPeriodRepository tRecPeriodRepository)
         {
             Check.Require(loanRepository != null, "loanRepository may not be null");
             Check.Require(installmentRepository != null, "installmentRepository may not be null");
+            Check.Require(tCommissionRepository != null, "tCommissionRepository may not be null");
+            Check.Require(tRecPeriodRepository != null, "tRecPeriodRepository may not be null");
 
             this._loanRepository = loanRepository;
             this._installmentRepository = installmentRepository;
+            this._tCommissionRepository = tCommissionRepository;
+            this._tRecPeriodRepository = tRecPeriodRepository;
         }
 
         [Transaction]
-        public ActionResult Report(EnumReports reports)
+        public ActionResult Report(EnumReports reports, EnumDepartment? dep = null)
         {
-            ReportParamViewModel viewModel = ReportParamViewModel.Create();
+            ReportParamViewModel viewModel = ReportParamViewModel.Create(_tRecPeriodRepository);
             string title = string.Empty;
             switch (reports)
             {
@@ -45,6 +51,10 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                     title = "Daftar Angsuran Jatuh Tempo";
                     viewModel.ShowDateFrom = true;
                     viewModel.ShowDateTo = false;
+                    break;
+                case EnumReports.RptCommission:
+                    title = "Lap. Komisi Karyawan";
+                    viewModel.ShowRecPeriod = true;
                     break;
             }
             ViewData["CurrentItem"] = title;
@@ -58,7 +68,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         [ValidateAntiForgeryToken]      // Helps avoid CSRF attacks
         [Transaction]                   // Wraps a transaction around the action
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Report(EnumReports reports, ReportParamViewModel viewModel, FormCollection formCollection)
+        public ActionResult Report(EnumReports reports, EnumDepartment? dep, ReportParamViewModel viewModel, FormCollection formCollection)
         {
             ReportDataSource[] repCol = new ReportDataSource[1];
             DateTime? dateFrom = Helper.CommonHelper.ConvertToDate(formCollection["DateFrom"]);
@@ -67,6 +77,9 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             {
                 case EnumReports.RptDueInstallment:
                     repCol[0] = GetDueInstallment(dateFrom, dateTo);
+                    break;
+                case EnumReports.RptCommission:
+                    repCol[0] = GetCommission(viewModel.RecPeriodId, dep);
                     break;
             }
             HttpContext.Session["ReportData"] = repCol;
@@ -78,6 +91,42 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 UrlReport = string.Format("{0}", reports.ToString())
             };
             return Json(e, JsonRequestBehavior.AllowGet);
+        }
+
+        private ReportDataSource GetCommission(string recPeriodId, EnumDepartment? dep)
+        {
+            IEnumerable<TCommission> comms = _tCommissionRepository.GetListByRecapId(recPeriodId, dep);
+
+            var list = from com in comms
+                       select new
+                       {
+                           com.Id,
+                           RecPeriodId = com.RecPeriodId.Id,
+                           EmployeeId = com.EmployeeId != null ? com.EmployeeId.Id : null,
+                           EmployeeName = com.EmployeeId != null ? com.EmployeeId.PersonId.PersonName : null,
+                           com.RecPeriodId.PeriodTo,
+                           com.RecPeriodId.PeriodFrom,
+                           com.CommissionLevel,
+                           CommissionType = GetStringValue(com.CommissionType),
+                           com.CommissionValue,
+                           com.CommissionFactor,
+                           com.CommissionDesc,
+                           com.CommissionStatus
+                       }
+            ;
+
+            ReportDataSource reportDataSource = new ReportDataSource("CommissionViewModel", list.ToList());
+            return reportDataSource;
+        }
+
+        private string GetStringValue(string commType)
+        {
+            EnumCommissionType t = (EnumCommissionType)Enum.Parse(typeof(EnumCommissionType), commType);
+            //if (t != null)
+            {
+                return Helper.CommonHelper.GetStringValue(t);
+            }
+            return string.Empty;
         }
 
         private ReportDataSource GetDueInstallment(DateTime? dateFrom, DateTime? dateTo)
@@ -93,7 +142,8 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                            ins.InstallmentMaturityDate,
                            ins.InstallmentTotal,
                            ins.InstallmentFine,
-                           ins.InstallmentMustPaid
+                           ins.InstallmentMustPaid,
+                           ins.InstallmentReceiptNo
                        }
             ;
 

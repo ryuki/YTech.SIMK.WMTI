@@ -221,7 +221,7 @@
                                    'Insentif (Survey & ACC)', 'Insentif (Survey)'
                                    ],
 
-<% if ((Request.QueryString["department"].Equals("COL")) || (Request.QueryString["department"].Equals("TLS")) )
+<% if ((Request.QueryString["department"].Equals("TLS")) )
    {%>
 
                         colModel: [
@@ -232,6 +232,22 @@
                             { name: 'DetailValue', index: 'DetailValue', align: 'right', editable: true, edittype: 'text' },
                             { name: 'DetailCustomerNumber', index: 'DetailCustomerNumber', align: 'right', editable: true, edittype: 'text', hidden: true },
                             { name: 'DetailTransportAllowance', index: 'DetailTransportAllowance', align: 'right', editable: true, edittype: 'text', hidden: true },
+                            { name: 'DetailIncentive', index: 'DetailIncentive', align: 'right', editable: true, edittype: 'text', hidden: true },
+                            { name: 'DetailIncentiveSurveyAcc', index: 'DetailIncentiveSurveyAcc', align: 'right', editable: true, edittype: 'text', hidden: true },
+                            { name: 'DetailIncentiveSurveyOnly', index: 'DetailIncentiveSurveyOnly', align: 'right', editable: true, edittype: 'text', hidden: true }
+                        ],
+                        <%
+   }
+   else if (Request.QueryString["department"].Equals("COL"))
+   { %>	
+    colModel: [
+                            { name: 'Id', index: 'Id', width: 75, align: 'left', key: true, editrules: { required: true, edithidden: false }, hidedlg: true, hidden: true, editable: false },
+                            { name: 'DetailType', index: 'DetailType', align: 'right', editable: true, edittype: 'text' },
+                            { name: 'DetailLowTarget', index: 'DetailLowTarget', align: 'right', editable: true, edittype: 'text' },
+                            { name: 'DetailHighTarget', index: 'DetailHighTarget', align: 'right', editable: true, edittype: 'text' },
+                            { name: 'DetailValue', index: 'DetailValue', align: 'right', editable: true, edittype: 'text' },
+                            { name: 'DetailCustomerNumber', index: 'DetailCustomerNumber', align: 'right', editable: true, edittype: 'text', hidden: true },
+                            { name: 'DetailTransportAllowance', index: 'DetailTransportAllowance', align: 'right', editable: true, edittype: 'text' },
                             { name: 'DetailIncentive', index: 'DetailIncentive', align: 'right', editable: true, edittype: 'text', hidden: true },
                             { name: 'DetailIncentiveSurveyAcc', index: 'DetailIncentiveSurveyAcc', align: 'right', editable: true, edittype: 'text', hidden: true },
                             { name: 'DetailIncentiveSurveyOnly', index: 'DetailIncentiveSurveyOnly', align: 'right', editable: true, edittype: 'text', hidden: true }

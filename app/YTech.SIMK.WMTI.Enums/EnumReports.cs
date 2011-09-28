@@ -7,6 +7,10 @@ namespace YTech.SIMK.WMTI.Enums
 {
     public enum EnumReports
     {
-        RptDueInstallment
+        RptDueInstallment,
+        RptPrintInstallment,
+        RptLetterSP,
+        RptLetterTarik,
+        RptCommission
     }
 }

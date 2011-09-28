@@ -25,7 +25,7 @@
         type="text/javascript"></script>
     <script src="<%= Url.Content("~/Scripts/MicrosoftMvcValidation.debug.js") %>" type="text/javascript"></script>--%>
 
-    <script src="<%= Url.Content("~/Scripts/jquery-1.6.2.min.js") %>" type="text/javascript"></script>
+    <script src="<%= Url.Content("~/Scripts/jquery-1.6.4.min.js") %>" type="text/javascript"></script>
 
     <script src="<%= Url.Content("~/Scripts/jquery-ui.min.js") %>" type="text/javascript"></script>
     <script src="<%= Url.Content("~/Scripts/jquery.validate-1.8.1.min.js") %>" type="text/javascript"></script>

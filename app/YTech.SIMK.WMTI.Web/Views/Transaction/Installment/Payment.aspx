@@ -6,13 +6,14 @@
 <asp:Content ID="indexContent" ContentPlaceHolderID="MainContent" runat="server">
     <% if (false)
        {%>
-    <script src="../../../Scripts/jquery-1.6.2-vsdoc.js" type="text/javascript"></script>
+    <script src="../../../Scripts/jquery-1.6.3-vsdoc.js" type="text/javascript"></script>
     <% } %>
     <% using (Ajax.BeginForm(new AjaxOptions
                                        {
                                            //UpdateTargetId = "status",
                                            InsertionMode = InsertionMode.Replace,
-                                           OnSuccess = "onSavedSuccess"
+                                           OnSuccess = "onSavedSuccess",
+                                           LoadingElementId = "progress"
                                        }
 
           ))
@@ -94,6 +95,15 @@
             </td>
         </tr>
         <tr>
+            <td>
+                <label for="ReceiptNo">
+                    No Kwitansi :</label>
+            </td>
+            <td>
+               <%= Html.TextBox("ReceiptNo", ViewData.Model.ReceiptNo)%>
+            </td>
+        </tr>
+        <tr>
             <td colspan="2" align="center">
                 <input id="btnSave" type="submit" value="Simpan"  <% if (string.IsNullOrEmpty(ViewData.Model.installment.Id)) { %>disabled='disabled' <% } %> />
             </td>
@@ -116,9 +126,13 @@
 
         function onSavedSuccess(e) {
             var json = e.get_response().get_object();
-            var success = json.Success;
             var msg = json.Message;
+            var status = json.Success;
+            //alert(status);
             alert(msg);
+            if (status) {
+                $('#btnSave').attr('disabled', 'disabled');
+            }
         }
     </script>
 </asp:Content>
