@@ -27,23 +27,27 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         private readonly ITInstallmentRepository _installmentRepository;
         private readonly ITCommissionRepository _tCommissionRepository;
         private readonly ITRecPeriodRepository _tRecPeriodRepository;
-        public ReportController(ITLoanRepository loanRepository, ITInstallmentRepository installmentRepository, ITCommissionRepository tCommissionRepository, ITRecPeriodRepository tRecPeriodRepository)
+        private readonly IMPartnerRepository _mPartnerRepository;
+
+        public ReportController(ITLoanRepository loanRepository, ITInstallmentRepository installmentRepository, ITCommissionRepository tCommissionRepository, ITRecPeriodRepository tRecPeriodRepository, IMPartnerRepository mPartnerRepository)
         {
             Check.Require(loanRepository != null, "loanRepository may not be null");
             Check.Require(installmentRepository != null, "installmentRepository may not be null");
             Check.Require(tCommissionRepository != null, "tCommissionRepository may not be null");
             Check.Require(tRecPeriodRepository != null, "tRecPeriodRepository may not be null");
+            Check.Require(mPartnerRepository != null, "mPartnerRepository may not be null");
 
             this._loanRepository = loanRepository;
             this._installmentRepository = installmentRepository;
             this._tCommissionRepository = tCommissionRepository;
             this._tRecPeriodRepository = tRecPeriodRepository;
+            this._mPartnerRepository = mPartnerRepository;
         }
 
         [Transaction]
         public ActionResult Report(EnumReports reports, EnumDepartment? dep = null)
         {
-            ReportParamViewModel viewModel = ReportParamViewModel.Create(_tRecPeriodRepository);
+            ReportParamViewModel viewModel = ReportParamViewModel.Create(_tRecPeriodRepository, _mPartnerRepository);
             string title = string.Empty;
             switch (reports)
             {
@@ -55,6 +59,18 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 case EnumReports.RptCommission:
                     title = "Lap. Komisi Karyawan";
                     viewModel.ShowRecPeriod = true;
+                    break;
+                case EnumReports.RptPartnerHutang:
+                    title = "Lap. Hutang Toko";
+                    viewModel.ShowDateFrom = true;
+                    viewModel.ShowDateTo = true;
+                    viewModel.ShowPartner = true;
+                    break;
+                case EnumReports.RptChartLoan:
+                    title = "Grafik Pengajuan Kredit";
+                    viewModel.ShowDateFrom = true;
+                    viewModel.ShowDateTo = true;
+                    viewModel.ShowPartner = true;
                     break;
             }
             ViewData["CurrentItem"] = title;
@@ -81,6 +97,12 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 case EnumReports.RptCommission:
                     repCol[0] = GetCommission(viewModel.RecPeriodId, dep);
                     break;
+                case EnumReports.RptPartnerHutang:
+                    repCol[0] = GetLoan(viewModel.DateFrom, viewModel.DateTo, viewModel.PartnerId);
+                    break;
+                case EnumReports.RptChartLoan:
+                    repCol[0] = GetLoan(viewModel.DateFrom, viewModel.DateTo, viewModel.PartnerId);
+                    break;
             }
             HttpContext.Session["ReportData"] = repCol;
 
@@ -91,6 +113,34 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 UrlReport = string.Format("{0}", reports.ToString())
             };
             return Json(e, JsonRequestBehavior.AllowGet);
+        }
+
+        private ReportDataSource GetLoan(DateTime? dateFrom, DateTime? dateTo, string partnerId)
+        {
+            IEnumerable<TLoan> loans = _loanRepository.GetListByAccDatePartner(dateFrom, dateTo, partnerId);
+
+            var list = from loan in loans
+                       select new
+                       {
+                           loan.Id,
+                           CustomerName = loan.PersonId.PersonName,
+                           PartnerId = loan.PartnerId != null ? loan.PartnerId.Id : null,
+                           PartnerName = loan.PartnerId != null ? loan.PartnerId.PartnerName : null,
+                           Address = loan.AddressId != null ? loan.AddressId.Address : null,
+                           SalesmanName = loan.SalesmanId != null ? loan.SalesmanId.PersonId.PersonName : null,
+                           SalesmanId = loan.SalesmanId != null ? loan.SalesmanId.Id : null,
+                           loan.LoanNo,
+                           loan.LoanCode,
+                           loan.LoanAccDate,
+                           loan.LoanSubmissionDate,
+                           loan.LoanBasicPrice,
+                           loan.LoanCreditPrice,
+                           loan.LoanStatus
+                       }
+            ;
+
+            ReportDataSource reportDataSource = new ReportDataSource("LoanViewModel", list.ToList());
+            return reportDataSource;
         }
 
         private ReportDataSource GetCommission(string recPeriodId, EnumDepartment? dep)

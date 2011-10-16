@@ -76,6 +76,8 @@
     <Content Include="RptPrintInstallment.rdlc" />
     <Content Include="RptLetterSP.rdlc" />
     <Content Include="RptCommission.rdlc" />
+    <Content Include="RptPartnerHutang.rdlc" />
+    <Content Include="RptChartLoan.rdlc" />
     <None Include="Properties\DataSources\YTech.SIMK.WMTI.Web.Controllers.ViewModel.Reports.CommissionViewModel.datasource" />
     <None Include="Properties\DataSources\YTech.SIMK.WMTI.Web.Controllers.ViewModel.Reports.InstallmentViewModel.datasource" />
     <None Include="Properties\Settings.settings">

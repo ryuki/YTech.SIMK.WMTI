@@ -86,6 +86,9 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Xml" />
+    <Reference Include="Telerik.Web.Mvc">
+      <HintPath>..\..\lib\Telerik.Web.Mvc.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ControllerEnums.cs" />
@@ -133,12 +136,15 @@
     <Compile Include="ViewModel\CRFormViewModel.cs" />
     <Compile Include="ViewModel\FeedbackViewModel.cs" />
     <Compile Include="ViewModel\InstallmentPaymentFormViewModel.cs" />
+    <Compile Include="ViewModel\JsTreeModel.cs" />
     <Compile Include="ViewModel\LoanViewModel.cs" />
     <Compile Include="ViewModel\OpeningViewModel.cs" />
     <Compile Include="ViewModel\PrintReceiptViewModel.cs" />
+    <Compile Include="ViewModel\PrivilegeViewModel.cs" />
     <Compile Include="ViewModel\ReportParamViewModel.cs" />
     <Compile Include="ViewModel\Reports\CommissionViewModel.cs" />
     <Compile Include="ViewModel\Reports\InstallmentViewModel.cs" />
+    <Compile Include="ViewModel\Reports\LoanViewModel.cs" />
     <Compile Include="ViewModel\SurveyFormViewModel.cs" />
     <Compile Include="ViewModel\UserAdministration\DetailsViewModel.cs" />
     <Compile Include="ViewModel\UserAdministration\IndexViewModel.cs" />

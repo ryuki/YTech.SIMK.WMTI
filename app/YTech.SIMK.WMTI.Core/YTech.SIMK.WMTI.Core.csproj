@@ -70,6 +70,7 @@
     <Compile Include="Master\MEmployee.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Master\MMenu.cs" />
     <Compile Include="Master\MPartner.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -93,6 +94,7 @@
     <Compile Include="RepositoryInterfaces\IMEmployeeRepository.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="RepositoryInterfaces\IMMenuRepository.cs" />
     <Compile Include="RepositoryInterfaces\IMPartnerRepository.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -118,6 +120,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="RepositoryInterfaces\ITLoanUnitRepository.cs" />
+    <Compile Include="RepositoryInterfaces\ITNewsRepository.cs" />
+    <Compile Include="RepositoryInterfaces\ITPrivilegeRepository.cs" />
     <Compile Include="RepositoryInterfaces\ITRecPeriodRepository.cs" />
     <Compile Include="RepositoryInterfaces\ITReferenceRepository.cs" />
     <Compile Include="RepositoryInterfaces\ITSettleRepository.cs" />
@@ -133,6 +137,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Transaction\TLoanUnit.cs" />
+    <Compile Include="Transaction\TNews.cs" />
+    <Compile Include="Transaction\TPrivilege.cs" />
     <Compile Include="Transaction\TRecPeriod.cs" />
     <Compile Include="Transaction\TReference.cs" />
     <Compile Include="Transaction\TSettle.cs" />

@@ -61,6 +61,7 @@
     <Compile Include="EnumPersonGender.cs" />
     <Compile Include="EnumPersonReligion.cs" />
     <Compile Include="EnumPrice.cs" />
+    <Compile Include="EnumPrivilegeType.cs" />
     <Compile Include="EnumReferenceTable.cs" />
     <Compile Include="EnumReferenceType.cs" />
     <Compile Include="EnumReligion.cs" />

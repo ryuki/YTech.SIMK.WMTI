@@ -23,6 +23,14 @@ namespace YTech.SIMK.WMTI.Core.Master
         public virtual string AddressStatus { get; set; }
         public virtual string AddressDesc { get; set; }
 
+        public virtual string Address
+        {
+            get
+            {
+                return string.Format("{0} {1} {2}", AddressLine1, AddressLine2, AddressLine3);
+            }
+        }
+
         public virtual string DataStatus { get; set; }
         public virtual string CreatedBy { get; set; }
         public virtual DateTime? CreatedDate { get; set; }

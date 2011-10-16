@@ -58,6 +58,18 @@
         </td>
     </tr>
     <% } %>
+    <% if (ViewData.Model.ShowPartner)
+       {	%>
+    <tr>
+        <td>
+            <label for="PartnerId">
+                Toko :</label>
+        </td>
+        <td>
+            <%= Html.DropDownList("PartnerId", Model.PartnerList)%>
+        </td>
+    </tr>
+    <% } %>
     <tr>
         <td colspan="2" align="center">
             <button id="Save" type="submit" name="Save">

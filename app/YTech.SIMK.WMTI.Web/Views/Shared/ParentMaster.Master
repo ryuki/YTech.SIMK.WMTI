@@ -12,14 +12,14 @@
     
     <script type="text/javascript">
         $(function () {
-            $("#accordion").accordion({
-                autoHeight: false,
-                navigation: true
-            });
+//            $("#accordion").accordion({
+//                autoHeight: false,
+//                navigation: true
+//            });
 
-            var path = location.pathname.substring(1);
-            if (path)
-                $('#accordion a[href$="' + path + '"]').parent().attr('class', 'selected');
+//            var path = location.pathname.substring(1);
+//            if (path)
+//                $('#accordion a[href$="' + path + '"]').parent().attr('class', 'selected');
 
         });
     </script>

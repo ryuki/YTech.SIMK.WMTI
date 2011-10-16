@@ -45,3 +45,5 @@
     <script src="<%= Url.Content("~/Scripts/pixastic.jquery.js") %>" type="text/javascript"></script>
     <script src="<%= Url.Content("~/Scripts/desaturate.js") %>" type="text/javascript"></script>
     <script src="<%= Url.Content("~/Scripts/grayscale.js") %>" type="text/javascript"></script>
+    <script src="<%= Url.Content("~/Scripts/jquery.tree.js") %>" type="text/javascript"></script>
+    <script src="<%= Url.Content("~/Scripts/plugins/jquery.tree.checkbox.js") %>" type="text/javascript"></script>

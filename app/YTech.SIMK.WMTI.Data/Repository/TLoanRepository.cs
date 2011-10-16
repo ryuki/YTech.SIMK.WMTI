@@ -142,12 +142,34 @@ namespace YTech.SIMK.WMTI.Data.Repository
             sql.AppendLine(@"  from TLoan as loan ");
             sql.AppendLine(@" where loan.LoanAccDate >= :startDate ");
             sql.AppendLine(@"   and loan.LoanAccDate <= :endDate ");
-            
+
             string query = string.Format(" select loan {0} ", sql);
             IQuery q = Session.CreateQuery(query);
             q = Session.CreateQuery(query);
             q.SetDateTime("startDate", startDate.Value);
             q.SetDateTime("endDate", endDate.Value);
+            IList<TLoan> list = q.List<TLoan>();
+            return list;
+        }
+
+        public IEnumerable<TLoan> GetListByAccDatePartner(DateTime? dateFrom, DateTime? dateTo, string partnerId)
+        {
+            StringBuilder sql = new StringBuilder();
+            sql.AppendLine(@"  from TLoan as loan ");
+            sql.AppendLine(@" where loan.LoanAccDate >= :dateFrom ");
+            sql.AppendLine(@"   and loan.LoanAccDate <= :dateTo ");
+            sql.AppendLine(@"   and loan.LoanStatus = :loanStatus ");
+            if (!string.IsNullOrEmpty(partnerId))
+                sql.AppendLine(@"   and loan.PartnerId.Id = :partnerId ");
+
+            string query = string.Format(" select loan {0} ", sql);
+            IQuery q = Session.CreateQuery(query);
+            q = Session.CreateQuery(query);
+            q.SetDateTime("dateFrom", dateFrom.Value);
+            q.SetDateTime("dateTo", dateTo.Value);
+            q.SetString("loanStatus", Enums.EnumLoanStatus.OK.ToString());
+            if (!string.IsNullOrEmpty(partnerId))
+                q.SetString("partnerId", partnerId);
             IList<TLoan> list = q.List<TLoan>();
             return list;
         }

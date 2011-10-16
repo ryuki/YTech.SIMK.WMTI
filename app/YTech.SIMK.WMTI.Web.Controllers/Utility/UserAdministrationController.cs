@@ -7,6 +7,11 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using SharpArch.Core;
 using SharpArch.Web.NHibernate;
+using Telerik.Web.Mvc.UI;
+using YTech.SIMK.WMTI.Core.Master;
+using YTech.SIMK.WMTI.Core.RepositoryInterfaces;
+using YTech.SIMK.WMTI.Core.Transaction;
+using YTech.SIMK.WMTI.Data.Repository;
 using YTech.SIMK.WMTI.Enums;
 using YTech.SIMK.WMTI.Web.Controllers.ViewModel;
 
@@ -31,6 +36,9 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Utility
         private readonly IMembershipSettings _membershipSettings;
         private readonly IUserService _userService;
         private readonly IPasswordService _passwordService;
+        private readonly IMEmployeeRepository _mEmployeeRepository;
+        private readonly IMMenuRepository _mMenuRepository;
+        private readonly ITPrivilegeRepository _tPrivilegeRepository;
 
         public UserAdministrationController()
             : this(
@@ -40,7 +48,10 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Utility
                 new AspNetRoleProviderWrapper(Roles.Provider),
                 new SmtpClientProxy(new SmtpClient()),
             null,
-            null)
+            null,
+           new MEmployeeRepository(),
+           new MMenuRepository(),
+            new TPrivilegeRepository())
         {
         }
 
@@ -56,7 +67,10 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Utility
             IUserService userService,
             IPasswordService passwordService,
             IRolesService rolesService,
-            ISmtpClient smtpClient, IMembershipService service, IFormsAuthentication formsAuth)
+            ISmtpClient smtpClient, IMembershipService service, IFormsAuthentication formsAuth,
+            IMEmployeeRepository mEmployeeRepository,
+            IMMenuRepository mMenuRepository,
+            ITPrivilegeRepository tPrivilegeRepository)
         {
             _membershipSettings = membershipSettings;
             _userService = userService;
@@ -65,6 +79,15 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Utility
             _smtpClient = smtpClient;
             FormsAuth = formsAuth ?? new FormsAuthenticationService();
             MembershipService = service ?? new AccountMembershipService();
+
+
+            Check.Require(mEmployeeRepository != null, "mEmployeeRepository may not be null");
+            Check.Require(mMenuRepository != null, "mMenuRepository may not be null");
+            Check.Require(tPrivilegeRepository != null, "tPrivilegeRepository may not be null");
+
+            this._mEmployeeRepository = mEmployeeRepository;
+            this._mMenuRepository = mMenuRepository;
+            this._tPrivilegeRepository = tPrivilegeRepository;
         }
 
         public IFormsAuthentication FormsAuth
@@ -80,6 +103,160 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Utility
                                 Users = _userService.FindAll(index ?? 0, PageSize),
                                 Roles = _rolesService.FindAll()
                             });
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public JsonResult GetTreeData(string userName = null)
+        {
+            if (string.IsNullOrEmpty(userName))
+                userName = User.Identity.Name;
+
+            Dictionary<string, object> param = new Dictionary<string, object>();
+            param.Add("UserName", userName);
+            IList<TPrivilege> privileges = _tPrivilegeRepository.FindAll(param);
+
+            var menus = from menu in _mMenuRepository.GetAll()
+                        where menu.MenuParent == null
+                        select new JsTreeModel()
+                                   {
+                                       data = menu.MenuName,
+                                       attributes = new JsTreeAttribute { id = menu.Id, selected = HasAccess(menu, privileges), link = Url.Content(menu.MenuLink) },
+                                       children = (from child in menu.MenuChildren
+                                                   select new JsTreeModel()
+                                                              {
+                                                                  data = child.MenuName,
+                                                                  attributes = new JsTreeAttribute { id = child.Id, selected = HasAccess(child, privileges), link = Url.Content(child.MenuLink) }
+                                                              }).ToArray()
+                                   };
+            
+            return Json(menus);
+        }
+
+        private bool HasAccess(MMenu menu, IList<TPrivilege> privileges)
+        {
+            var hasAccess = privileges
+                                .Where(e => e.MenuId.Equals(menu))
+                                .FirstOrDefault();
+
+            return hasAccess != null ? true : false;
+        }
+
+        public ActionResult UserPrivilege(string userName)
+        {
+            //Dictionary<string, object> param = new Dictionary<string, object>();
+            //param.Add("UserName", userName);
+            //var privileges = _tPrivilegeRepository.FindAll(param);
+
+            //List<TreeViewItem> TreeView1_checkedNodes = new List<TreeViewItem>();
+            //TreeViewItem node = new TreeViewItem();
+            //foreach (TPrivilege privilege in privileges)
+            //{
+            //    node = new TreeViewItem();
+            //    node.Value = privilege.MenuId.Id;
+            //    node.Text = privilege.MenuId.MenuName;
+            //    node.Checked = true;
+            //    TreeView1_checkedNodes.Add(node);
+            //}
+            //ViewData["TreeView1_checkedNodes"] = TreeView1_checkedNodes;
+
+            //ViewData["userName"] = userName;
+
+            //var menus = from menu in _mMenuRepository.GetAll()
+            //            where menu.MenuParent == null
+            //            select menu;
+            //return View(menus);
+            return View();
+        }
+
+        //// [ValidateAntiForgeryToken]      // Helps avoid CSRF attacks
+        // [Transaction]                   // Wraps a transaction around the action
+        // [AcceptVerbs(HttpVerbs.Post)]
+        // public ActionResult UserPrivilege(string userName, FormCollection formCollection)
+        // {
+        //     var obj = formCollection["checkedId"];
+
+        //     return View(formCollection);
+        // }
+
+        [ValidateAntiForgeryToken]      // Helps avoid CSRF attacks
+        [Transaction]                   // Wraps a transaction around the action
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult UserPrivilege(string userName, List<TreeViewItem> TreeView1_checkedNodes, FormCollection formCollection)
+        {
+            string Message = string.Empty;
+            bool Success = true;
+
+            try
+            {
+                _tPrivilegeRepository.DbContext.BeginTransaction();
+
+                _tPrivilegeRepository.DeleteByUserName(userName);
+
+                //for (int i = 0; i < formCollection.Count; i++)
+                //{
+                //    Message += "name : " + formCollection.Keys[i] + "  value : " + formCollection[i] + "\n";
+                //}
+
+                string checkedNodes = formCollection["checkedId"];
+                if (!string.IsNullOrEmpty(checkedNodes))
+                {
+                    TPrivilege privilege = new TPrivilege();
+                    string separator = ",";
+                    foreach (string checkedId in checkedNodes.Split(separator.ToCharArray(), StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        privilege = new TPrivilege();
+                        privilege.SetAssignedIdTo(Guid.NewGuid().ToString());
+                        privilege.UserName = userName;
+                        privilege.MenuId = _mMenuRepository.Get(checkedId);
+                        privilege.PrivilegeType = EnumPrivilegeType.Menu.ToString();
+                        privilege.ModifiedBy = User.Identity.Name;
+                        privilege.ModifiedDate = DateTime.Now;
+                        privilege.DataStatus = EnumDataStatus.New.ToString();
+                        _tPrivilegeRepository.Save(privilege);
+                    }
+                }
+
+
+                //if (TreeView1_checkedNodes != null)
+                //{
+                //    TPrivilege privilege = new TPrivilege();
+                //    foreach (TreeViewItem node in TreeView1_checkedNodes)
+                //    {
+                //        Message += "text : " + node.Text + "  value : " + node.Value + "\n";
+                //        //if (node.Checked)
+                //        {
+                //            //privilege = new TPrivilege();
+                //            //privilege.SetAssignedIdTo(Guid.NewGuid().ToString());
+                //            //privilege.UserName = userName;
+                //            //privilege.MenuId = _mMenuRepository.Get(node.Value);
+                //            //privilege.PrivilegeType = EnumPrivilegeType.Menu.ToString();
+                //            //privilege.ModifiedBy = User.Identity.Name;
+                //            //privilege.ModifiedDate = DateTime.Now;
+                //            //privilege.DataStatus = EnumDataStatus.New.ToString();
+                //            //_tPrivilegeRepository.Save(privilege);
+                //        }
+                //    }
+                //}
+
+                //ViewData["message"] = Message;
+                //ViewData["TreeView1_checkedNodes"] = TreeView1_checkedNodes;
+
+                _tPrivilegeRepository.DbContext.CommitTransaction();
+                Success = true;
+                Message = "Hak akses pengguna Berhasil Disimpan.";
+            }
+            catch (Exception ex)
+            {
+                Success = false;
+                Message = "Error :\n" + ex.GetBaseException().Message;
+                _tPrivilegeRepository.DbContext.RollbackTransaction();
+            }
+            var e = new
+            {
+                Success,
+                Message
+            };
+            return Json(e, JsonRequestBehavior.AllowGet);
         }
 
         public ViewResult ListUsers()

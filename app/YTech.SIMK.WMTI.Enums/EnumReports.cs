@@ -11,6 +11,8 @@ namespace YTech.SIMK.WMTI.Enums
         RptPrintInstallment,
         RptLetterSP,
         RptLetterTarik,
-        RptCommission
+        RptCommission,
+        RptPartnerHutang,
+        RptChartLoan
     }
 }

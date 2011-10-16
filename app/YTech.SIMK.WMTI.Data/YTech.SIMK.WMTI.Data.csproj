@@ -75,6 +75,7 @@
     <Compile Include="NHibernateMaps\Master\MEmployeeMap.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="NHibernateMaps\Master\MMenuMap.cs" />
     <Compile Include="NHibernateMaps\Master\MPartnerMap.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -100,6 +101,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="NHibernateMaps\Transaction\TLoanUnitMap.cs" />
+    <Compile Include="NHibernateMaps\Transaction\TNewsMap.cs" />
+    <Compile Include="NHibernateMaps\Transaction\TPrivilegeMap.cs" />
     <Compile Include="NHibernateMaps\Transaction\TRecPeriodMap.cs" />
     <Compile Include="NHibernateMaps\Transaction\TReferenceMap.cs" />
     <Compile Include="NHibernateMaps\Transaction\TSettleMap.cs" />
@@ -113,6 +116,7 @@
     <Compile Include="Repository\MEmployeeRepository.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Repository\MMenuRepository.cs" />
     <Compile Include="Repository\MPartnerRepository.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -138,6 +142,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Repository\TLoanUnitRepository.cs" />
+    <Compile Include="Repository\TNewsRepository.cs" />
+    <Compile Include="Repository\TPrivilegeRepository.cs" />
     <Compile Include="Repository\TRecPeriodRepository.cs" />
     <Compile Include="Repository\TReferenceRepository.cs" />
     <Compile Include="Repository\TSettleRepository.cs" />

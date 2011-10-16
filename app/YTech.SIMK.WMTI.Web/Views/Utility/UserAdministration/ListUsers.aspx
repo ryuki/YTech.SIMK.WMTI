@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/MyMaster.master" Inherits="System.Web.Mvc.ViewPage<YTech.SIMK.WMTI.Web.Controllers.ViewModel.UserAdministration.IndexViewModel>" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/MyMaster.master" Inherits="System.Web.Mvc.ViewPage" %>
 
 <asp:Content ContentPlaceHolderID="title" runat="server">
 	Administrasi Pengguna
@@ -18,6 +18,7 @@
     <div id='popup'>
         <iframe width='100%' height='440px' id="popup_frame" frameborder="0"></iframe>
     </div>
+    
 </asp:Content>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
@@ -127,9 +128,12 @@
               autowidth: true,
               loadComplete: function () {
                   var ids = jQuery("#list").getDataIDs();
+                  var row;
                   for (var i = 0; i < ids.length; i++) {
                       var cl = ids[i];
+                      row = $("#list").getRowData(cl);
                       var be = "<input type='button' value='Edit' tooltips='Edit Pengguna'  onClick=\"OpenPopup('" + cl + "');\" />";
+                      be = be + "&nbsp;<input type='button' value='Hak Akses' tooltips='Hak Akses'  onClick=\"OpenPopupPrivilege('" + row.UserName + "');\" />";
 
                       //                                                alert(be); 
                       $(this).setRowData(ids[i], { act: be });
@@ -155,6 +159,16 @@
                 $("#popup_frame").attr("src", url);
                 $("#popup").dialog("open");
                 return false;
-            }    
+            }
+            function OpenPopupPrivilege(id) {
+                var url = '<%= Url.Content("~/Utility/UserAdministration/UserPrivilege?userName=") %>';
+                if (id) {
+                    url += id;
+                    url += '&rand=' + (new Date()).getTime();
+                }
+                $("#popup_frame").attr("src", url);
+                $("#popup").dialog("open");
+                return false;
+            }   
     </script>
 </asp:Content>

@@ -22,7 +22,7 @@
             padding: 3px;
             height: 20px;
         }
-        #accordion .child-menu-container a
+        #accordion .child-menu-container A
         {
             border: none;
             border-bottom: 1px solid #C2C8D1;
@@ -66,15 +66,15 @@
             outerLayout = $("body").layout(
              $.extend(layoutSettings_Outer, layoutState.load('myLayout'))
             );
-            $("#accordion").accordion({
-                autoHeight: true,
-                navigation: true,
-                fillSpace: true
-            });
+//            $("#accordion").accordion({
+//                autoHeight: true,
+//                navigation: true,
+//                fillSpace: true
+//            });
 
-            var path = location.pathname + location.search + location.hash;
-            if (path)
-                $('#accordion a[href$="' + path + '"]').addClass('selected');
+//            var path = location.pathname + location.search + location.hash;
+//            if (path)
+//                $('#accordion a[href$="' + path + '"]').addClass('selected');
             /*******************************
             ***  CUSTOM LAYOUT BUTTONS  ***
             *******************************

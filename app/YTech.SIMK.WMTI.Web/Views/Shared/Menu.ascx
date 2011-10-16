@@ -2,7 +2,59 @@
 <%@ Import Namespace="YTech.SIMK.WMTI.Web.Controllers.Transaction" %>
 <%@ Import Namespace="YTech.SIMK.WMTI.Web.Controllers.Master" %>
 <%@ Import Namespace="YTech.SIMK.WMTI.Web.Controllers.Utility" %>
+<% if (false)
+   { %>
+<script src="../../Scripts/jquery-1.6.3-vsdoc.js" type="text/javascript"></script>
+<script src="../../../Scripts/jquery.validate-vsdoc.js" type="text/javascript"></script>
+<% } %>
 <div id="accordion">
+</div>
+<script type="text/javascript">
+    $(function () {
+        $("#accordion-old").hide();
+
+        var url = '<%= ResolveUrl("~/Utility/UserAdministration/GetTreeData") %>';
+        var getMenus = $.ajax({
+            url: url,
+            type: "POST",
+            async: true,
+            cache: false,
+            success: function (data, result) {
+                if (!result) alert('Failure to retrieve the Menu.');
+
+                var menuStr = "";
+                for (var i = 0; i < data.length; i++) {
+                    var parent = data[i];
+                    // alert(parent.attributes.selected);
+                    if (parent.attributes.selected == true) {
+                        menuStr += "<h3><a href='" + parent.attributes.link + "'>" + parent.data + "</a></h3>";
+                        menuStr += "<div class='child-menu-container'>";
+
+                        for (var j = 0; j < parent.children.length; j++) {
+                            var child = parent.children[j];
+                            if (child.attributes.selected == true) {
+                                menuStr += "<a href='" + child.attributes.link + "'>" + child.data + "</a>";
+                            }
+                        }
+                        menuStr += "</div>";
+                    }
+                }
+                $("#accordion").html(menuStr);
+                $("#accordion").accordion({
+                    autoHeight: true,
+                    navigation: true,
+                    fillSpace: true
+                });
+
+                var path = location.pathname + location.search + location.hash;
+                if (path)
+                    $('#accordion a[href$="' + path + '"]').addClass('selected');
+            }
+        });
+    });
+
+</script>
+<div id="accordion-old">
     <h3>
         <a href="#">Home</a></h3>
     <div class="child-menu-container">
@@ -69,6 +121,8 @@
         <%= Html.ActionLinkForAreas<ReportController>(c => c.Report(EnumReports.RptCommission,EnumDepartment.SA ), "Lap. Komisi Salesman")%>
         <%= Html.ActionLinkForAreas<ReportController>(c => c.Report(EnumReports.RptCommission,EnumDepartment.TLS), "Lap. Komisi TLS")%>
         <%= Html.ActionLinkForAreas<ReportController>(c => c.Report(EnumReports.RptCommission,EnumDepartment.COL), "Lap. Komisi Kolektor")%>
+        <%= Html.ActionLinkForAreas<ReportController>(c => c.Report(EnumReports.RptPartnerHutang,null), "Lap. Hutang Toko")%>
+        <%= Html.ActionLinkForAreas<ReportController>(c => c.Report(EnumReports.RptChartLoan,null), "Grafik Pengajuan Kredit")%>
     </div>
     <%
        }

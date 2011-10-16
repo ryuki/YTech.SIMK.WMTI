@@ -11,5 +11,7 @@ namespace YTech.SIMK.WMTI.Core.RepositoryInterfaces
         IEnumerable<TLoan> GetPagedLoanListToday(string orderCol, string orderBy, int pageIndex, int maxRows, ref int totalRows);
 
         IList<TLoan> GetListByAccDate(System.DateTime? startDate, System.DateTime? endDate);
+
+        IEnumerable<TLoan> GetListByAccDatePartner(System.DateTime? dateFrom, System.DateTime? dateTo, string partnerId);
     }
 }
