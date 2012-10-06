@@ -67,22 +67,26 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 _installmentRepository.DbContext.BeginTransaction();
                 TInstallment installment = _installmentRepository.Get(viewModel.Id);
 
-                //validate receipt no
-                if (installment.InstallmentReceiptNo != formCollection["ReceiptNo"])
-                {
-                    throw new Exception("No kwitansi salah, data angsuran tidak dapat disimpan.");
-                }
+                ////validate receipt no
+                //if (installment.InstallmentReceiptNo != formCollection["ReceiptNo"])
+                //{
+                //    throw new Exception("No kwitansi salah, data angsuran tidak dapat disimpan.");
+                //}
 
                 installment.EmployeeId = viewModel.EmployeeId;
                 installment.InstallmentPaymentDate = Helper.CommonHelper.ConvertToDate(formCollection["InstallmentPaymentDate"]);
                 installment.InstallmentPaid = Helper.CommonHelper.ConvertToDecimal(formCollection["InstallmentPaid"]);
                 installment.InstallmentFine = Helper.CommonHelper.ConvertToDecimal(formCollection["InstallmentFine"]);
-
                 installment.InstallmentStatus = EnumInstallmentStatus.Paid.ToString();
+                installment.InstallmentReceiptNo = formCollection["ReceiptNo"];
+
                 installment.ModifiedBy = User.Identity.Name;
                 installment.ModifiedDate = DateTime.Now;
                 installment.DataStatus = EnumDataStatus.Updated.ToString();
                 _installmentRepository.Update(installment);
+
+                //update loan status to Paid when all installment have been paid
+                _loanRepository.UpdateLoanToPaid(installment.LoanId.Id);
 
                 _installmentRepository.DbContext.CommitTransaction();
                 Success = true;

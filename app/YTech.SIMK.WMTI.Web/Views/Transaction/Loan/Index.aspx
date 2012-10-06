@@ -14,14 +14,90 @@
 </asp:Content>
 <asp:Content ID="indexContent" ContentPlaceHolderID="MainContent" runat="server">
     <div>
-        <label for="ddlSearchBy">
-            Cari berdasar :</label>
-        <select id="ddlSearchBy">
-            <option value="loan.LoanCode">No Account</option>
-            <option value="person.PersonFirstName">Nama</option>
-        </select>
-        <input id="txtSearch" type="text" />
-        <input id="btnSearch" type="button" value="Cari" />
+        <table>
+            <tr>
+                <td>
+                    <label for="ddlSearchBy">
+                        Cari berdasar :</label>
+                </td>
+                <td>
+                    <select id="ddlSearchBy">
+                        <option value="loan.LoanCode">No Account</option>
+                        <option value="person.PersonFirstName">Nama</option>
+                    </select>
+                    <input id="txtSearch" type="text" />
+                </td>
+                <td>
+                    <label for="CollectorId">
+                        Kolektor :</label>
+                </td>
+                <td>
+                    <%= Html.DropDownList("CollectorId", Model.CollectorList)%>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="ZoneId">
+                        Wilayah :</label>
+                </td>
+                <td>
+                    <%= Html.DropDownList("ZoneId", Model.ZoneList)%>
+                </td>
+                <td>
+                    <label for="TLSId">
+                        LTS :</label>
+                </td>
+                <td>
+                    <%= Html.DropDownList("TLSId", Model.TLSList)%>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="ddlMonth">
+                        Periode Pengajuan Kredit :</label>
+                </td>
+                <td>
+                    <select id="ddlMonth">
+                        <option value=""></option>
+                        <option value="1">Jan</option>
+                        <option value="2">Feb</option>
+                        <option value="3">Mar</option>
+                        <option value="4">Apr</option>
+                        <option value="5">Mei</option>
+                        <option value="6">Jun</option>
+                        <option value="7">Jul</option>
+                        <option value="8">Agust</option>
+                        <option value="9">Sep</option>
+                        <option value="10">Okt</option>
+                        <option value="11">Nov</option>
+                        <option value="12">Des</option>
+                    </select>
+                    <select id="ddlYear">
+                        <option value=""></option>
+                        <option value="<%= DateTime.Today.Year %>">
+                            <%= DateTime.Today.Year %></option>
+                        <option value="<%= DateTime.Today.AddYears(-1).Year %>">
+                            <%= DateTime.Today.AddYears(-1).Year %></option>
+                        <option value="<%= DateTime.Today.AddYears(-2).Year %>">
+                            <%= DateTime.Today.AddYears(-2).Year %></option>
+                    </select>
+                </td>
+                <td>
+                    <label for="SalesmanId">
+                        SA :</label>
+                </td>
+                <td>
+                    <%= Html.DropDownList("SalesmanId", Model.SalesmanList)%>
+                </td>
+            </tr>
+            <tr>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <input id="btnSearch" type="button" value="Cari" />
+                </td>
+            </tr>
+        </table>
     </div>
     <table id="list" class="scroll" cellpadding="0" cellspacing="0">
     </table>
@@ -29,12 +105,24 @@
     </div>
     <div id="listPsetcols" class="scroll" style="text-align: center;">
     </div>
+    <div id="total" style="text-align: right; width: 860px;">
+        <p style="font-weight: bold;">
+        </p>
+    </div>
     <div id='popup'>
         <iframe width='100%' height='340px' id="popup_frame" frameborder="0"></iframe>
     </div>
     <div id="dialog" title="Status">
         <p>
         </p>
+    </div>
+    <div id="LoanOK" title="Tanggal Cicilan Pertama">
+        <input id="hidLoanId" type="hidden" />
+        Tanggal Cicilan Pertama :
+        <br />
+        <input id="txtFirstInstallment" name="txtFirstInstallment" />
+        <br />
+        <input id="btnOk" type="button" value="Simpan" />
     </div>
     <% if (Model.ShowLegend)
        { %>
@@ -44,6 +132,7 @@
         $(document).ready(function () {
 
             $("#txtSearch").focus();
+            $("#txtFirstInstallment").datepicker();
 
             $("#popup").dialog({
                 autoOpen: false,
@@ -57,6 +146,16 @@
             $("#dialog").dialog({
                 autoOpen: false
             });
+            $("#LoanOK").dialog({
+                autoOpen: false
+            });
+
+            var loanStatus = '<%= Request.QueryString["loanStatus"]%>';
+               // alert(loanStatus);
+            var showLongDayLate = true ;
+            if (loanStatus == 'LatePay')
+                showLongDayLate=false;
+                //alert(showLongDayLate);
 
             $.jgrid.nav.addtext = "Tambah";
             $.jgrid.nav.edittext = "Edit";
@@ -70,11 +169,17 @@
                 postData: {
                     loanStatus: function () { return '<%= Request.QueryString["loanStatus"]%>'; },
                     searchBy: function () { return $('#ddlSearchBy option:selected').val(); },
-                    searchText: function () { return $('#txtSearch').val(); }
+                    searchText: function () { return $('#txtSearch').val(); },
+                    zoneId: function () { return $('#ZoneId option:selected').val(); },
+                    collectorId: function () { return $('#CollectorId option:selected').val(); },
+                    tLSId: function () { return $('#TLSId option:selected').val(); },
+                    salesmanId: function () { return $('#SalesmanId option:selected').val(); },
+                    month: function () { return $('#ddlMonth option:selected').val(); },
+                    year: function () { return $('#ddlYear option:selected').val(); }
                 },
                 datatype: 'json',
                 mtype: 'GET',
-                colNames: ['', 'Id', 'LoanId', 'No PK', 'No Account', 'Tgl Pengajuan Kredit', 'Pemohon', 'Surveyor', 'Wilayah', 'Status'],
+                colNames: ['', 'Id', 'LoanId', 'No PK', 'No Account', 'Tgl Pengajuan Kredit', 'Pemohon', 'Surveyor', 'Angsuran (Rp)', 'Status', 'Tunggakan'],
                 colModel: [
                     {
                         name: 'act', index: 'act', width: 200, sortable: false
@@ -86,8 +191,9 @@
                     { name: 'LoanSubmissionDate', index: 'LoanSubmissionDate', width: 125, align: 'left', editable: false, edittype: 'text', editrules: { required: false} },
                     { name: 'CustomerName', index: 'CustomerName', width: 125, align: 'left', editable: false, edittype: 'text', editrules: { required: false} },
                    { name: 'SurveyorName', index: 'SurveyorName', width: 125, align: 'left', editable: true, edittype: 'text', editrules: { required: false} },
-                   { name: 'ZoneName', index: 'ZoneName', width: 100, align: 'left', editable: true, edittype: 'text', editrules: { required: false, edithidden: true} },
-                     { name: 'LoanStatus', index: 'LoanStatus', width: 60, align: 'left', editable: true, edittype: 'text', editrules: { required: false, edithidden: true} }
+                   { name: 'LoanBasicInstallment', index: 'LoanBasicInstallment', width: 100, align: 'right', editable: true, edittype: 'text', editrules: { required: false, edithidden: true} },
+                     { name: 'LoanStatus', index: 'LoanStatus', width: 60, align: 'left', editable: true, edittype: 'text', editrules: { required: false, edithidden: !showLongDayLate}, hidden : !showLongDayLate },
+                     { name: 'LongDayLate', index: 'LongDayLate', width: 130, align: 'left', editable: true, edittype: 'text', editrules: { required: false, edithidden: showLongDayLate}, hidden : showLongDayLate }
                    ],
 
                 pager: $('#listPager'),
@@ -101,6 +207,7 @@
                 caption: 'Daftar Kredit',
                 autowidth: true,
                 loadComplete: function () {
+                    CalculateTotal();
                     SetLoanFunctionButton();                    
                 },
 <% if (Model.ShowInstallmentSubGrid)
@@ -195,7 +302,47 @@
                 }
             });
 
+            $('#btnOk').click(function () {
+            var loanId=$("#hidLoanId").val();
+            var installDate=$("#txtFirstInstallment").val();
+//            alert(loanId);
+//            alert(installDate);
+            if (installDate == '')
+            alert('Tanggal Cicilan pertama harus diisi.');
+            else
+            {
+                $("#LoanOK").dialog("close");
+                return PostChangeStatus('Anda yakin kredit Ok?', '<%= Url.Action("Oke","Loan") %>?loanId=' + loanId + '&installDate=' + installDate);
+                }
+            });
+
         });
+
+        function CalculateTotal()
+        {
+            var loanStatus = '<%= Request.QueryString["loanStatus"]%>';
+            var searchBy = $('#ddlSearchBy option:selected').val(); 
+            var searchText = $('#txtSearch').val(); 
+            var zoneId = $('#ZoneId option:selected').val(); 
+            var collectorId = $('#CollectorId option:selected').val();
+            var tLSId= $('#TLSId option:selected').val(); 
+            var  salesmanId= $('#SalesmanId option:selected').val(); 
+            var  month= $('#ddlMonth option:selected').val(); 
+            var  year= $('#ddlYear option:selected').val(); 
+            
+            var posturl = '<%= Url.Action( "GetTotal", "Loan") %>';
+            posturl = posturl + '?loanStatus=' + loanStatus;
+            posturl = posturl + '&searchBy=' + searchBy;
+            posturl = posturl + '&searchText=' + searchText;
+            posturl = posturl + '&zoneId=' + zoneId;
+            posturl = posturl + '&collectorId=' + collectorId;
+            posturl = posturl + '&tLSId=' + tLSId;
+            posturl = posturl + '&salesmanId=' + salesmanId;
+            posturl = posturl + '&month=' + month;
+            posturl = posturl + '&year=' + year;
+            var total = $.ajax({ url: posturl, async: false, type: 'POST', cache: false, success: function (data, result) { if (!result) alert('Failure to retrieve the page.'); } }).responseText;
+             $('#total p:first').text("Total Angsuran : Rp." + total);
+        }
 
         function SetLoanFunctionButton()
         {
@@ -257,7 +404,7 @@
 
                     case "OK":
                         if (loanStatus == 'OK' || loanStatus == '')
-                            be = be + notes;
+                            be = be + survey + notes;
                         else if (loanStatus == 'LatePay')
                             be = sp + separator + tarik;
                         break;
@@ -272,6 +419,10 @@
 
                     case "Postpone":
                         be = be + edit + survey + separator + approve + cancel;
+                        break;
+
+                    case "Paid":
+                        be = "";
                         break;
 
                     default:
@@ -309,7 +460,10 @@
         }
 
         function OpenPopupOke(loanId) {
-            return PostChangeStatus('Anda yakin kredit Ok?', '<%= Url.Action("Oke","Loan") %>?loanId=' + loanId);
+         $("#hidLoanId").val(loanId);
+         $("#txtFirstInstallment").val("");
+         $("#LoanOK").dialog("open");
+            //return PostChangeStatus('Anda yakin kredit Ok?', '<%= Url.Action("Oke","Loan") %>?loanId=' + loanId);
         }
 
         function OpenPopupCancel(loanId) {

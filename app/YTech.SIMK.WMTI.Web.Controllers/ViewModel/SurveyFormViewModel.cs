@@ -108,28 +108,28 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
 
             var salesman = from emp in listSaEmployee
                            select new { Id = emp.Id, Name = emp.PersonId != null ? emp.PersonId.PersonName : "-Pilih Salesman-" };
-            viewModel.SalesmanList = new SelectList(salesman, "Id", "Name", loanSurvey.LoanId.SalesmanId != null ? loanSurvey.LoanId.SalesmanId.Id : string.Empty);
+            viewModel.SalesmanList = new SelectList(salesman, "Id", "Id", loanSurvey.LoanId.SalesmanId != null ? loanSurvey.LoanId.SalesmanId.Id : string.Empty);
 
             var listSuEmployee = mEmployeeRepository.GetEmployeeByDept(EnumDepartment.SU.ToString());
             listSuEmployee.Insert(0, employee);
 
             var surveyor = from emp in listSuEmployee
                            select new { Id = emp.Id, Name = emp.PersonId != null ? emp.PersonId.PersonName : "-Pilih Surveyor-" };
-            viewModel.SurveyorList = new SelectList(surveyor, "Id", "Name", loanSurvey.LoanId.SurveyorId != null ? loanSurvey.LoanId.SurveyorId.Id : string.Empty);
+            viewModel.SurveyorList = new SelectList(surveyor, "Id", "Id", loanSurvey.LoanId.SurveyorId != null ? loanSurvey.LoanId.SurveyorId.Id : string.Empty);
 
             var listColEmployee = mEmployeeRepository.GetEmployeeByDept(EnumDepartment.COL.ToString());
             listColEmployee.Insert(0, employee);
 
             var collector = from emp in listColEmployee
                             select new { Id = emp.Id, Name = emp.PersonId != null ? emp.PersonId.PersonName : "-Pilih Kolektor-" };
-            viewModel.CollectorList = new SelectList(collector, "Id", "Name", loanSurvey.LoanId.CollectorId != null ? loanSurvey.LoanId.CollectorId.Id : string.Empty);
+            viewModel.CollectorList = new SelectList(collector, "Id", "Id", loanSurvey.LoanId.CollectorId != null ? loanSurvey.LoanId.CollectorId.Id : string.Empty);
 
             var listTlsEmployee = mEmployeeRepository.GetEmployeeByDept(EnumDepartment.TLS.ToString());
             listTlsEmployee.Insert(0, employee);
 
             var tls = from emp in listTlsEmployee
                       select new { Id = emp.Id, Name = emp.PersonId != null ? emp.PersonId.PersonName : "-Pilih Team Leader-" };
-            viewModel.TLSList = new SelectList(tls, "Id", "Name", loanSurvey.LoanId.TLSId != null ? loanSurvey.LoanId.TLSId.Id : string.Empty);
+            viewModel.TLSList = new SelectList(tls, "Id", "Id", loanSurvey.LoanId.TLSId != null ? loanSurvey.LoanId.TLSId.Id : string.Empty);
 
             var listZone = mZoneRepository.GetAll();
             MZone z = new MZone();

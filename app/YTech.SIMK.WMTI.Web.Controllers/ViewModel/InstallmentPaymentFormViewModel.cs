@@ -38,7 +38,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
             var collector = from emp in listEmployee
                             //where emp.DepartmentId.DepartmentName == "COLLECTOR"
                             select new { Id = emp.Id, Name = emp.PersonId != null ? emp.PersonId.PersonName : "-Pilih Kolektor-" };
-            viewModel.CollectorList = new SelectList(collector, "Id", "Name", string.Empty);
+            viewModel.CollectorList = new SelectList(collector, "Id", "Id", string.Empty);
 
             return viewModel;
         }

@@ -1,41 +1,25 @@
-﻿using FluentNHibernate.Automapping;
-using FluentNHibernate.Automapping.Alterations;
+﻿using System.Collections.Generic;
+using NHibernate;
+using NHibernate.Criterion;
+using SharpArch.Data.NHibernate;
+using YTech.SIMK.WMTI.Core.Master;
+using YTech.SIMK.WMTI.Core.RepositoryInterfaces;
 using YTech.SIMK.WMTI.Core.Transaction;
+using YTech.SIMK.WMTI.Enums;
 
 namespace YTech.SIMK.WMTI.Data.Repository
 {
-    public class TNewsRepository : IAutoMappingOverride<TNews>
+    public class TNewsRepository : NHibernateRepositoryWithTypedId<TNews, string>, ITNewsRepository
     {
-        #region Implementation of IAutoMappingOverride<TNews>
-
-        public void Override(AutoMapping<TNews> mapping)
+        public TNews GetByType(EnumNewsType enumNewsType)
         {
-            mapping.DynamicUpdate();
-            mapping.DynamicInsert();
-            mapping.SelectBeforeUpdate();
+            ICriteria criteria = Session.CreateCriteria(typeof(TNews));
 
-            mapping.Table("T_NEWS");
-            mapping.Id(x => x.Id, "NEWS_ID").GeneratedBy.Assigned();
+            //get list results
+            criteria.Add(Restrictions.Eq("NewsType", enumNewsType.ToString()));
+            criteria.SetMaxResults(1);
 
-            mapping.Map(x => x.NewsTitle, "NEWS_TITLE");
-            mapping.Map(x => x.NewsDesc, "NEWS_DESC");
-            mapping.Map(x => x.NewsStartDate, "NEWS_START_DATE");
-            mapping.Map(x => x.NewsEndDate, "NEWS_END_DATE");
-            mapping.Map(x => x.DataStatus, "NEWS_STATUS");
-            mapping.Map(x => x.NewsTo, "NEWS_TO");
-
-            mapping.Map(x => x.DataStatus, "DATA_STATUS");
-            mapping.Map(x => x.CreatedBy, "CREATED_BY");
-            mapping.Map(x => x.CreatedDate, "CREATED_DATE");
-            mapping.Map(x => x.ModifiedBy, "MODIFIED_BY");
-            mapping.Map(x => x.ModifiedDate, "MODIFIED_DATE");
-            mapping.Version(x => x.RowVersion)
-                   .Column("ROW_VERSION")
-                   .CustomSqlType("Timestamp")
-                   .Not.Nullable()
-                   .Generated.Always();
+            return criteria.UniqueResult<TNews>();
         }
-
-        #endregion
     }
 }

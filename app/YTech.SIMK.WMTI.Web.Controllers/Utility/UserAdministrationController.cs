@@ -128,7 +128,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Utility
                                                                   attributes = new JsTreeAttribute { id = child.Id, selected = HasAccess(child, privileges), link = Url.Content(child.MenuLink) }
                                                               }).ToArray()
                                    };
-            
+
             return Json(menus);
         }
 
@@ -533,29 +533,53 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Utility
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Insert(FormCollection formCollection)
         {
-            string userName = formCollection["UserName"];
-            string email = "yahu@yahu.com";
-            string password = formCollection["Password"];
-            string confirmPassword = formCollection["PasswordConfirm"];
-
-            ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
-
-            if (ValidateRegistration(userName, email, password, confirmPassword))
+            try
             {
-                // Attempt to register the user
-                MembershipCreateStatus createStatus = MembershipService.CreateUser(userName, password, email);
+                string userName = formCollection["UserName"];
+                string email = "yahu@yahu.com";
+                string password = formCollection["Password"];
+                string confirmPassword = formCollection["PasswordConfirm"];
 
-                if (createStatus == MembershipCreateStatus.Success)
+                ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
+
+                if (ValidateRegistration(userName, email, password, confirmPassword))
                 {
-                    //FormsAuth.SignIn(userName, false /* createPersistentCookie */);
-                    return Content("success");
+                    // Attempt to register the user
+                    MembershipCreateStatus createStatus = MembershipService.CreateUser(userName, password, email);
+
+                    if (createStatus == MembershipCreateStatus.Success)
+                    {
+                        //FormsAuth.SignIn(userName, false /* createPersistentCookie */);
+                        return Content("Pengguna berhasil disimpan");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("_FORM", ErrorCodeToString(createStatus));
+                        return Content(ErrorCodeToString(createStatus));
+                    }
                 }
                 else
                 {
-                    ModelState.AddModelError("_FORM", ErrorCodeToString(createStatus));
-                    return Content(ErrorCodeToString(createStatus));
+                    StringBuilder sb = new StringBuilder();
+                    if (ModelState.Count > 0)
+                    {
+                        foreach (KeyValuePair<string, ModelState> keyValuePair in ModelState)
+                        {
+                            if (keyValuePair.Value.Errors.Count > 0)
+                            {
+                                sb.Append(keyValuePair.Value.Errors[0].ErrorMessage);
+                            }
+                        }
+                    }
+                    return Content(sb.ToString());
                 }
             }
+            catch (Exception ex)
+            {
+
+                return Content(ex.Message);
+            }
+
 
             // If we got this far, something failed, redisplay form
             return View();
@@ -607,7 +631,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Utility
         {
             if (String.IsNullOrEmpty(userName))
             {
-                ModelState.AddModelError("username", "You must specify a username.");
+                ModelState.AddModelError("username", "Nama pengguna harus diisi.");
             }
             if (String.IsNullOrEmpty(email))
             {
@@ -617,12 +641,12 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Utility
             {
                 ModelState.AddModelError("password",
                     String.Format(CultureInfo.CurrentCulture,
-                         "You must specify a password of {0} or more characters.",
+                         "Password minimal {0} karakter.",
                          MembershipService.MinPasswordLength));
             }
             if (!String.Equals(password, confirmPassword, StringComparison.Ordinal))
             {
-                ModelState.AddModelError("_FORM", "The new password and confirmation password do not match.");
+                ModelState.AddModelError("_FORM", "Password dan konfirmasi password harus sama.");
             }
             return ModelState.IsValid;
         }

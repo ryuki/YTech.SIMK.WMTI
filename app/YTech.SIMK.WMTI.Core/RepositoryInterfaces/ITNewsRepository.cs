@@ -5,5 +5,6 @@ namespace YTech.SIMK.WMTI.Core.RepositoryInterfaces
 {
     public interface ITNewsRepository : INHibernateRepositoryWithTypedId<TNews, string>
     {
+        TNews GetByType(Enums.EnumNewsType enumNewsType);
     }
 }

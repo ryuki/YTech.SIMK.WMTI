@@ -300,7 +300,8 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Master
             for (int i = 0; i < employees.Count; i++)
             {
                 mEmployee = employees[i];
-                sb.AppendFormat(";{0}:{1} {2}", mEmployee.Id, mEmployee.PersonId.PersonFirstName, mEmployee.PersonId.PersonLastName);
+                //sb.AppendFormat(";{0}:{1} {2}", mEmployee.Id, mEmployee.PersonId.PersonFirstName, mEmployee.PersonId.PersonLastName);
+                sb.AppendFormat(";{0}:{1}", mEmployee.Id, mEmployee.Id);
             }
             return Content(sb.ToString());
         }
@@ -317,7 +318,8 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Master
             for (int i = 0; i < employees.Count; i++)
             {
                 mEmployee = employees[i];
-                sb.AppendFormat(";{0}:{1}", mEmployee.Id, mEmployee.PersonId.PersonName);
+                //sb.AppendFormat(";{0}:{1}", mEmployee.Id, mEmployee.PersonId.PersonName);
+                sb.AppendFormat(";{0}:{1}", mEmployee.Id, mEmployee.Id);
             }
 
             return Content(sb.ToString());

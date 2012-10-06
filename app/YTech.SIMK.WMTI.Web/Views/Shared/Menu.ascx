@@ -58,7 +58,7 @@
     <h3>
         <a href="#">Home</a></h3>
     <div class="child-menu-container">
-        <%=Html.ActionLinkForAreas<HomeController>(c => c.Index(), "Home") %>
+        <%=Html.ActionLinkForAreas<HomeController>(c => c.Index(), "Dashboard") %>
         <%= Html.ActionLinkForAreas<HomeController>(c => c.Calculate(), "Simulasi Kredit") %>
     </div>
     <% if (Request.IsAuthenticated)

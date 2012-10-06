@@ -100,12 +100,16 @@
                                 <td colspan="2">&nbsp;</td>
                             </tr>
                             <tr>
-                                <td colspan="2">
-                                    <%= Html.CheckBox("LoanAdminFee", Model.LoanAdminFee)%>&nbsp;Biaya Administrasi sebesar Rp. 14.000,- (Empat Belas Ribu Rupiah)
-                                    <%= Html.ValidationMessage("LoanAdminFee")%>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                <td colspan="2">Biaya Administrasi sebesar 
+                                    <%= Html.CheckBox("LoanAdminFee1", Model.LoanAdminFee1)%>&nbsp;Rp. 25.000,-
+                                    <%= Html.CheckBox("LoanAdminFee2", Model.LoanAdminFee2)%>&nbsp;Rp. 50.000,-
+                                    <%= Html.CheckBox("LoanAdminFee3", Model.LoanAdminFee3)%>&nbsp;Rp. 75.000,-
+                                    <%= Html.ValidationMessage("LoanAdminFee1")%>
+                                    <%= Html.ValidationMessage("LoanAdminFee2")%>
+                                    <%= Html.ValidationMessage("LoanAdminFee3")%>
+                                   <%-- &nbsp;&nbsp;&nbsp;&nbsp;
                                     <%= Html.CheckBox("LoanMateraiFee", Model.LoanMateraiFee)%>&nbsp;Biaya Materai sebesar Rp. 6.000,- (Enam Ribu Rupiah)
-                                    <%= Html.ValidationMessage("LoanMateraiFee")%>
+                                    <%= Html.ValidationMessage("LoanMateraiFee")%>--%>
                                 </td>
                             </tr>
                             <tr>

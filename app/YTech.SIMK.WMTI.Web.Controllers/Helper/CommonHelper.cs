@@ -39,6 +39,11 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Helper
             get { return "N0"; }
         }
 
+        public static string MonthFormat
+        {
+            get { return "MMM yyyy"; }
+        }
+
         //set culture to id-ID for standardization
         public static CultureInfo DefaultCulture
         {
@@ -195,6 +200,14 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Helper
             string result = string.Empty;
             if (value.HasValue)
                 result = value.Value.ToString(DateFormat, DefaultCulture);
+            return result;
+        }
+
+        public static string ConvertToString(double? value)
+        {
+            string result = string.Empty;
+            if (value.HasValue)
+                result = value.Value.ToString(IntegerFormat, DefaultCulture);
             return result;
         }
     }

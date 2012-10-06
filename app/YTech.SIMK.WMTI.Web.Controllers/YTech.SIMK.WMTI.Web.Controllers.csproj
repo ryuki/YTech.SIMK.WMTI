@@ -146,6 +146,7 @@
     <Compile Include="ViewModel\Reports\InstallmentViewModel.cs" />
     <Compile Include="ViewModel\Reports\LoanViewModel.cs" />
     <Compile Include="ViewModel\SurveyFormViewModel.cs" />
+    <Compile Include="ViewModel\HomeViewModel.cs" />
     <Compile Include="ViewModel\UserAdministration\DetailsViewModel.cs" />
     <Compile Include="ViewModel\UserAdministration\IndexViewModel.cs" />
     <Compile Include="ViewModel\UserAdministration\RoleViewModel.cs" />

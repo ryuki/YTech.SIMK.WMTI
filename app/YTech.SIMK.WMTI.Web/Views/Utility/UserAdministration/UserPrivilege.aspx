@@ -93,7 +93,7 @@
      <% using (Html.BeginForm())
        { %>
     <%=Html.AntiForgeryToken()%>
-    <div id="demoTree" style="height: 380px;width:350px;overflow:auto;">
+    <div id="demoTree" style="height: 350px;width:350px;overflow:auto;">
     </div>
     <br />
     <div>

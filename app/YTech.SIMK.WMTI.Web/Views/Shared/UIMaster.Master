@@ -284,7 +284,8 @@
             </div>
         </div>
         <div class="content">
-            <div class="sbheader">
+            <div class="sbheader" style="text-align:right;font:28px bold;color:Blue;margin:5px;">
+            <%= DateTime.Today.ToString(CommonHelper.DateFormat) %>
             </div>
         </div>
         <%--<ul class="toolbar" style="display:none;">

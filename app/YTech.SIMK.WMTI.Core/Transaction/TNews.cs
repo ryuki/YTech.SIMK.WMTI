@@ -9,12 +9,13 @@ namespace YTech.SIMK.WMTI.Core.Transaction
     {
         [DomainSignature]
         [NotNull, NotEmpty]
-        public virtual DateTime? NewsTitle { get; set; }
-        public virtual decimal? NewsDesc { get; set; }
-        public virtual decimal? NewsStatus { get; set; }
-        public virtual decimal? NewsStartDate { get; set; }
-        public virtual string NewsEndDate { get; set; }
+        public virtual string NewsTitle { get; set; }
+        public virtual string NewsDesc { get; set; }
+        public virtual string NewsStatus { get; set; }
+        public virtual DateTime? NewsStartDate { get; set; }
+        public virtual DateTime? NewsEndDate { get; set; }
         public virtual string NewsTo { get; set; }
+        public virtual string NewsType { get; set; }
 
         public virtual string DataStatus { get; set; }
         public virtual string CreatedBy { get; set; }

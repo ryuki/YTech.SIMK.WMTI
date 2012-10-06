@@ -61,16 +61,16 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
 
         public ActionResult Index(EnumLoanStatus? loanStatus)
         {
-            LoanViewModel viewModel = LoanViewModel.Create(loanStatus);
+            LoanViewModel viewModel = LoanViewModel.Create(loanStatus, _mEmployeeRepository, _mZoneRepository);
             return View(viewModel);
         }
 
         [Transaction]
-        public virtual ActionResult List(string sidx, string sord, int page, int rows, string loanStatus, string searchBy, string searchText)
+        public virtual ActionResult List(string sidx, string sord, int page, int rows, string loanStatus, string searchBy, string searchText, string zoneId, string collectorId, string tLSId, string salesmanId, int? month, int? year)
         {
 
             int totalRecords = 0;
-            var loans = _tLoanRepository.GetPagedLoanList(sidx, sord, page, rows, ref totalRecords, loanStatus, searchBy, searchText);
+            var loans = _tLoanRepository.GetPagedLoanList(sidx, sord, page, rows, ref totalRecords, loanStatus, searchBy, searchText, zoneId, collectorId, tLSId, salesmanId, month, year);
 
             int pageSize = rows;
             int totalPages = (int)Math.Ceiling((float)totalRecords / (float)pageSize);
@@ -91,18 +91,33 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                                                 loan.Id,
                                                 loan.LoanNo,
                                                 loan.LoanCode,
-                                                //loan.LoanSubmissionDate.HasValue ? loan.LoanSubmissionDate.Value.ToString(Helper.CommonHelper.DateFormat) : null,
                                                 Helper.CommonHelper.ConvertToString(loan.LoanSubmissionDate),
                                                 loan.PersonId.PersonName,
                                                 loan.SurveyorId != null ?  loan.SurveyorId.PersonId.PersonName : null,
-                                                loan.ZoneId != null ? loan.ZoneId.ZoneName : null,
-                                                loan.LoanStatus
+                                               Helper.CommonHelper.ConvertToString(loan.LoanBasicInstallment),
+                                               loan.LoanStatus,
+                                               //if loan status is latepay, set status to long of late
+                                                loanStatus == EnumLoanStatus.LatePay.ToString() ? GetDayLate(loan.Id) : string.Empty
                                                 }
                                         }
                                     ).ToArray()
                                 };
 
             return Json(jsonData, JsonRequestBehavior.AllowGet);
+        }
+
+        private string GetDayLate(string loanId)
+        {
+            DateTime? lastMaturityDate = _tLoanRepository.GetLastMaturityDate(loanId);
+            if (lastMaturityDate.HasValue)
+            {
+                TimeSpan longLate = DateTime.Today - lastMaturityDate.Value;
+                int totalDays = (int)Math.Floor(longLate.TotalDays);
+                int month = (int)Math.Floor(totalDays / 30d);
+                int days = (int)Math.Floor(totalDays - (month * 30d));
+                return string.Format("{0} bulan {1} hari", Helper.CommonHelper.ConvertToString(month), Helper.CommonHelper.ConvertToString(days));
+            }
+            return string.Empty;
         }
 
         [Transaction]
@@ -232,11 +247,15 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
 
                 loan.LoanSubmissionDate = Helper.CommonHelper.ConvertToDate(formCollection["LoanSubmissionDate"]); //loanVM.LoanSubmissionDate;
 
-                if (formCollection["LoanAdminFee"].Contains("true"))
-                    loan.LoanAdminFee = 14000;
+                if (formCollection["LoanAdminFee1"].Contains("true"))
+                    loan.LoanAdminFee = 25000;
+                else if (formCollection["LoanAdminFee2"].Contains("true"))
+                    loan.LoanAdminFee = 50000;
+                else if (formCollection["LoanAdminFee3"].Contains("true"))
+                    loan.LoanAdminFee = 75000;
 
-                if (formCollection["LoanMateraiFee"].Contains("true"))
-                    loan.LoanMateraiFee = 6000;
+                //if (formCollection["LoanMateraiFee"].Contains("true"))
+                //    loan.LoanMateraiFee = 6000;
 
                 loan.LoanTenor = loanVM.LoanTenor;
 
@@ -579,9 +598,9 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                     _tLoanSurveyRepository.Update(survey);
                 }
 
-                //save installment
-                if (loan.LoanStatus == "Approve")
-                    SaveInstallment(loan);
+                ////save installment
+                //if (loan.LoanStatus == "Approve")
+                //    SaveInstallment(loan);
 
                 _tLoanSurveyRepository.DbContext.CommitChanges();
             }
@@ -715,12 +734,12 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
 
         [Transaction]
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Oke(string loanId)
+        public ActionResult Oke(string loanId, string installDate)
         {
-            return ChangeLoanStatus(EnumLoanStatus.OK, loanId, "Kredit Ok");
+            return ChangeLoanStatus(EnumLoanStatus.OK, loanId, "Kredit Ok", Helper.CommonHelper.ConvertToDate(installDate));
         }
 
-        private ActionResult ChangeLoanStatus(EnumLoanStatus enumLoanStatus, string loanId, string successMsg)
+        private ActionResult ChangeLoanStatus(EnumLoanStatus enumLoanStatus, string loanId, string successMsg, DateTime? installDate = null)
         {
             string Message = string.Empty;
             bool Success = true;
@@ -742,7 +761,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                         //loan.LoanAccBy = User.Identity.Name;
                         loan.LoanAccDate = DateTime.Now;
                         //save installment
-                        SaveInstallment(loan);
+                        SaveInstallment(loan, installDate);
                     }
                 }
 
@@ -764,7 +783,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
             return Json(e, JsonRequestBehavior.AllowGet);
         }
 
-        private void SaveInstallment(TLoan loan)
+        private void SaveInstallment(TLoan loan, DateTime? installDate)
         {
             if (loan.LoanTenor.HasValue)
             {
@@ -800,7 +819,8 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
 
                 //looping for each month
                 TInstallment ins = null;
-                DateTime startDate = Convert.ToDateTime(string.Format("{1:yyyy-MM}-{0}", loan.LoanMaturityDate.Value, loan.LoanAccDate.Value));
+                //DateTime startDate = Convert.ToDateTime(string.Format("{1:yyyy-MM}-{0}", loan.LoanMaturityDate.Value, loan.LoanAccDate.Value));
+                DateTime startDate = installDate.Value;
 
                 for (int i = 0; i < loan.LoanTenor.Value; i++)
                 {
@@ -1017,6 +1037,15 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
 
             ReportDataSource reportDataSource = new ReportDataSource("InstallmentViewModel", list.ToList());
             return reportDataSource;
+        }
+
+        [Transaction]
+        public string GetTotal(string loanStatus, string searchBy, string searchText, string zoneId, string collectorId, string tLSId, string salesmanId, int? month, int? year)
+        {
+            decimal? total = _tLoanRepository.GetTotalInstallmentLoan(loanStatus, searchBy, searchText, zoneId, collectorId, tLSId, salesmanId, month, year);
+            if (total.HasValue)
+                return total.Value.ToString(Helper.CommonHelper.NumberFormat);
+            return "0";
         }
     }
 }

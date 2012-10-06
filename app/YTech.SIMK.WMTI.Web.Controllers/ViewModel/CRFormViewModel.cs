@@ -51,7 +51,14 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
             viewModel.LoanUnit = loanUnit;
 
             if (loan.LoanAdminFee != null)
-                viewModel.LoanAdminFee = true;
+            {
+                if (loan.LoanAdminFee == 25000)
+                    viewModel.LoanAdminFee1 = true;
+                else if (loan.LoanAdminFee == 50000)
+                    viewModel.LoanAdminFee2 = true;
+                else if (loan.LoanAdminFee == 75000)
+                    viewModel.LoanAdminFee3 = true;
+            }
 
             if (loan.LoanMateraiFee != null)
                 viewModel.LoanMateraiFee = true;
@@ -63,21 +70,21 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
 
             var tls = from emps in listTlsEmployee
                       select new { Id = emps.Id, Name = emps.PersonId != null ? emps.PersonId.PersonName : "-Pilih Team Leader-" };
-            viewModel.TLSList = new SelectList(tls, "Id", "Name", loan.TLSId != null ? loan.TLSId.Id : string.Empty);
+            viewModel.TLSList = new SelectList(tls, "Id", "Id", loan.TLSId != null ? loan.TLSId.Id : string.Empty);
 
             var listSaEmployee = mEmployeeRepository.GetEmployeeByDept(EnumDepartment.SA.ToString());
             listSaEmployee.Insert(0, employee);
 
             var salesman = from emps in listSaEmployee
                            select new { Id = emps.Id, Name = emps.PersonId != null ? emps.PersonId.PersonName : "-Pilih Salesman-" };
-            viewModel.SalesmanList = new SelectList(salesman, "Id", "Name", loan.SalesmanId != null ? loan.SalesmanId.Id : string.Empty);
+            viewModel.SalesmanList = new SelectList(salesman, "Id", "Id", loan.SalesmanId != null ? loan.SalesmanId.Id : string.Empty);
 
             var listSuEmployee = mEmployeeRepository.GetEmployeeByDept(EnumDepartment.SU.ToString());
             listSuEmployee.Insert(0, employee);
 
             var surveyor = from emps in listSuEmployee
                            select new { Id = emps.Id, Name = emps.PersonId != null ? emps.PersonId.PersonName : "-Pilih Surveyor-" };
-            viewModel.SurveyorList = new SelectList(surveyor, "Id", "Name", loan.SurveyorId != null ? loan.SurveyorId.Id : string.Empty);
+            viewModel.SurveyorList = new SelectList(surveyor, "Id", "Id", loan.SurveyorId != null ? loan.SurveyorId.Id : string.Empty);
 
             return viewModel;
         }
@@ -91,7 +98,9 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
 
         public bool CanEditId { get; internal set; }
 
-        public bool LoanAdminFee { get; internal set; }
+        public bool LoanAdminFee1 { get; internal set; }
+        public bool LoanAdminFee2 { get; internal set; }
+        public bool LoanAdminFee3 { get; internal set; }
         public bool LoanMateraiFee { get; internal set; }
     }
 }

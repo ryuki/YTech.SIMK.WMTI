@@ -15,6 +15,7 @@ namespace YTech.SIMK.WMTI.Enums
         Survey,
         OK,
         LatePay,
-        Paid
+        Paid,
+        Revert
     }
 }
