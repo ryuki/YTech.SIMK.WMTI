@@ -302,14 +302,16 @@ namespace YTech.SIMK.WMTI.Data.Repository
             StringBuilder sql = new StringBuilder();
             sql.AppendLine(@"  select coalesce(sum(loan.LoanBasicPrice),0), coalesce(sum(loan.LoanCreditPrice),0), coalesce(sum(loan.LoanBasicInstallment),0) ");
             sql.AppendLine(@"  from TLoan as loan ");
-            sql.AppendLine(@" where loan.LoanAccDate >= :startDate ");
-            sql.AppendLine(@"   and loan.LoanAccDate <= :endDate ");
+            sql.AppendLine(@" where loan.LoanSubmissionDate >= :startDate ");
+            sql.AppendLine(@"   and loan.LoanSubmissionDate <= :endDate ");
+            sql.AppendLine(@"   and loan.LoanStatus = :loanStatus ");
 
             string query = string.Format("{0} ", sql);
             IQuery q = Session.CreateQuery(query);
             q = Session.CreateQuery(query);
             q.SetDateTime("startDate", month);
             q.SetDateTime("endDate", month.AddMonths(1).AddDays(-1));
+            q.SetString("loanStatus", EnumLoanStatus.OK.ToString());
             IList list = q.List();
             return list;
         }
@@ -319,8 +321,8 @@ namespace YTech.SIMK.WMTI.Data.Repository
             StringBuilder sql = new StringBuilder();
             sql.AppendLine(@"  select coalesce(count(loan.Id),0) ");
             sql.AppendLine(@"  from TLoan as loan ");
-            sql.AppendLine(@" where loan.LoanSurveyDate >= :startDate ");
-            sql.AppendLine(@"   and loan.LoanSurveyDate <= :endDate ");
+            sql.AppendLine(@" where loan.LoanSubmissionDate >= :startDate ");
+            sql.AppendLine(@"   and loan.LoanSubmissionDate <= :endDate ");
             sql.AppendLine(@"   and loan.LoanStatus = :loanStatus ");
 
             string query = string.Format("{0} ", sql);
@@ -360,7 +362,8 @@ namespace YTech.SIMK.WMTI.Data.Repository
                 from dbo.T_LOAN loan
                 where loan.LOAN_STATUS = 'OK'
                 and loan.COLLECTOR_ID is not null
-                group by loan.COLLECTOR_ID ) a
+                group by loan.COLLECTOR_ID
+                having sum(loan.LOAN_BASIC_INSTALLMENT) > 0 ) a
                 left join
                 (
                 select ins.EMPLOYEE_ID, sum(ins.INSTALLMENT_BASIC) INSTALLMENT_BASIC
@@ -392,8 +395,9 @@ namespace YTech.SIMK.WMTI.Data.Repository
                 from dbo.T_LOAN loan
                 where loan.LOAN_STATUS = 'OK'
                 and loan.TLS_ID is not null
-                and loan.LOAN_ACC_DATE >= :startDate and loan.LOAN_ACC_DATE <= :endDate
-                group by loan.TLS_ID ) a
+                and loan.LOAN_SUBMISSION_DATE >= :startDate and loan.LOAN_SUBMISSION_DATE <= :endDate
+                group by loan.TLS_ID
+                having sum(loan.LOAN_BASIC_PRICE) > 0 ) a
                 left join
                 (
                 select com.COMMISSION_VALUE
@@ -425,8 +429,9 @@ namespace YTech.SIMK.WMTI.Data.Repository
                 from dbo.T_LOAN loan
                 where loan.LOAN_STATUS = 'OK'
                 and loan.SALESMAN_ID is not null
-                and loan.LOAN_ACC_DATE >= :startDate and loan.LOAN_ACC_DATE <= :endDate
-                group by loan.SALESMAN_ID ) a
+                and loan.LOAN_SUBMISSION_DATE >= :startDate and loan.LOAN_SUBMISSION_DATE <= :endDate
+                group by loan.SALESMAN_ID
+                having sum(loan.LOAN_CREDIT_PRICE) > 0 ) a
                 left join
                 (
                 select com.COMMISSION_VALUE
