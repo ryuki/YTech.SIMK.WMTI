@@ -14,17 +14,21 @@ namespace YTech.SIMK.WMTI.Data.Repository
 {
     public class TInstallmentRepository : NHibernateRepositoryWithTypedId<TInstallment, string>, ITInstallmentRepository
     {
-        public IEnumerable<TInstallment> GetPagedInstallmentList(string orderCol, string orderBy, int pageIndex, int maxRows, ref int totalRows, string loanCode)
+        public IEnumerable<TInstallment> GetPagedInstallmentList(string orderCol, string orderBy, int pageIndex, int maxRows, ref int totalRows, string loanCode, EnumLoanStatus loanStatus)
         {
             StringBuilder sql = new StringBuilder();
             sql.AppendLine(@"  from TInstallment as ins
                                left outer join ins.LoanId as loan ");
 
             sql.AppendLine(@" where loan.LoanCode = :loanCode");
+            if (loanStatus != EnumLoanStatus.Nothing)
+                sql.AppendLine(@" and loan.LoanStatus = :loanStatus ");
 
             string queryCount = string.Format(" select count(ins.Id) {0}", sql);
             IQuery q = Session.CreateQuery(queryCount);
             q.SetString("loanCode", loanCode);
+            if (loanStatus != EnumLoanStatus.Nothing)
+                q.SetString("loanStatus", loanStatus.ToString());
 
             totalRows = Convert.ToInt32(q.UniqueResult());
 
@@ -32,6 +36,8 @@ namespace YTech.SIMK.WMTI.Data.Repository
             string query = string.Format(" select ins {0}  order by ins.InstallmentNo", sql);
             q = Session.CreateQuery(query);
             q.SetString("loanCode", loanCode);
+            if (loanStatus != EnumLoanStatus.Nothing)
+                q.SetString("loanStatus", loanStatus.ToString());
             q.SetMaxResults(maxRows);
             q.SetFirstResult((pageIndex - 1) * maxRows);
             IEnumerable<TInstallment> list = q.List<TInstallment>();
@@ -45,15 +51,16 @@ namespace YTech.SIMK.WMTI.Data.Repository
                                                inner join ins.LoanId as loan ");
 
             sql.AppendLine(@" where loan.LoanCode = :loanCode and ins.InstallmentStatus = :status  ");
+            sql.AppendLine(@" and loan.LoanStatus = :loanStatus ");
 
             string query = string.Format(" select ins {0}  order by ins.InstallmentNo ", sql);
             IQuery q = Session.CreateQuery(query);
             q.SetString("loanCode", loanCode);
             q.SetString("status", EnumInstallmentStatus.Not_Paid.ToString());
-            //q.SetString("status", loanId);
+            q.SetString("loanStatus", EnumLoanStatus.OK.ToString());
             q.SetMaxResults(1);
 
-            return q.UniqueResult<TInstallment>(); 
+            return q.UniqueResult<TInstallment>();
         }
 
         IEnumerable<TInstallment> ITInstallmentRepository.GetListDueByDate(DateTime? dateFrom)
@@ -69,7 +76,7 @@ namespace YTech.SIMK.WMTI.Data.Repository
             q.SetDateTime("dateFrom", dateFrom.Value);
             q.SetString("status", EnumInstallmentStatus.Not_Paid.ToString());
 
-            return q.List<TInstallment>(); 
+            return q.List<TInstallment>();
         }
 
         public void UpdateInstallmentByLoan(string loanId, decimal loanBasicInstallment, decimal loanInterest, decimal loanOtherInstallment)
@@ -102,7 +109,7 @@ namespace YTech.SIMK.WMTI.Data.Repository
             q.SetString("loanCode", loanCode);
             q.SetInt32("installmentNo", installmentNo);
 
-            return q.List<TInstallment>(); 
+            return q.List<TInstallment>();
         }
 
         public IEnumerable<TInstallment> GetLastInstallmentByLoanId(string loanId)
@@ -118,7 +125,7 @@ namespace YTech.SIMK.WMTI.Data.Repository
             q.SetString("loanId", loanId);
             q.SetString("status", EnumInstallmentStatus.Not_Paid.ToString());
             q.SetMaxResults(1);
-            return q.List<TInstallment>(); 
+            return q.List<TInstallment>();
         }
 
         public IList<TInstallment> GetListByMaturityDate(DateTime? dateFrom, DateTime? dateTo)
@@ -134,7 +141,7 @@ namespace YTech.SIMK.WMTI.Data.Repository
             q.SetDateTime("dateFrom", dateFrom.Value);
             q.SetDateTime("dateTo", dateTo.Value);
 
-            return q.List<TInstallment>(); 
+            return q.List<TInstallment>();
         }
     }
 }

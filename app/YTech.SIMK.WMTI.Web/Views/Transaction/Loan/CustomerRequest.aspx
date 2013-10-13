@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Views/Shared/MyMaster.master" 
-    CodeBehind="CustomerRequest.aspx.cs" Inherits="YTech.SIMK.WMTI.Web.Views.Transaction.Loan.CustomerRequest" %>
+    CodeBehind="CustomerRequest.aspx.cs" Inherits="YTech.SIMK.WMTI.Web.Views.Transaction.Loan.CustomerRequest"  ValidateRequest="false" %>
 
 <asp:Content ContentPlaceHolderID="head" ID="headContent" runat="server">
 </asp:Content>

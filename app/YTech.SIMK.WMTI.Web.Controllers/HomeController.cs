@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using SharpArch.Core;
@@ -53,7 +55,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers
         }
 
         [Transaction]
-        [ValidateInput(false)] 
+        [ValidateInput(false)]
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult SavePromo(string promoNews)
         {
@@ -62,7 +64,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers
         }
 
         [Transaction]
-        [ValidateInput(false)] 
+        [ValidateInput(false)]
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult SaveAnnouncement(string announcementNews)
         {
@@ -111,6 +113,32 @@ namespace YTech.SIMK.WMTI.Web.Controllers
                 Message
             };
             return Json(e, JsonRequestBehavior.AllowGet);
+
+        }
+
+        public ActionResult Upload()
+        {
+            return View();
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Upload(FormCollection formCollection)
+        {
+            string filePath = string.Empty;
+            string fileName = string.Empty;
+            foreach (string inputTagName in Request.Files)
+            {
+                HttpPostedFileBase file = Request.Files[inputTagName];
+                if (file != null)
+                    if (file.ContentLength > 0)
+                    {
+                        fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                        filePath = Path.Combine(HttpContext.Server.MapPath("~/Upload/News/"), fileName);
+                        file.SaveAs(filePath);
+                    }
+            }
+
+            return Content(Url.Content("~/Upload/News/" + fileName));
 
         }
     }

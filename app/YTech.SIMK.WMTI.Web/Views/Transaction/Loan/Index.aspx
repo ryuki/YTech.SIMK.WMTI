@@ -221,7 +221,7 @@
                     
                     $("#" + subGridId).html("<table id='" + subGridTableId + "' class='scroll'></table><div id='" + pagerId + "' class='scroll'></div>");
                     $("#" + subGridTableId).jqGrid({
-                        url: '<%= Url.Action("List", "Installment") %>',
+                        url: '<%= Url.Action("ListAll", "Installment") %>',
                         postData: { loanCode: function () { return row.LoanCode; } },
                         datatype: 'json',
                         mtype: 'GET',
@@ -383,6 +383,7 @@
                 }
 
                 var separator = " | &nbsp;"; 
+                var del = "<img src='../Content/Images/cross.gif' title='Hapus Kredit' class='imgButton' onClick=\"OpenPopupDelete('" + row.LoanId + "');\" />&nbsp;";
                 var survey = "<img src='../Content/Images/edit24_on.gif' title='Edit Survey' class='imgButton' onClick=\"OpenPopup('" + cl + "');\" />&nbsp;";
                 var ok = "<img src='../Content/Images/ok24_on.png' title='Kredit Oke' class='imgButton' onClick=\"OpenPopupOke('" + row.LoanId + "');\" " + disableOk + " />";
                 var notes = "<img src='../Content/Images/Note-48.png' title='Catatan' class='imgButton' onClick=\"OpenPopupNotes('" + row.LoanId + "');\" />&nbsp;";
@@ -395,6 +396,13 @@
                 var tarik = "<a href='#' onClick=\"OpenPopupTarik('" + row.LoanId + "');\">Penarikan</a>&nbsp;";
                         
                 var be = "";
+                <% if (Request.IsAuthenticated && User.Identity.Name.ToLower() == "admin")
+                   {
+%>
+be = del + separator;
+    <%
+                   }%>
+                
                 switch (status) {
                     case 'Approve':
                         be = be + survey + separator + cancel + postpone;
@@ -422,6 +430,14 @@
                         break;
 
                     case "Paid":
+                        be = "";
+                        break;
+
+                    case "Revert":
+                        be = "";
+                        break;                        
+
+                    case "Delete":
                         be = "";
                         break;
 
@@ -476,6 +492,10 @@
 
         function OpenPopupReject(loanId) {
             return PostChangeStatus('Anda yakin menolak kredit?', '<%= Url.Action("Reject","Loan") %>?loanId=' + loanId);
+        }
+
+        function OpenPopupDelete(loanId) {
+            return PostChangeStatus('Anda yakin menghapus kredit?\nData yang telah dihapus tidak dapat dikembalikan!!', '<%= Url.Action("Delete","Loan") %>?loanId=' + loanId);
         }
 
         function PostChangeStatus(confirm_msg,posturl) {

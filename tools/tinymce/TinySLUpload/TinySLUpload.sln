@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinySLUpload", "TinySLUpload\TinySLUpload.csproj", "{233CCCC5-71A9-4134-9BD4-0C5F7FA02CBD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinySLUpload.Web", "TinySLUpload.Web\TinySLUpload.Web.csproj", "{4FE3E7A1-FFA5-4259-AE6D-3FDFC32B3561}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{233CCCC5-71A9-4134-9BD4-0C5F7FA02CBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{233CCCC5-71A9-4134-9BD4-0C5F7FA02CBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{233CCCC5-71A9-4134-9BD4-0C5F7FA02CBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{233CCCC5-71A9-4134-9BD4-0C5F7FA02CBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FE3E7A1-FFA5-4259-AE6D-3FDFC32B3561}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FE3E7A1-FFA5-4259-AE6D-3FDFC32B3561}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FE3E7A1-FFA5-4259-AE6D-3FDFC32B3561}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FE3E7A1-FFA5-4259-AE6D-3FDFC32B3561}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

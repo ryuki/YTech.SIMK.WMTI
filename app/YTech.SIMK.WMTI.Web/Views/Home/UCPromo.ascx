@@ -6,10 +6,6 @@
 <% } %>
 <script language="javascript" type="text/javascript">
     $(document).ready(function () {
-        // Add markItUp! to your textarea in one line
-        // $('textarea').markItUp( { Settings }, { OptionalExtraSettings } );
-        $('#promoNews').markItUp(mySettings);
-
 
         $("#popup").dialog({
             autoOpen: false,
@@ -27,7 +23,7 @@
 
         $('#btnPromoNewsSave').click(function () {
             var posturl = '<%= Url.Action("SavePromo","Home") %>';
-            var dataString = 'promoNews=' + $("#promoNews").text();
+            var dataString = 'promoNews=' + $("#promoNews").html();
             //alert (dataString);return false;  
             $.ajax({
                 type: "POST",
@@ -43,7 +39,7 @@
 
 </script>
 <div id='popup' style="text-align: center;">
-    <textarea rows="10" style="width: 95%; height: 250px;" id="promoNews"><%= Model.PromoNews.NewsDesc%></textarea><br />
+    <textarea rows="10" style="width: 95%; height: 250px;" id="promoNews" class="tinymce"><%= Model.PromoNews.NewsDesc%></textarea><br />
     <br />
     <button id="btnPromoNewsSave">
         Simpan</button>

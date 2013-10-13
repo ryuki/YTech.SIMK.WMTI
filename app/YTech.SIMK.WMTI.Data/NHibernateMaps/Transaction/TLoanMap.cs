@@ -64,6 +64,16 @@ namespace YTech.SIMK.WMTI.Data.NHibernateMaps.Transaction
                 .AsBag()
                 .Inverse()
                 .KeyColumn("LOAN_ID");
+
+            mapping.HasMany(x => x.LoanFeedbacks)
+                .AsBag()
+                .Inverse()
+                .KeyColumn("LOAN_ID");
+
+            mapping.HasMany(x => x.Installments)
+                .AsBag()
+                .Inverse()
+                .KeyColumn("LOAN_ID");
             
             mapping.Map(x => x.DataStatus, "DATA_STATUS");
             mapping.Map(x => x.CreatedBy, "CREATED_BY");

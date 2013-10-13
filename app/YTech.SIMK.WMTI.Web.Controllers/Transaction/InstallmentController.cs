@@ -85,10 +85,14 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
                 installment.DataStatus = EnumDataStatus.Updated.ToString();
                 _installmentRepository.Update(installment);
 
+                _installmentRepository.DbContext.CommitTransaction();
+
+
+                _loanRepository.DbContext.BeginTransaction();
                 //update loan status to Paid when all installment have been paid
                 _loanRepository.UpdateLoanToPaid(installment.LoanId.Id);
+                _loanRepository.DbContext.CommitTransaction();
 
-                _installmentRepository.DbContext.CommitTransaction();
                 Success = true;
                 Message = "Pembayaran Angsuran Berhasil Disimpan.";
             }
@@ -107,10 +111,10 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
         }
 
         [Transaction]
-        public virtual ActionResult List(string sidx, string sord, int page, int rows, string loanCode)
+        public virtual ActionResult List(string sidx, string sord, int page, int rows, string loanCode, EnumLoanStatus loanStatus)
         {
             int totalRecords = 0;
-            var installmentList = _installmentRepository.GetPagedInstallmentList(sidx, sord, page, rows, ref totalRecords, loanCode);
+            var installmentList = _installmentRepository.GetPagedInstallmentList(sidx, sord, page, rows, ref totalRecords, loanCode, loanStatus);
             int pageSize = rows;
             int totalPages = (int)Math.Ceiling((float)totalRecords / (float)pageSize);
 
@@ -142,6 +146,25 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
 
 
             return Json(jsonData, JsonRequestBehavior.AllowGet);
+        }
+
+        [Transaction]
+        public virtual ActionResult ListAll(string sidx, string sord, int page, int rows, string loanCode)
+        {
+            return List(sidx, sord, page, rows, loanCode, EnumLoanStatus.Nothing);
+        }
+
+        [Transaction]
+        public virtual ActionResult ListOK(string sidx, string sord, int page, int rows, string loanCode)
+        {
+            return List(sidx, sord, page, rows, loanCode, EnumLoanStatus.OK);
+        }
+
+        [Transaction]
+        public virtual ActionResult DetailLoan(string loanCode)
+        {
+            DetailLoanViewModel viewModel = DetailLoanViewModel.Create(_loanRepository,_installmentRepository, loanCode);
+            return View(viewModel);
         }
 
         private decimal tempSisa = 0;
@@ -217,6 +240,68 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Transaction
 
             ReportDataSource reportDataSource = new ReportDataSource("InstallmentViewModel", list.ToList());
             return reportDataSource;
+        }
+
+        public ActionResult Acquittance(string loanCode)
+        {
+            AcquittanceViewModel viewModel = AcquittanceViewModel.Create(_loanRepository, _mEmployeeRepository, loanCode);
+            return View(viewModel);
+        }
+
+        [ValidateAntiForgeryToken]      // Helps avoid CSRF attacks
+        [Transaction]                   // Wraps a transaction around the action
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Acquittance(FormCollection formCollection, string loanCode)
+        {
+            string Message = string.Empty;
+            bool Success = true;
+
+            try
+            {
+                _installmentRepository.DbContext.BeginTransaction();
+                TInstallment installment = _installmentRepository.GetLastInstallment(loanCode);
+
+                installment.EmployeeId = _mEmployeeRepository.Get(formCollection["EmployeeId"]);
+                installment.InstallmentPaymentDate = Helper.CommonHelper.ConvertToDate(formCollection["InstallmentPaymentDate"]);
+                installment.InstallmentPaid = Helper.CommonHelper.ConvertToDecimal(formCollection["MustPaid"]);
+                installment.InstallmentStatus = EnumInstallmentStatus.Paid.ToString();
+                installment.InstallmentReceiptNo = formCollection["ReceiptNo"];
+
+                installment.ModifiedBy = User.Identity.Name;
+                installment.ModifiedDate = DateTime.Now;
+                installment.DataStatus = EnumDataStatus.Updated.ToString();
+                _installmentRepository.Update(installment);
+
+                _installmentRepository.DbContext.CommitTransaction();
+
+
+                _loanRepository.DbContext.BeginTransaction();
+                //update loan status to Paid when all installment have been paid
+                TLoan loan = installment.LoanId;
+                loan.LoanStatus = EnumLoanStatus.Paid.ToString();
+
+                loan.ModifiedBy = User.Identity.Name;
+                loan.ModifiedDate = DateTime.Now;
+                loan.DataStatus = EnumDataStatus.Updated.ToString();
+
+                _loanRepository.Update(loan);
+                _loanRepository.DbContext.CommitTransaction();
+
+                Success = true;
+                Message = "Pelunasan Angsuran Berhasil Disimpan.";
+            }
+            catch (Exception ex)
+            {
+                Success = false;
+                Message = "Error :\n" + ex.GetBaseException().Message;
+                _installmentRepository.DbContext.RollbackTransaction();
+            }
+            var e = new
+            {
+                Success,
+                Message
+            };
+            return Json(e, JsonRequestBehavior.AllowGet);
         }
     }
 }

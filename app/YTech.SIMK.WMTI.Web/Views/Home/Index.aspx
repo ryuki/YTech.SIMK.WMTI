@@ -11,59 +11,43 @@
        { %>
     <script src="../../Scripts/jquery-1.6.3-vsdoc.js" type="text/javascript"></script>
     <% } %>
-
-    
-
-	<!-- markItUp! skin -->
-	<link rel="stylesheet" type="text/css" href="<%= Url.Content("~/Scripts/markitup/skins/markitup/style.css") %>">
-	<!--  markItUp! toolbar skin -->
-	<link rel="stylesheet" type="text/css" href="<%= Url.Content("~/Scripts/markitup/sets/default/style.css") %>">
-	<!-- markItUp! -->
-	<script type="text/javascript" src="<%= Url.Content("~/Scripts/markitup/jquery.markitup.js") %>"></script>
-	<!-- markItUp! toolbar settings -->
-	<script type="text/javascript" src="<%= Url.Content("~/Scripts/markitup/sets/default/set.js") %>"></script>
-    
     <h2>
         Sistem Informasi Manajemen Kredit Wahana Finance</h2>
-     <% if (Request.IsAuthenticated)
+    <% if (Request.IsAuthenticated)
        {%>
-
-
     <style type="text/css">
-    .kiri {
-    float: left; width: 49%;
-    }
-    .kanan {
-    float: right; width: 49%;
-    }
-    .boxkiri {
-    height: 210px; border: 1px black solid;
-    margin : 5px;
-    overflow:auto;
-    padding : 5px;
-    }
-    .boxkanan {
-    height: 135px; border: 1px black solid;
-    margin : 5px;
-    overflow:auto;
-    padding : 5px;
-    }
-    .title {
-    font-weight : bold;
-    color : Blue;
-    }
+        .kiri
+        {
+            float: left;
+            width: 49%;
+        }
+        .kanan
+        {
+            float: right;
+            width: 49%;
+        }
+        .boxkiri
+        {
+            height: 210px;
+            border: 1px black solid;
+            margin: 5px;
+            overflow: auto;
+            padding: 5px;
+        }
+        .boxkanan
+        {
+            height: 135px;
+            border: 1px black solid;
+            margin: 5px;
+            overflow: auto;
+            padding: 5px;
+        }
+        .title
+        {
+            font-weight: bold;
+            color: Blue;
+        }
     </style>
-    <%--<input type="button" id="btnTest" value='line 1&#13;&#10;line 2' />
-
-    <script type="text/javascript">
-        $(document).ready(function () {
-            var i = 3;
-            $("#btnTest").click(function () {
-                $("#btnTest").val($("#btnTest").val() + "\nline " + i); 
-                i = i + 1;
-            });
-        });
-    </script>--%>
     <div>
         <div class="kiri">
             <div class="boxkiri">
@@ -85,8 +69,7 @@
             </div>
         </div>
     </div>
-
-     <%
+    <%
        }
     %>
 </asp:Content>

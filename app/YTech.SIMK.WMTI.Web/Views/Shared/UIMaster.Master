@@ -298,7 +298,7 @@
     </div>
     <div class="ui-layout-south">
         <div class="header">
-            ©2011 YTech</div>
+            ©2011-2012 YTech</div>
         <%-- <div class="content">
             <p>
                 I only have a resizer/toggler when 'open'</p>
@@ -326,6 +326,6 @@
         </div>
         <%-- <div class="footer"></div>--%>
     </div>
-    <% Html.RenderPartial("Progress"); %>
+    <%--<% Html.RenderPartial("Progress"); %>--%>
 </body>
 </html>

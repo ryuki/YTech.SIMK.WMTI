@@ -6,11 +6,6 @@
 <% } %>
 <script language="javascript" type="text/javascript">
     $(document).ready(function () {
-        // Add markItUp! to your textarea in one line
-        // $('textarea').markItUp( { Settings }, { OptionalExtraSettings } );
-        $('#announcementNews').markItUp(mySettings);
-
-
         $("#popupAnnouncement").dialog({
             autoOpen: false,
             height: 420,
@@ -27,7 +22,7 @@
 
         $('#btnAnnouncementNewsSave').click(function () {
             var posturl = '<%= Url.Action("SaveAnnouncement","Home") %>';
-            var dataString = 'announcementNews=' + $("#announcementNews").text();
+            var dataString = 'announcementNews=' + $("#announcementNews").html();
             //alert (dataString);return false;  
             $.ajax({
                 type: "POST",
@@ -44,7 +39,8 @@
 
 </script>
 <div id='popupAnnouncement' style="text-align: center;">
-    <textarea rows="10" style="width: 95%; height: 250px;" id="announcementNews"><%= Model.AnnouncementNews.NewsDesc%></textarea><br />
+    <textarea rows="10" style="width: 95%; height: 250px;" id="announcementNews" class="tinymce">
+<%= Model.AnnouncementNews.NewsDesc%></textarea><br />
     <br />
     <button id="btnAnnouncementNewsSave">
         Simpan</button>

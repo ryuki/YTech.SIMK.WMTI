@@ -63,6 +63,23 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
             if (loan.LoanMateraiFee != null)
                 viewModel.LoanMateraiFee = true;
 
+            viewModel.Photo1 = "~/Content/Images/no_photo104_on.jpg";
+            viewModel.Photo2 = "~/Content/Images/no_photo104_on.jpg";
+
+            if (!string.IsNullOrEmpty(loan.LoanDesc))
+            {
+                string separator = "|";
+                string[] photos = loan.LoanDesc.Split(separator.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                if (photos.Count() > 0)
+                {
+                    viewModel.Photo1 = photos[0];
+                }
+                if (photos.Count() > 1)
+                {
+                    viewModel.Photo2 = photos[1];
+                }
+            }
+
             MEmployee employee = new MEmployee();
 
             var listTlsEmployee = mEmployeeRepository.GetEmployeeByDept(EnumDepartment.TLS.ToString());
@@ -102,5 +119,8 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
         public bool LoanAdminFee2 { get; internal set; }
         public bool LoanAdminFee3 { get; internal set; }
         public bool LoanMateraiFee { get; internal set; }
+
+        public string Photo1 { get; internal set; }
+        public string Photo2 { get; internal set; }
     }
 }

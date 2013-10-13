@@ -11,7 +11,7 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
 {
     public class SurveyFormViewModel
     {
-        public static SurveyFormViewModel CreateSurveyFormViewModel(ITLoanSurveyRepository tLoanSurveyRepository, IMEmployeeRepository mEmployeeRepository,IMZoneRepository mZoneRepository, IMPartnerRepository mPartnerRepository, IMDepartmentRepository mDepartmentRepository, string loanSurveyId)
+        public static SurveyFormViewModel CreateSurveyFormViewModel(ITLoanSurveyRepository tLoanSurveyRepository, IMEmployeeRepository mEmployeeRepository, IMZoneRepository mZoneRepository, IMPartnerRepository mPartnerRepository, IMDepartmentRepository mDepartmentRepository, string loanSurveyId)
         {
             SurveyFormViewModel viewModel = new SurveyFormViewModel();
             viewModel.CanEditId = true;
@@ -144,8 +144,23 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
             p.PartnerName = "-Pilih Toko-";
             listPartner.Insert(0, p);
             var partners = from prtner in listPartner
-                           select new {Id = prtner.Id, Name = prtner.PartnerName};
+                           select new { Id = prtner.Id, Name = prtner.PartnerName };
             viewModel.PartnerList = new SelectList(partners, "Id", "Name", loanSurvey.LoanId.PartnerId != null ? loanSurvey.LoanId.PartnerId.Id : string.Empty);
+
+            const string separator = "|";
+            string[] photos = new string[0];//= loanSurvey.LoanId.LoanDesc.Split(separator.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            if (!string.IsNullOrEmpty(loanSurvey.LoanId.LoanDesc))
+                photos = loanSurvey.LoanId.LoanDesc.Split(separator.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            viewModel.Photo1 = "~/Content/Images/no_photo104_on.jpg";
+            viewModel.Photo2 = "~/Content/Images/no_photo104_on.jpg";
+            if (photos.Count() > 0)
+            {
+                viewModel.Photo1 = photos[0];
+            }
+            if (photos.Count() > 1)
+            {
+                viewModel.Photo2 = photos[1];
+            }
 
             return viewModel;
         }
@@ -172,9 +187,9 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
                 if (assetArr.Contains("MBL"))
                     viewModel.SurveyNeighborAsset_MBL = true;
                 if (assetArr.Contains("AC"))
-                    viewModel.SurveyNeighborAsset_AC = true; 
+                    viewModel.SurveyNeighborAsset_AC = true;
             }
-            
+
         }
 
         public TLoanSurvey LoanSurvey { get; internal set; }
@@ -205,6 +220,9 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
         public bool SurveyNeighborAsset_PC { get; internal set; }
         public bool SurveyNeighborAsset_MTR { get; internal set; }
         public bool SurveyNeighborAsset_MBL { get; internal set; }
-        public bool SurveyNeighborAsset_AC { get; internal set; } 
+        public bool SurveyNeighborAsset_AC { get; internal set; }
+
+        public string Photo1 { get; internal set; }
+        public string Photo2 { get; internal set; }
     }
 }

@@ -590,6 +590,27 @@
                 </table>
             </td>
             <td>
+             Foto :<br />
+                <%--<%= Html.TextArea("LoanDesc", Model.Loan.LoanDesc, new { @style = "width: 200px; height: 250px;",@class="tinymce" })%>
+                 <textarea rows="10" style="width: 200px; height: 250px;" id="LoanDesc_"
+                    name="LoanDesc_" class="tinymces">
+<%= Model.Loan.LoanDesc %></textarea>--%>
+                <fieldset>
+                <legend>Foto 1</legend>
+                    <img id="img1" alt="" src='<%= Url.Content(Model.Photo1) %>'  width="300px" height="200px"/>
+                        <br />
+                    <iframe id='iUpload1' src='<%= Url.Content("~/Home/Upload?src=Photo1") %>' frameborder="0" width="300px"
+                        height="50px"></iframe>
+                <input type="hidden" id="hidPhoto1" name="hidPhoto1" />
+                </fieldset>
+                <fieldset>
+                <legend>Foto 2</legend>
+                    <img id="img2" alt="" src='<%= Url.Content(Model.Photo2) %>' width="300px" height="200px" />
+                        <br />
+                    <iframe id='iUpload2' src='<%= Url.Content("~/Home/Upload?src=Photo2") %>' frameborder="0" width="300px"
+                        height="50px"></iframe>
+                <input type="hidden" id="hidPhoto2" name="hidPhoto2" />
+                </fieldset>
             </td>
         </tr>
         <tr>
@@ -782,6 +803,16 @@
                 return "OK";
             }
         });
+    }
+
+    function UploadSuccess(data) {
+        $('#img1').attr('src', data);
+        $('#hidPhoto1').val(data);
+    }
+
+    function UploadSuccess2(data) {
+        $('#img2').attr('src', data);
+        $('#hidPhoto2').val(data);
     }
 
 </script>

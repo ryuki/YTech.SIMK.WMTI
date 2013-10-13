@@ -497,6 +497,16 @@ namespace YTech.SIMK.WMTI.Data.Repository
             return q.UniqueResult<DateTime>();
         }
 
+        public TLoan GetLoanByLoanCode(string loanCode)
+        {
+            ICriteria criteria = Session.CreateCriteria(typeof(TLoan));
+
+            criteria.Add(Restrictions.Eq("LoanCode", loanCode));
+
+            criteria.SetMaxResults(1);
+            return criteria.UniqueResult<TLoan>();
+        }
+
         #endregion
     }
 }

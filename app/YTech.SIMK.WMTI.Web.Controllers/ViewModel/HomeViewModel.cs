@@ -29,11 +29,13 @@ namespace YTech.SIMK.WMTI.Web.Controllers.ViewModel
             }
             viewModel.AnnouncementNews = news;
 
-            viewModel.CurrentLoanSummary = LoanSummary.Create(tLoanRepository, DateTime.Today);
+            DateTime currentMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
 
-            viewModel.OneMonthAgoLoanSummary = LoanSummary.Create(tLoanRepository, DateTime.Today.AddMonths(-1));
+            viewModel.CurrentLoanSummary = LoanSummary.Create(tLoanRepository, currentMonth);
 
-            viewModel.OneMonthAgoAchievement = AchievementSummary.Create(tLoanRepository, DateTime.Today.AddMonths(-1));
+            viewModel.OneMonthAgoLoanSummary = LoanSummary.Create(tLoanRepository, currentMonth.AddMonths(-1));
+
+            viewModel.OneMonthAgoAchievement = AchievementSummary.Create(tLoanRepository, currentMonth.AddMonths(-1));
 
             return viewModel;
         }

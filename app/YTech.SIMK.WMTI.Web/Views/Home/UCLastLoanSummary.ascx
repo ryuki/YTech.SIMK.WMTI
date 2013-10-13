@@ -46,27 +46,27 @@ Total Tertagih = Rp.<%= CommonHelper.ConvertToString(Model.OneMonthAgoLoanSummar
 Jumlah PK Masuk :
 </td>
 <td>
-Total PK = <%= CommonHelper.ConvertToString(Model.OneMonthAgoLoanSummary.TotalLoan)%> Permohonan
+Total PK = <%= CommonHelper.ConvertToString(Model.OneMonthAgoLoanSummary.TotalLoan, 0)%> Permohonan
 </td>
 </tr>
 <tr>
 <td>
-PK Terima = <%= CommonHelper.ConvertToString(Model.OneMonthAgoLoanSummary.TotalLoanApprove)%> Permohonan
+PK Terima = <%= CommonHelper.ConvertToString(Model.OneMonthAgoLoanSummary.TotalLoanApprove, 0)%> Permohonan
 </td>
 </tr>
 <tr>
 <td>
-PK Tolak = <%= CommonHelper.ConvertToString(Model.OneMonthAgoLoanSummary.TotalLoanReject)%> Permohonan
+PK Tolak = <%= CommonHelper.ConvertToString(Model.OneMonthAgoLoanSummary.TotalLoanReject, 0)%> Permohonan
 </td>
 </tr>
 <tr>
 <td>
-PK Tunda = <%= CommonHelper.ConvertToString(Model.OneMonthAgoLoanSummary.TotalLoanPostpone)%> Permohonan
+PK Tunda = <%= CommonHelper.ConvertToString(Model.OneMonthAgoLoanSummary.TotalLoanPostpone, 0)%> Permohonan
 </td>
 </tr>
 <tr>
 <td>
-PK Cancel = <%= CommonHelper.ConvertToString(Model.OneMonthAgoLoanSummary.TotalLoanCancel)%> Permohonan
+PK Cancel = <%= CommonHelper.ConvertToString(Model.OneMonthAgoLoanSummary.TotalLoanCancel, 0)%> Permohonan
 </td>
 </tr>
 </table>

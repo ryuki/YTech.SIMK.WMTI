@@ -32,5 +32,7 @@ namespace YTech.SIMK.WMTI.Core.RepositoryInterfaces
         void UpdateLoanToPaid(string loanId);
 
         DateTime? GetLastMaturityDate(string loanId);
+
+        TLoan GetLoanByLoanCode(string loanCode);
     }
 }

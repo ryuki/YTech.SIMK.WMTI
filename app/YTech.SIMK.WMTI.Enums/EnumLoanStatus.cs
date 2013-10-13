@@ -7,6 +7,7 @@ namespace YTech.SIMK.WMTI.Enums
 {
     public enum EnumLoanStatus
     {
+        Nothing,
         Approve,
         Cancel,
         Postpone,
@@ -16,6 +17,7 @@ namespace YTech.SIMK.WMTI.Enums
         OK,
         LatePay,
         Paid,
-        Revert
+        Revert,
+        Delete
     }
 }

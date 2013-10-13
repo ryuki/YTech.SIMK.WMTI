@@ -179,6 +179,14 @@ namespace YTech.SIMK.WMTI.Web.Controllers.Helper
             return result;
         }
 
+        public static string ConvertToString(decimal? value, int digitComma)
+        {
+            string result = string.Empty;
+            if (value.HasValue)
+                result = value.Value.ToString("N" + digitComma, DefaultCulture);
+            return result;
+        }
+
         public static string ConvertToString(int? value)
         {
             string result = string.Empty;

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="TinySLUpload">
+</Property><Property Name="Solution File" Value="E:\My Project\MVC Project\Solutions\YTech.SIMK.WMTI\tools\tinymce\TinySLUpload\TinySLUpload.sln">
+</Property><Property Name="Date" Value="Sunday, October 21, 2012">
+</Property><Property Name="Time" Value="12:43 PM">
+</Property></Properties><Event ErrorLevel="0" Project="TinySLUpload" Source="TinySLUpload\TinySLUpload.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="TinySLUpload" Source="TinySLUpload\TinySLUpload.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="TinySLUpload.Web" Source="TinySLUpload.Web\TinySLUpload.Web.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="TinySLUpload.Web" Source="TinySLUpload.Web\TinySLUpload.Web.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="TinySLUpload.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="TinySLUpload.sln" Description="Converted">
+</Event><Event ErrorLevel="0" Project="TinySLUpload" Source="TinySLUpload\TinySLUpload.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="TinySLUpload.Web" Source="TinySLUpload.Web\TinySLUpload.Web.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>

@@ -132,8 +132,10 @@
     <Compile Include="Utility\UserAccountController.cs" />
     <Compile Include="Utility\UserAdministrationController.cs" />
     <Compile Include="Utility\UtilityAreaRegistration.cs" />
+    <Compile Include="ViewModel\AcquittanceViewModel.cs" />
     <Compile Include="ViewModel\ClosingViewModel.cs" />
     <Compile Include="ViewModel\CRFormViewModel.cs" />
+    <Compile Include="ViewModel\DetailLoanViewModel.cs" />
     <Compile Include="ViewModel\FeedbackViewModel.cs" />
     <Compile Include="ViewModel\InstallmentPaymentFormViewModel.cs" />
     <Compile Include="ViewModel\JsTreeModel.cs" />

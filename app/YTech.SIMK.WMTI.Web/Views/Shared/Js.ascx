@@ -37,7 +37,6 @@
     <script src="<%= Url.Content("~/Scripts/jquery.layout.state.js") %>" type="text/javascript"></script>
     <script src="<%= Url.Content("~/Scripts/autoNumeric-1.6.2.js") %>" type="text/javascript"></script>
     <script src="<%= Url.Content("~/Scripts/jquery.tooltip.js") %>" type="text/javascript"></script>
-    <script src="<%= Url.Content("~/Scripts/default.js?v1.1") %>" type="text/javascript"></script>
     <script src="<%= Url.Content("~/Scripts/date.format.js") %>" type="text/javascript"></script>
     <script src="<%= Url.Content("~/Scripts/NumberFormat.js") %>" type="text/javascript"></script>
     <script src="<%= Url.Content("~/Scripts/complex.js") %>" type="text/javascript"></script>
@@ -47,3 +46,7 @@
     <script src="<%= Url.Content("~/Scripts/grayscale.js") %>" type="text/javascript"></script>
     <script src="<%= Url.Content("~/Scripts/jquery.tree.js") %>" type="text/javascript"></script>
     <script src="<%= Url.Content("~/Scripts/plugins/jquery.tree.checkbox.js") %>" type="text/javascript"></script>
+    
+    <script type="text/javascript" src="<%= Url.Content("~/Scripts/tiny_mce/jquery.tinymce.js") %>"></script>
+
+    <script src="<%= Url.Content("~/Scripts/default.js?v1.2") %>" type="text/javascript"></script>
